@@ -1,0 +1,87 @@
+/* 全体の基本 */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.7;
+}
+
+/* 上のバナー */
+.site-header {
+  border-bottom: 1px solid #ddd;
+}
+.banner {
+  padding: 20px 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.banner h1 {
+  margin: 0 0 6px;
+  font-size: 28px;
+}
+.banner p {
+  margin: 0;
+  color: #555;
+}
+
+/* 二段組 */
+.layout {
+  display: flex;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+/* 左メニュー */
+.sidebar {
+  width: 260px;
+  flex: 0 0 260px;
+  border: 1px solid #ddd;
+  padding: 12px;
+  border-radius: 8px;
+}
+.sidebar h2, .sidebar h3 {
+  margin: 8px 0;
+}
+.sidebar ul {
+  margin: 8px 0 16px;
+  padding-left: 18px;
+}
+.sidebar a {
+  text-decoration: none;
+}
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+/* 右本文 */
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 右の「枠」 */
+.box {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+/* フッター */
+.site-footer {
+  border-top: 1px solid #ddd;
+  padding: 14px 16px;
+  text-align: center;
+  color: #666;
+}
+
+/* スマホ対応: 幅が狭いと縦に積む */
+@media (max-width: 800px) {
+  .layout {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: auto;
+    flex: none;
+  }
+}
