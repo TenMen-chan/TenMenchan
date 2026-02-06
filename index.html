@@ -1,13 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>てんめんちゃん</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>テンメンちゃんじゃん</h1>
-  <p>ここはテストページです。</p>
-  <img src="Gazo/TenMen Icon.png" alt="うぉ、でっか" width="400">
-  <a href="reviews/testreviews.html">テスト用ゲーム感想</a>
+  <header class="site-header">
+    <div class="banner">
+      <h1>テンメンちゃんじゃん</h1>
+      <p>うぉ、でっか……（余白）</p>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="sidebar">
+      <h2>コンテンツ</h2>
+      <ul>
+        <li><a href="index.html">トップ</a></li>
+        <li><a href="reviews/testreviews.html">テスト用ゲーム感想</a></li>
+        <li><a href="reviews/">レビュー一覧</a></li>
+      </ul>
+
+      <h3>機種</h3>
+      <ul>
+        <li><a href="platform/fc.html">ファミコン</a></li>
+        <li><a href="platform/sfc.html">スーファミ</a></li>
+      </ul>
+    </nav>
+
+    <main class="content">
+      <h2>ここはテストページです。</h2>
+      <p>右側が本文エリアです。長文はここに置きます。</p>
+
+      <section class="box">
+        <h3>更新</h3>
+        <p>2026-02-06: CSSで二段組にしました。</p>
+      </section>
+    </main>
+  </div>
+
+  <footer class="site-footer">
+    <small>© TenMen-chan</small>
+  </footer>
 </body>
 </html>
