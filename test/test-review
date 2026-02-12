@@ -1,1 +1,69 @@
 
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>セクション試作</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <section class="qa-section">
+    <h2 class="question">Q. 一番好きだったポイントは？</h2>
+
+    <!-- メイン発言（128x128） -->
+    <article class="talk talk--main">
+      <img class="talk__avatar talk__avatar--128" src="images/tenmen_128.png" alt="テンメンちゃん" />
+      <div class="talk__bubble">
+        <div class="talk__name">テンメンちゃん</div>
+        <p>
+          そりゃバトルシーンだよねっ！ 妲己の三連続変化も熱かったし、でも一番は躯！ 髪で戦う日本人形って
+          ありがちになりそうなのに、「心中」って動機の問答無用さと、時間停止の圧が、BGMの弦推しと合体して
+          グワーッと来た！
+        </p>
+        <p>
+          長文テスト：このテキストは横にダーッと伸びつつ、行が増えたら下に伸びます。顔の下に文章が潜り込まないのが条件です。
+        </p>
+      </div>
+    </article>
+
+    <!-- コメント群（64x64） -->
+    <div class="comments">
+      <article class="talk talk--comment">
+        <img class="talk__avatar talk__avatar--64" src="images/yamamoto_64.png" alt="山本ディレッタントちゃん" />
+        <div class="talk__bubble">
+          <div class="talk__name">山本ディレッタントちゃん</div>
+          <p>
+            私は、燃やされたランパスを救出する場面が良かったわ。作品全体の「悪魔への歩み寄り」を一発で納得させた。
+            それと、強さの出し方が階段じゃなくランダムなのも、世界の圧がある。
+          </p>
+        </div>
+      </article>
+
+      <article class="talk talk--comment">
+        <img class="talk__avatar talk__avatar--64" src="images/tenmen_64.png" alt="テンメンちゃん" />
+        <div class="talk__bubble">
+          <div class="talk__name">テンメンちゃん</div>
+          <p>
+            わかる～！ でも「躯」はさ、サブっぽい顔して急に刺しにくるのが最高なんだよ。
+            そしてこのコメントが長くなっても、ちゃんと下に伸びるだけで、顔の下に潜り込まないこと。
+          </p>
+        </div>
+      </article>
+
+      <article class="talk talk--comment">
+        <img class="talk__avatar talk__avatar--64" src="images/yamamoto_64.png" alt="山本ディレッタントちゃん" />
+        <div class="talk__bubble">
+          <div class="talk__name">山本ディレッタントちゃん</div>
+          <p>
+            いいわ。では次の質問に行きましょう。人間はすぐ脱線するから。
+          </p>
+        </div>
+      </article>
+    </div>
+
+  </section>
+
+</body>
+</html>
