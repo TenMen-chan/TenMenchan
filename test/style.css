@@ -1,0 +1,107 @@
+/* 見た目の基礎 */
+* { box-sizing: border-box; }
+
+body {
+  margin: 24px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  line-height: 1.7;
+}
+
+.qa-section {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.question {
+  margin: 0 0 12px;
+  font-size: 1.2rem;
+}
+
+/* 会話ブロック共通（ここが“部品”） */
+.talk {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* 重要：これで「文章が顔の下に潜り込まない」 */
+.talk__bubble {
+  flex: 1;              /* 余白は全部セリフ側が取る */
+  min-width: 0;         /* 長い文字列があってもレイアウト崩さない保険 */
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.talk__name {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+/* アバター */
+.talk__avatar {
+  display: block;
+  flex: 0 0 auto; /* 画像サイズを固定して縮ませない */
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  background: #eee;
+  object-fit: cover;
+}
+
+.talk__avatar--128 {
+  width: 128px;
+  height: 128px;
+}
+
+.talk__avatar--64 {
+  width: 64px;
+  height: 64px;
+}
+
+/* メイン発言 */
+.talk--main {
+  margin: 8px 0 18px;
+}
+
+/* コメント群 */
+.comments {
+  display: grid;
+  gap: 12px;
+}
+
+/* 吹き出し「っぽく」する（本格は後でいい） */
+.talk__bubble {
+  position: relative;
+}
+
+.talk__bubble::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 18px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent #ccc transparent transparent;
+}
+
+.talk__bubble::after {
+  content: "";
+  position: absolute;
+  left: -9px;
+  top: 18px;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent #fafafa transparent transparent;
+}
+
+/* 画面が狭いときは縦並び（スマホ耐性） */
+@media (max-width: 640px) {
+  .talk {
+    flex-direction: column;
+  }
+  .talk__bubble::before,
+  .talk__bubble::after {
+    display: none; /* 縦並びだと矢印が邪魔なので消す */
+  }
+}
