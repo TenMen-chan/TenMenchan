@@ -5,6 +5,9 @@ body {
   line-height: 1.7;
 }
 
+/フォントサイズ/
+h1 { font-size: 32px; }
+
 /* 上のバナー */
 .site-header {
   border-bottom: 1px solid #ddd;
