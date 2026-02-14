@@ -1,0 +1,13 @@
+/* スマホ対応だけ */
+
+body {
+  margin: 0;
+  padding: 10px;
+}
+
+/* スマホのとき */
+@media (max-width: 600px) {
+  body {
+    padding: 5px;
+  }
+}
