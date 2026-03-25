@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+
+<style>
+  body {
+    margin: 0;
+    font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: #fff;
+      color: #555;
+      line-height: 1.6;
+      padding: 16px;
+  }
+
+  .page{
+    max-width: 850px;
+    margin:0 auto;
+    padding:0 16px;
+  }
+
+  @media (min-width: 850px){
+
+    .page{
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      padding-left: 32px;
+      padding-right: 32px;
+    }
+
+  }
+
+  .side-title,
+  .side-characters{
+    display:none;
+  }
+  @media (min-width: 1000px){
+
+.side-title{
+  display:block;
+  position:absolute;
+  left:calc(50% - 510px);
+  top:140px;
+  writing-mode: vertical-rl;
+  font-size:22px;
+  color:#888;
+  letter-spacing:2px;
+}
+
+.side-characters{
+  display:block;
+  position:absolute;
+  opacity: 0.8;
+  left:calc(50% + 470px);
+  top:140px;
+  width:150px;
+}
+
+.side-char{
+  margin-bottom:40px;
+  text-align:center;
+}
+
+.side-char img{
+  width:70px;
+  border-radius:50%;
+}
+
+.side-name{
+  font-weight:600;
+  margin-top:6px;
+}
+
+.side-desc{
+  font-size:11px;
+  color:#777;
+}
+
+}
+
+.poster{
+  border:1px solid #ddd;
+  padding:8px;
+  background:#fff;
+  max-width : 360px;
+}
+
+  img{
+    max-width: 100%;
+    height:auto;
+  }
+  h1 {
+  font-size: 48px;
+  line-height: 1.3;
+  font-weight: 700;
+  }
+  h2 {
+  font-size: 32px;
+  }
+  h3 {
+  font-size: 24px;
+  }
+  h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color:#666;
+  }
+  h5 {
+  font-size: 14px;
+  }
+
+  hr{
+    border:none;
+    border-top: 1px solid #ddd;
+    margin:30px 0;
+    margin-bottom: 20px;
+  }
+    .title-card{
+      margin:40px 0;
+    }
+    .lead-label{
+        font-size: 20px;
+        color:#777;
+        margin-bottom: 12px;
+        letter-spacing: 1px;
+    }
+    .title-card h1{
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .chat {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .avatar-block {
+      width: 130px;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+      margin: 0 auto 4px;
+    }
+
+    .name {
+      font-size: 14px;
+      color: #555;
+      font-weight: 700;
+    }
+
+    .bubble {
+      position: relative;
+      max-width: 520px;
+      padding: 16px 20px;
+      border: 2px solid #cfcfcf;
+      border-radius: 16px;
+      background: #fff;
+      font-size: 20px;
+      font-weight: 500;
+      color: #444;
+      line-height: 1.5;
+      white-space: normal;
+      word-break: break-word;
+      margin-top: 8px;
+    }
+
+    .bubble::before {
+      content: "";
+      position: absolute;
+      top: 24px;
+      left: -14px;
+      width: 0;
+      height: 0;
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-right: 14px solid #cfcfcf;
+    }
+
+    .bubble::after {
+      content: "";
+      position: absolute;
+      top: 24px;
+      left: -11px;
+      width: 0;
+      height: 0;
+      border-top: 9px solid transparent;
+      border-bottom: 9px solid transparent;
+      border-right: 13px solid #fff;
+    }
+    
+    .action{
+        font-size: 20px;
+        font-weight: 500;
+        margin-top:5px;
+        margin-bottom: 24px;
+        color:#333;
+        padding:6px 10px;
+        background: #f4f4f4;
+        border-left:4px solid #b9b9b9;
+        border-radius:4px;
+    }
+
+    .action.vertical {
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+
+        font-family:
+          "Yu Mincho",
+          "Hiragino Mincho ProN",
+          "Hiragino Serif",
+          "BIZ UDPMincho",
+          "MS Mincho",
+          serif;
+
+        font-size: 20px;
+        line-height: 1.8;
+        letter-spacing: 0.04em;
+
+        display: inline-block;
+        white-space: normal;
+
+        max-height: 520px;
+        padding: 20px 16px;
+        margin-top: 5px;
+        margin-bottom: 24px;
+
+        color: #333;
+        background: #f7f7f7;
+        border: 1px solid #cfcfcf;
+        border-left: none;
+        border-radius: 4px;
+    }
+
+.score-table{
+  width: 100%;
+  max-width: 900px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+
+.score-table th,
+.score-table td{
+  border: 2px solid #444;
+  vertical-align: top;
+  padding: 10px;
+}
+
+.score-table th{
+  font-size: 26px;
+  text-align: center;
+  background: #f8f8f8;
+}
+
+.tenmen-cell{
+  text-align: center;
+  height: 240px;
+}
+
+.big-score{
+  font-size: 64px;
+  font-weight: 700;
+  margin-top: 40px;
+}
+
+.big-score span{
+  font-size: 28px;
+  margin-left: 6px;
+}
+
+.yamamoto-cell{
+  font-size: 26px;
+}
+
+.score-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:16px 40px;
+  margin-bottom:20px;
+}
+
+.score-row{
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #ddd;
+  padding-bottom:4px;
+}
+
+.score-row span:first-child{
+font-weight:600;
+}
+
+.score-row:nth-child(odd){
+    border-right: 1px solid #ddd;
+    padding-right: 16px;
+}
+
+.empty{
+    border-bottom:none;
+}
+
+.total-mini{
+  font-weight: 700;
+  border-bottom: none;
+  margin-top: 18px;
+}
+
+.bottom-total{
+  text-align: center;
+  font-size: 40px;
+  font-weight: 700;
+  background: #fafafa;
+}
+.tenmen-comment{
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.question{
+  margin:40px 0 24px 0;
+  padding:10px 16px;
+  border-left:6px solid #e60023;
+  border-bottom:2px solid #333;
+  font-size:30px;
+  font-weight:700;
+}
+
+.q-label{
+  color:#e60023;
+  margin-right:10px;
+}
+
+.blue-tag{
+  margin:40px 0 24px 0;
+  padding:10px 16px;
+  border-left:6px solid #0036e6;
+  border-bottom:2px solid #333;
+  font-size:30px;
+  font-weight:700;
+}
+
+.green-tag{
+  margin:40px 0 24px 0;
+  padding:10px 16px;
+  border-left:6px solid #08e600;
+  border-bottom:2px solid #333;
+  font-size:30px;
+  font-weight:700;
+}
+
+.profile-card{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.profile-card + .profile-card{
+  margin-top: 24px;
+}
+
+.profile-card:last-of-type{
+  margin-bottom: 40px;
+}
+
+.profile-icon{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  object-fit:cover;
+}
+
+.profile-name{
+  font-size:32px;
+  font-weight:700;
+}
+
+.profile-tip{
+  font-size:16px;
+  color:#666;
+}
+
+.dialogue-box{
+  background: rgba(255,255,255,0.7);
+  padding:28px;
+  border-radius:10px;
+  max-width:720px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.9) ;
+  position: relative;
+  z-index: 1;
+}
+
+/* シーン係数は画像の操作があるため、cssに入れない。また、増やしたければscene2を作る。 dialogue-boxとの併用推奨。*/
+
+.scene{
+  position: relative;
+  padding:60px 40px;
+  overflow: hidden;
+  margin-top: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.scene::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background-image:
+    linear-gradient(
+      rgba(0,0,0,0.45),
+      rgba(0,0,0,0.45)
+    ),
+    url("images/kanari1.jpeg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px);
+  transform: scale(1.05);
+
+  z-index:0;
+}
+
+.scene2{
+  position: relative;
+  padding:60px 40px;
+  overflow: hidden;
+  margin-top: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.scene2::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background-image:
+    linear-gradient(
+      rgba(0,0,0,0.45),
+      rgba(0,0,0,0.45)
+    ),
+    url("images/stage.jpeg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px);
+  transform: scale(1.05);
+
+  z-index:0;
+}
+
+.scene3{
+  position: relative;
+  padding:60px 40px;
+  overflow: hidden;
+  margin-top: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.scene3::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background-image:
+    linear-gradient(
+      rgba(0,0,0,0.45),
+      rgba(0,0,0,0.45)
+    ),
+    url("images/audienceseats.jpeg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px);
+  transform: scale(1.05);
+
+  z-index:0;
+}
+
+.scene4{
+  position: relative;
+  padding:60px 40px;
+  overflow: hidden;
+  margin-top: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.scene4::before{
+    content:"";
+    position:absolute;
+    inset:0;
+
+    background-image:
+    linear-gradient(
+      rgba(0,0,0,0.45),
+      rgba(0,0,0,0.45)
+    ),
+    url("images/townnight.jpeg");
+  background-size: cover;
+  background-position: center;
+  filter: blur(4px);
+  transform: scale(1.05);
+
+  z-index:0;
+}
+</style>
+
+<!-- スマホ表示用 -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TEST</title>
+
+<!-- CSS読み込み -->
+<link rel="stylesheet" href="mobile.css">
+
+</head>
+<body>
+
+<div class="side-title">
+  創作レビュー　ブンドド＆チェリーピッキング
+</div>
+
+<div class="side-characters">
+
+  <div class="side-char">
+    <img src="K/T.jpg">
+    <div class="side-name">テンメンちゃん</div>
+    <div class="side-desc">どこでも寝れるように、歯ブラシを持ち歩いている。</div>
+  </div>
+
+  <div class="side-char">
+    <img src="K/Y.jpg">
+    <div class="side-name">山本ディレッタント</div>
+    <div class="side-desc">死ぬほど口が悪いので、友達がほぼいない。</div>
+  </div>
+
+</div>
+<div class="page">
+  <div class="title-card">
+    <div class="lead-label">今日はこれを観に行こう！</div>
+    <h1>「魔法使いの弟子たちの美しくて馬鹿げたシナリオ」</h1>
+  </div>
+  <div class="poster">
+  <img src="images/hyoushi.jpeg" width="350px">
+  </div>
+  <h4><b>【作品情報】</b>
+    <br>ジャンル：演劇
+    <br>タイトル：「魔法使いの弟子たちの美しくて馬鹿げたシナリオ」
+    <br>制作　　：作・松原俊太郎<br>　　　　 演出・小野彩加 中澤陽 スペースノットブランク
+    <br>初演　 　: 2025年9月13日～15日／静思堂シアター
+    <br><b>【観劇情報】</b>
+    <br>2026年2月26日～3月1日／ゲーテ・インスティテュート東京
+    <br>
+    <br>詳細なクレジットは、公式のものをご参照ください。
+    <br>URL　https://matsubarashuntaro.com
+    <br>X→　@shuntaro_m ／Instagram→  @shuntaroum
+    <br><br><b>※　この記事はネタバレを含みます。</b>
+
+    <hr>
+
+
+  <p class="blue-tag">劇場に行こう！</p>
+
+  <div class="scene">
+
+      <div class="dialogue-box">
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            劇楽しみだね～！
+            
+          </div>
+        </div>
+　　　　　
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            くっつかないで、離れて、気持ち悪い
+          </div>
+        </div>
+
+          <p class="action"><b>≪２月２８日の赤坂≫</b><br>「ゲーテ・インスティテュート」につづく坂道。</p>
+          <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            展開当てっこしよ？　当てっこ。<br>
+            えーっとね、まずこの人が死ぬでしょー？<br><br>
+            で、この人が実は裏切り者ね。<br>
+            師匠の魔法使いがラスボスで、そいつと通じてるの。<br><br>
+            けど仲間になって、魔法使いを倒して、最初に死んだ人が魔法で生き返って、ハッピーエンドね。
+
+            
+          </div>
+        </div>
+        
+
+      
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            絶対そういう劇じゃないから。<br><br>
+            どーせ知らないだろうけど、こういう劇での『魔法』っていうのは、大概、比喩やメタファーなのよ。ファンタジーな冒険モノなんか期待して見に来てる奴はいないから。
+          </div>
+        </div>
+      
+
+      <p class ="action">テンメンちゃんがパンフレットをじっくり読む──</p>
+
+        <div class="chat tenmen">
+          <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            いやッ、でも『美しい』って書いてあるよ！？<br>
+            ファンタジーじゃんやっぱり！
+          </div>
+        </div>
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="山本ディレッタント" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            あのさ、接続が１つもないのは分かってる？
+          </div>
+        </div>
+      </div>
+  </div>
+ <h3>　　　　　　　　◆　　　　　　　　◆　　　　　　　　◆</h3>
+  <p class="blue-tag">なんとかやっていく</p>
+  <div class="scene2">
+    
+
+      <div class="dialogue-box">
+         <p class="action"><b>≪開演後≫</b><br>「この四人で、なんとか、なんとかやっていきたいと思いますけれどね」<br>　演劇が始まってすぐ、カトウが観客に呼びかける。</p>
+         <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            『なんとか』を妙に強調するわね。こんな良い劇場でやってるのに、売れない芸人みたいな入り方というか。
+          </div>
+        </div>
+        <p class="action">ナニカ「はい、いまどんな言葉が浮かんできてる？」<br>フジ「バーニラ、バニラバーニラ地球人！」<br>一瞬、客席の空気が張り詰める。</p>
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            今の面白くないギャグは……もしかして笑うとこ？
+            
+            
+          </div>
+        </div>
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            ？　さあ。面白かったら笑えば？
+
+           
+          </div>
+        </div>
+
+        <p class="action">ナニカ「重症ですねえ」</p>
+          <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">本当に大丈夫かしら、この劇……
+            
+          </div>
+        </div>
+        
+      </div>
+    </div>
+<h3>　　　　　　　　◆　　　　　　　　◆　　　　　　　　◆</h3>
+<p class="blue-tag">十年</p>
+  <div class="scene2">
+    
+
+      <div class="dialogue-box">
+         <p class="action">リカが、客席に向かって、<br>「<b>ここにはさまざまな十年が集合しています。</b>あなたはその中から、あなたの十年と言えるものを、ひとつ選んでください。選んだら、それを一枚のハンカチーフのように、薄く引き伸ばしてください」
+          　</p>
+         <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            （おしぼりサイズの十年を膝の上で広げる）
+
+           
+          </div>
+        </div>
+        
+         
+         <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            （テーブルクロスのような十年を胸の前で折り畳む）
+          </div>
+        </div>
+
+        <p class="action">リカ<br>「はい、ばっちりです。これで十年ハンカチーフで涙をぬぐったり膝に広げたり、別れの挨拶をしたり出来ます。最後までお手に、お持ちになっていてくださいね」</p>
+
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            ねねねね、あかりちゃんはどんなのにした？<br>おれはねー、<b>これ</b>(エア十年を見せる)
+          </div>
+        </div>
+
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            うるさい、静かに観て（エア十年を押しのける）<br><br>戯曲家と演出家から予想はしてたけれど、こういうメタ系の演出がちょくちょく入るのね。まあ演劇は、もとから半分メタみたいなものだけど……お手並み拝見ね。
+          </div>
+        </div>
+
+        
+        
+      </div>
+    </div>
+<h3>　　　　　　　　◆　　　　　　　　◆　　　　　　　　◆</h3>
+  <p class="blue-tag">ギャル</p>
+  <div class="scene2">
+
+      <div class="dialogue-box">
+        <p class="action"><b>タクシードライバーになったカトウ。</b><br>話しこんでいるカトウとサラリーマンの近くで、スカートの下にジャージを履いたギャルが様子を伺っている。</p>
+          <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+          あの子が次の乗客かしら。<br><br>
+          疲れたサラリーマンの次は、元気なギャルってとこ？　ずいぶん典型的な配役なんじゃない？
+          </div>
+        </div>
+          <p class="action"><b>ギャル「フラペチーノ飲みます？　アサリの」<br>（圧倒）（やたら近い距離）</b><br></p>
+          <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            やばいギャル来たｗｗ
+          </div>
+        </div>  
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+          （思考停止）
+          </div>
+        </div>
+
+      <p class ="action">カトウ「………………………………アサリの？」<br>ギャル「砂は入ってないよ」</p>
+
+        <div class="chat tenmen">
+          <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            あかりちゃんめっちゃ驚いてて草ｗ
+          </div>
+        </div>
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="山本ディレッタント" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            は？　集中してただけなんだけど。<br>
+            悪いんだけど、私の前ではそういう低俗な言葉遣いやめてくれる？　分からないから、ネットの言葉とか。私。
+          </div>
+        </div>
+        <div class="chat tenmen">
+          <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            草ぐらいでダメなんだ
+            
+          </div>
+        </div>
+        
+      </div>
+  </div>
+<h3>　　　　　　　　◆　　　　　　　　◆　　　　　　　　◆</h3>
+  <p class="blue-tag">笑い</p>
+  <div class="scene2">
+
+      <div class="dialogue-box">
+          <p class="action"><b>≪物語終盤≫<br>フジ「クワイエタス！！」</b><br>ミチコが声を奪われて、口をぱくぱくさせる。</p>
+          <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            あはははｗｗ
+          </div>
+        </div>
+      
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            フッ……ｗ　フフフｗｗｗ
+          </div>
+        </div>
+        <p class="action">客席からもひときわ大きな笑いが起こっている。</p>
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            そういえばこの劇、妙に観客が笑うわね……劇にしては観る側の緊張がほぐれてるというか。リラックスというほどじゃないけど……何かしらこれ？
+          </div>
+        </div>
+
+        <p class="action">フジ「ホグワーツ魔法魔術学校って正式名称言ったことある？　こんなすんなり出てこなくない？」</p>
+
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            ﾌｨｰﾋﾋﾋｗｗｗ　ﾋｯｗｗ
+          </div>
+        </div>
+
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            ……ま、とりあえず観ようかしら……
+          </div>
+        </div>
+        
+      
+
+      
+      </div>
+  </div>
+<h3>　　　　　　　　◆　　　　　　　　◆　　　　　　　　◆</h3>
+  <p class="blue-tag">シナリオ</p>
+  <div class="scene2">
+    
+
+      <div class="dialogue-box">
+        <p class="action"><b>フジ「ぼくが部屋を出たら、ナニカにぶつかって、再開して、いまはそういう場面だよ、ミチコはもう終わり」</b><br>
+          ミチコ「終わりってなんや！」</p>
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            ……
+            
+          </div>
+        </div>
+        <p class="action">ミチコが観客のほうを向いて、<br>
+          「あのー、さっきから気になってたんですけど、その手に握ってはるのは、何ですか？」
+        </p>
+          <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+          <h2><b>十年のハンカチ！！！！！ </b></h2>
+
+            
+          </div>
+        </div>
+         <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            <b>ちょっと何叫んでるの！</b>
+            
+          </div>
+        </div>
+        <p class="action">一瞬、客席の空気が張り詰める。<br>
+          それからミチコの眼がテンメンちゃんを捉える。<br>
+          「は。十年のハンカチ？　なにそれ、十年を手に握ってはんの？　……考えたこともなかったことばっかりあるな。……十年。一瞬だったんやろな。」
+        </p>
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+           や、役者がアドリブ上手で助かった……。<br>
+           私、あなたはもう少し常識があると思ってたんだけど？
+          </div>
+        </div>
+
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+          え、いまの絶対おれたちが答えるシーンだよ
+
+            
+          </div>
+        </div>
+
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+           <b>演劇にそんなシーンはないのよ……！</b><br>はあ……、連れてくるんじゃなかったわ、あんたみたいなガキ……。
+          </div>
+        </div>
+        <p class="action">
+          その後、すぐに劇が終わり、舞台が暗転していく。
+        </p>
+
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+          （ミチコに十年ハンカチを振る）
+
+            
+          </div>
+        </div>
+
+      </div> 
+    </div>
+<h3>　　　　　　　　◆　　　　　　　　◆　　　　　　　　◆</h3>
+  <p class="blue-tag">帰り道</p>
+  <div class="scene4">
+
+      <div class="dialogue-box">
+          <p class="action">テンメンちゃんが塀の上に乗り、垣根の枝を勝手に折る。</p>
+          <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            <b>クワイエタスッ！！</b>（木の棒を振る）<br>……………ッ！！（木の棒を振る）<br>ｗｗｗｗｗｗｗｗｗｗｗｗ</br>
+          </div>
+        </div>
+      
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            『あなたが、いまそこにいることで、同時に起きてるんだよ』……『あなたが、いまそこにいることで、同時に起きてるんだよ』……うーん。
+          </div>
+        </div>
+        <p class="action">山本ディレッタントが、道端に座って戯曲を読んでいる。</p>
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+            <b>クワイエタスッ！！</b>（山本に葉っぱを投げる）<br>ｗｗｗｗｗｗｗｗｗｗｗｗｗｗ
+          </div>
+        </div>
+
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y-happa.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            ……ねえ、ちょっといいかしら？　ここ読んで。
+            <br>（戯曲の一節を指さす）
+          </div>
+        </div>  
+
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+           え、なになに？
+                   
+          </div>
+        </div>
+
+        <p class="action">テンメンちゃんがぴょんっと降りてきて、戯曲を覗きこむ。
+        </p>
+
+        <p class="action vertical">フジ　　（観客が答えたら言わない。観客が答えなさそ<br>　　　　うだったら気まずくならない間ですぐ言う）<br>　　　　十年だよ。</p>
+
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y-happa.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            ……ごめんなさい。あなたの反応で正解だったみたい。
+          </div>
+        </div>   
+        
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+           ？
+          </div>
+        </div>
+
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y-happa.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            ラストシーンよ。<br>ほら、観客の応答があらかじめ書かれてるでしょ？<br>……あなたの方が、ちゃんとミチコの視線に応えてられていたのかもしれないわ。
+          </div>
+        </div> 
+
+
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+           <b>あーーーーね！！</b><br>あそこ良かったよねマジで！　うわこれヒーローショーじゃんってなってブワーッってあがってこなかった？？<br><br>最初は魔法使いでそのあと日常で、ラストであれ持ってくるってマジ天才だよねー！　会場全体の一体感！　みたいな！！！
+          </div>
+        </div>
+
+        <div class="chat yamamoto">
+          <div class="avatar-block">
+            <img src="K/Y-happa.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">山本ディレッタント</div>
+          </div>
+          <div class="bubble">
+            は？<br><br>待ちなさいよ。話、聞いてた？　謝罪はするけれど、受け取る気がない謝罪はするつもりないからね。私。
+          </div>
+        </div>
+
+        <div class="chat tenmen">
+            <div class="avatar-block">
+            <img src="K/T.jpg" alt="テンメンちゃん" class="avatar">
+            <div class="name">テンメンちゃん</div>
+          </div>
+          <div class="bubble">
+           え、なにが？
+          </div>
+        </div>
+
+        <p class="action"><b>　　　　　　　　　　　　　　　～おわり～</b></p>
+
+      </div>
+    </div>
+  
+  <div class="question">
+    <span class="q-label">Q.</span>
+    今回の演劇の点数は？
+  </div>
+
+  <div class="score-wrap">
+    <table class="score-table">
+      <tr>
+        <th>テンメンちゃん</th>
+        <th>山本ディレッタント</th>
+      </tr>
+      <tr>
+        <td class="tenmen-cell">
+          <div class="big-score">724<span>点</span></div>
+          <div claas="tenmen-comment">観る時食べた夜ご飯：いくらおにぎり</div>
+        </td>
+
+        <td class="yamamoto-cell">
+
+          <div class="score-grid">
+          
+              <div class="score-row">
+                  <span>構成</span>
+                  <span>18 / 20</span>
+              </div>
+          
+              <div class="score-row">
+                  <span>倫理</span>
+                  <span>18 / 20</span>
+              </div>
+          
+              <div class="score-row">
+                  <span>セリフ</span>
+                  <span>19 / 20</span>
+              </div>
+        
+              <div class="score-row">
+                  <span>テーマ</span>
+                  <span>19 / 20</span>
+              </div>
+          
+              <div class="score-row">
+                  <span>動作</span>
+                  <span>18 / 20</span>
+              </div>
+    
+          <div class="score-row empty"></div>
+      </div>
+
+          <div class="score-row total-mini">
+            <span>計</span>
+            <span>92 / 100</span>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="bottom-total">724点いくらおにぎり</td>
+        <td class="bottom-total">92/100点</td>
+      </tr>
+    </table>
+  </div>
+    <h3>天下無双のれびゅあ～ず</h3>
+
+    <div class="profile-card">
+      <img src="images/T.jpg" class="profile-icon">
+      <div class="profile-text">
+        <div class="profile-name">テンメンちゃん</div>
+        <div class="profile-tip">もし１００万円あったら？　ベンツを買いたい。</div>
+      </div>
+    </div>
+    <div class="profile-card">
+      <img src="images/Y.jpg" class="profile-icon">
+      <div class="profile-text">
+        <div class="profile-name">山本ディレッタント</div>
+        <div class="profile-tip">もし１００万円あったら？　貯金して大学の学費にする。駄目ならヨーロッパを一人旅。</div>
+      </div>
+    </div>
+  <h3>テンメンちゃん</h3>
+  <h4><b>めっちゃ面白かった～！！！</b><br>
+<br>ギャルの子とナニカちゃんがめちゃくちゃかっこよかった！<br>二人ともすごいガーーーッて喋るんだけど、でも自分のことはしっかり分かってそうな感じが頭良さそうですごいかっこよかった。
+<br><br>でも二人とも出てきてすぐいなくなっちゃったのが残念だった。結構コレあるあるなんだよね、おれが好きなキャラ、絶対途中でいなくなっちゃうの。澪田唯吹ちゃんとか。最後、結局ナニカちゃん戻ってこなかったの悲しかったな〜……。でも、ミチコちゃんの中にいると思えばいいのかな。
+<br><br><b>あとね、ギャグ楽しい。</b>コレ！<br><br>演劇マジで知らなかったんだけど、こんな感じなら全然もっといっぱい観れるかも……！？　おれ、席にずっと座ってるのマジで苦手すぎて、だから演劇ムリなんだけど、ぜんぜん立たなかったもん。あんま覚えてないけど、たぶん一回も立たなかったんじゃない？　あの劇は絶対、お客さんを座らせておくための劇だよね！
+<br><br><b>楽しかった！</b>　誘ってくれてありがとね、あかりちゃん！
+<br>
+
+
+<h3>山本ディレッタント</h3>
+
+<b>構成18点</b><br><br>
+
+　ラストの終わらせ方は賛否が分かれるだろう。最終的に日常に戻っていく終わり方で、個人的にはそう嫌いでもない。だが、シナリオ外に行ってからはかなりシリアス一直線だったので、シナリオ外で軽さや明るさをどう見せてくれるのか、それをもう少し見てみたかった。
+
+<br>　テーマがテーマだけに、明るい終わり方に振り切っても良かったのではないだろうか？　無論、難しいとは思うが。とはいうものの、それ以外は悪くなかった。
+<br><br>　一緒に観劇した友人が、ラストでミチコに叫び返していたのだが、何度考えても、あれで正解なのか見当がつかない。戯曲には『（観客が答えたら～）』という一節があるので、少なくとも想定はされていたのだろう。
+<br>　もしそうなら、あのラストは、ミチコが日常に戻っていくシーンではなくて、観客と登場人物の、本物の会話が成立するかが試されていた、すさまじく緊迫したシーンだった、ということになる。
+<br>　確証は持てないものの、その解釈を採用するなら、かなり攻めた構成なので、18点をつけた。
+
+<br><br><b>セリフ19点</b><br><br>
+
+　不思議な体験だった。あとから戯曲を読み返すと、セリフにも会話の流れにも、逸脱がかなりの頻度で仕組まれていて、観劇中は自然に受け入れていたのがまったく理解できない。確証はないが、字幕の存在が実は大きかったのかもしれない。何度かセリフを聞きながら字幕を参照した記憶がある。<br>
+
+<br>　観劇後、他の観客の一人が「語が頭に入ってこなくてついていけなかった」と首をひねっていた。なにやら、界隈で名の知れた批評家ふうの、年配の男性だったが。あれだけ工夫されたこの劇で頭に入ってこないなら、どうやったら入ると言うのだろう？　僭越ながら、セリフを意味で捉えすぎなのでは？　それとも、世代間の言葉の差は、そんなに大きいのだろうか。あるいは、単に私が変なだけかもしれない。
+
+<br><br><b>動作18点</b><br>
+
+<br>　動作の観察に関しては、本当に自信がないのだが、観劇前に予想していたより、意外と素直な動きだったと思う。少なくとも、演劇によくある、「動きに違和感をあえて残すことで観客の目を惹きつけるタイプ」というよりは、「動きでメッセージを増幅しながら、その増幅ぐあいで観客の目を惹きつけるタイプ」だろう。情報の密度で攻めてこられた感触もあり、細かく言おうとすると難しい。かなりのクオリティだったと思うので18点をつけた。
+
+<br><br><b>倫理18点</b><br><br>
+
+　世界で普遍的に起きている悲劇を、ごまかすのではなく、正面から引き受けたうえで、軽さと明るさで回収しようとする姿勢が伝わってきた。その回収のやり方も、あくまで演劇特有のやり方を貫いていたのも評価できる。
+
+<br><br>　どんな表現方法でも、展開をメタに振ることで登場人物の存在を肯定するのはけっこう簡単だ。だが、メタをやったという作者の罪を引き受けず、単に感動させようとしてきたり、逆に暴力性に引っ張られすぎてしまう作品は多い。その問題を動きやセリフで緩和できていると思う。
+
+<br><br><b>テーマ19点</b><br><br>
+
+　物語を失った後は日常に戻ることが、もはや人々の共通認識になっているなかで、どうやって我々は物語に戻れるのか、みたいなテーマ…なのだろうか？　たぶん私の中にあるテーマなだけで、演者や作家たちの思っていることとは違うだろう。
+<br>　全体として、軽さと明るさを意図してるのは間違いないのだが、ここも不思議な感覚だった。テーマの重さと、セリフや動きの軽さが「つり合っていない」と感じ、それが心地よかった。他の表現物でも言えることだが、重いテーマに合わないセリフと動きの軽さが、しばしば救いに見える気がしてしまうのはなぜなのだろう？
+<br><br>　アンネ・フランクの言葉に、「薬を10錠飲むよりも、心から笑った方がずっと効果があるはず」というのがあるが、近いかもしれない。人はそれぞれ、物質としての人体の時間軸と、精神としての人間の時間軸を持っている。物質の苦痛は、薬でしか解決できないが、精神の苦しみは、常に主観の時間でつくられているので、逸脱さえ出来れば、すなわち根治になる。ではどうやって根治するのか、という所を実践しているのがこの劇だと思うが、言葉の練度が低く、言語化できない。ありきたりだが、創作のキャラクターと現実の人物を同一視する……のがいいのだろうか？　これは我田引水のやり過ぎのような気もする。　
+
+<br><br><b>総計92点</b><br><br>
+
+　私個人の教義として、各要素、満点の20点はつけないことにしている。事実上、総計の最高得点は95点なので、悪しからず。
+了</h4>
+<br><br><hr>
+出展：『松原俊太郎責任編集　草の草　戯曲　魔法使いの弟子たちの美しくて馬鹿げたシナリオ』
+<br>　　　（作・発行：松原俊太郎　2025）
+<br><br>
+
+※　作中での演劇のセリフや描写は、上記作品から再構成・引用したものです。当時の体験の再現や、展開上の都合で、再構成・引用・一部改変を含んでいます。
+<br><br>※　本作は、上記作品の観劇時の体験をもとにした個人の感想であり、原作の再現を目的とするものではありません。
+<br>
+<br>※　演劇のラストでテンメンちゃんにコール＆レスポンスをさせる展開を描写しましたが、筆者が観劇した際は、観客のレスポンスはありませんでした。そのため、レスポンスがあった場合、実際には、違う演出が用意されていた可能性があります。
+
+  </div>
+  </div> 
+</div>
+</body>
