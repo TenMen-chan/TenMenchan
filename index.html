@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width initial-scale=1.0">
+<meta name="viewport" content="width=1200">
 
 <style>
 
@@ -22,7 +22,7 @@
   }
 
   .page{
-    widith: 100%;
+    widith: 850px;
     max-width: 850px;
     margin:0 auto;
     padding:0 16px;
@@ -39,12 +39,6 @@
     }
 
   }
-
-  .side-title,
-  .side-characters{
-    display:none;
-  }
-  @media (min-width: 1000px){
 
 .side-title{
   display:block;
@@ -88,17 +82,11 @@
 
 }
 
- @media (max-width: 767px){
-
-  body {
-    font-size: 15px;
-  }
-
-  .page{
-    padding: 0 12px;
-  }
-   
- }
+ @media (hover: none),(pointer:coarse){
+   .side-title,
+   .side-characters{
+     display:none !important;
+   }
 
 .poster{
   border:1px solid #ddd;
