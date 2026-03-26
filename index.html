@@ -29,8 +29,6 @@
     max-width: 850px;
     margin:0 auto;
     padding:0 16px;
-    width: 100%;
-    box-sizing: border-box;
   }
 
   @media (min-width: 850px){
@@ -53,7 +51,7 @@
 .side-title{
   display:block;
   position:absolute;
-  left:calc(50% - 510px);
+  left:calc(50% - 520px);
   top:140px;
   writing-mode: vertical-rl;
   font-size:22px;
@@ -65,7 +63,7 @@
   display:block;
   position:absolute;
   opacity: 0.8;
-  left:calc(50% + 470px);
+  left:calc(50% + 490px);
   top:140px;
   width:150px;
 }
@@ -76,17 +74,17 @@
 }
 
 .side-char img{
-  width:70px;
-  border-radius:50%;
+  width: 200px;
 }
 
 .side-name{
+  font-size: 16px;
   font-weight:600;
   margin-top:6px;
 }
 
 .side-desc{
-  font-size:11px;
+  font-size:14px;
   color:#777;
 }
 
@@ -104,23 +102,23 @@
     height:auto;
   }
   h1 {
-  font-size: 48px;
+  font-size: 50px;
   line-height: 1.3;
   font-weight: 700;
   }
   h2 {
-  font-size: 32px;
+  font-size: 34px;
   }
   h3 {
-  font-size: 24px;
+  font-size: 26px;
   }
   h4 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   color:#666;
   }
   h5 {
-  font-size: 14px;
+  font-size: 16px;
   }
 
   hr{
@@ -133,7 +131,7 @@
       margin:40px 0;
     }
     .lead-label{
-        font-size: 20px;
+        font-size: 22px;
         color:#777;
         margin-bottom: 12px;
         letter-spacing: 1px;
@@ -254,6 +252,11 @@
         border-radius: 4px;
     }
 
+.score-wrap{
+  width: 100%;
+  overflow-x: auto;
+}
+
 .score-table{
   width: 100%;
   max-width: 900px;
@@ -264,9 +267,11 @@
 
 .score-table th,
 .score-table td{
+  width: 50%;
   border: 2px solid #444;
   vertical-align: top;
   padding: 10px;
+  box-sizing: border-box;
 }
 
 .score-table th{
@@ -284,6 +289,7 @@
   font-size: 64px;
   font-weight: 700;
   margin-top: 40px;
+  line-height: 1.1;
 }
 
 .big-score span{
@@ -291,35 +297,50 @@
   margin-left: 6px;
 }
 
+.tenmen-comment{
+  margin-top: 12px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
 .yamamoto-cell{
-  font-size: 26px;
+  font-size: 24px;
 }
 
 .score-grid{
-  display:grid;
+  display: grid;
   grid-template-columns: 1fr 1fr;
-  gap:16px 40px;
-  margin-bottom:20px;
+  gap: 16px 24px;
+  margin-bottom: 20px;
 }
 
 .score-row{
-  display:flex;
-  justify-content:space-between;
-  border-bottom:1px solid #ddd;
-  padding-bottom:4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #ddd;
+  min-width: 0;
 }
 
 .score-row span:first-child{
-font-weight:600;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.score-row span:last-child{
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .score-row:nth-child(odd){
-    border-right: 1px solid #ddd;
-    padding-right: 16px;
+  border-right: 1px solid #ddd;
+  padding-right: 16px;
 }
 
 .empty{
-    border-bottom:none;
+  border-bottom: none;
 }
 
 .total-mini{
@@ -330,12 +351,18 @@ font-weight:600;
 
 .bottom-total{
   text-align: center;
-  font-size: 40px;
+  font-size: 38px;
   font-weight: 700;
   background: #fafafa;
+  line-height: 1.2;
 }
+
+.bottom-total.nowrap{
+  white-space: nowrap;
+}
+
 .tenmen-comment{
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 600;
 }
 
@@ -538,13 +565,13 @@ font-weight:600;
 <div class="side-characters">
 
   <div class="side-char">
-    <img src="K/T.jpg">
+    <img src="images/tachie.png">
     <div class="side-name">テンメンちゃん</div>
     <div class="side-desc">どこでも寝れるように、歯ブラシを持ち歩いている。</div>
   </div>
 
   <div class="side-char">
-    <img src="K/Y.jpg">
+    <img src="images/tachiey.jpg">
     <div class="side-name">山本ディレッタント</div>
     <div class="side-desc">死ぬほど口が悪いので、友達がほぼいない。</div>
   </div>
@@ -563,6 +590,7 @@ font-weight:600;
     <br>タイトル：「魔法使いの弟子たちの美しくて馬鹿げたシナリオ」
     <br>制作　　：作・松原俊太郎<br>　　　　 演出・小野彩加 中澤陽 スペースノットブランク
     <br>初演　 　: 2025年9月13日～15日／静思堂シアター
+    <br>
     <br><b>【観劇情報】</b>
     <br>2026年2月26日～3月1日／ゲーテ・インスティテュート東京
     <br>
@@ -570,7 +598,7 @@ font-weight:600;
     <br>URL　https://matsubarashuntaro.com
     <br>X→　@shuntaro_m ／Instagram→  @shuntaroum
     <br><br><b>※　この記事はネタバレを含みます。</b>
-
+    </h4>
     <hr>
 
 
@@ -1136,7 +1164,7 @@ font-weight:600;
       <tr>
         <td class="tenmen-cell">
           <div class="big-score">724<span>点</span></div>
-          <div claas="tenmen-comment">観る時食べた夜ご飯：いくらおにぎり</div>
+          <div class="tenmen-comment">観る時食べた夜ご飯：いくらおにぎり</div>
         </td>
 
         <td class="yamamoto-cell">
@@ -1178,7 +1206,7 @@ font-weight:600;
         </td>
       </tr>
       <tr>
-        <td class="bottom-total">724点いくらおにぎり</td>
+        <td class="bottom-total nowrap">724点いくらおにぎり</td>
         <td class="bottom-total">92/100点</td>
       </tr>
     </table>
@@ -1210,7 +1238,7 @@ font-weight:600;
 
 <h3>山本ディレッタント</h3>
 
-<b>構成18点</b><br><br>
+<h4><b>・構成18点</b><br><br>
 
 　ラストの終わらせ方は賛否が分かれるだろう。最終的に日常に戻っていく終わり方で、個人的にはそう嫌いでもない。だが、シナリオ外に行ってからはかなりシリアス一直線だったので、シナリオ外で軽さや明るさをどう見せてくれるのか、それをもう少し見てみたかった。
 
@@ -1219,29 +1247,29 @@ font-weight:600;
 <br>　もしそうなら、あのラストは、ミチコが日常に戻っていくシーンではなくて、観客と登場人物の、本物の会話が成立するかが試されていた、すさまじく緊迫したシーンだった、ということになる。
 <br>　確証は持てないものの、その解釈を採用するなら、かなり攻めた構成なので、18点をつけた。
 
-<br><br><b>セリフ19点</b><br><br>
+<br><br><b>・セリフ19点</b><br><br>
 
 　不思議な体験だった。あとから戯曲を読み返すと、セリフにも会話の流れにも、逸脱がかなりの頻度で仕組まれていて、観劇中は自然に受け入れていたのがまったく理解できない。確証はないが、字幕の存在が実は大きかったのかもしれない。何度かセリフを聞きながら字幕を参照した記憶がある。<br>
 
 <br>　観劇後、他の観客の一人が「語が頭に入ってこなくてついていけなかった」と首をひねっていた。なにやら、界隈で名の知れた批評家ふうの、年配の男性だったが。あれだけ工夫されたこの劇で頭に入ってこないなら、どうやったら入ると言うのだろう？　僭越ながら、セリフを意味で捉えすぎなのでは？　それとも、世代間の言葉の差は、そんなに大きいのだろうか。あるいは、単に私が変なだけかもしれない。
 
-<br><br><b>動作18点</b><br>
+<br><br><b>・動作18点</b><br>
 
 <br>　動作の観察に関しては、本当に自信がないのだが、観劇前に予想していたより、意外と素直な動きだったと思う。少なくとも、演劇によくある、「動きに違和感をあえて残すことで観客の目を惹きつけるタイプ」というよりは、「動きでメッセージを増幅しながら、その増幅ぐあいで観客の目を惹きつけるタイプ」だろう。情報の密度で攻めてこられた感触もあり、細かく言おうとすると難しい。かなりのクオリティだったと思うので18点をつけた。
 
-<br><br><b>倫理18点</b><br><br>
+<br><br><b>・倫理18点</b><br><br>
 
 　世界で普遍的に起きている悲劇を、ごまかすのではなく、正面から引き受けたうえで、軽さと明るさで回収しようとする姿勢が伝わってきた。その回収のやり方も、あくまで演劇特有のやり方を貫いていたのも評価できる。
 
 <br><br>　どんな表現方法でも、展開をメタに振ることで登場人物の存在を肯定するのはけっこう簡単だ。だが、メタをやったという作者の罪を引き受けず、単に感動させようとしてきたり、逆に暴力性に引っ張られすぎてしまう作品は多い。その問題を動きやセリフで緩和できていると思う。
 
-<br><br><b>テーマ19点</b><br><br>
+<br><br><b>・テーマ19点</b><br><br>
 
 　物語を失った後は日常に戻ることが、もはや人々の共通認識になっているなかで、どうやって我々は物語に戻れるのか、みたいなテーマ…なのだろうか？　たぶん私の中にあるテーマなだけで、演者や作家たちの思っていることとは違うだろう。
 <br>　全体として、軽さと明るさを意図してるのは間違いないのだが、ここも不思議な感覚だった。テーマの重さと、セリフや動きの軽さが「つり合っていない」と感じ、それが心地よかった。他の表現物でも言えることだが、重いテーマに合わないセリフと動きの軽さが、しばしば救いに見える気がしてしまうのはなぜなのだろう？
 <br><br>　アンネ・フランクの言葉に、「薬を10錠飲むよりも、心から笑った方がずっと効果があるはず」というのがあるが、近いかもしれない。人はそれぞれ、物質としての人体の時間軸と、精神としての人間の時間軸を持っている。物質の苦痛は、薬でしか解決できないが、精神の苦しみは、常に主観の時間でつくられているので、逸脱さえ出来れば、すなわち根治になる。ではどうやって根治するのか、という所を実践しているのがこの劇だと思うが、言葉の練度が低く、言語化できない。ありきたりだが、創作のキャラクターと現実の人物を同一視する……のがいいのだろうか？　これは我田引水のやり過ぎのような気もする。　
 
-<br><br><b>総計92点</b><br><br>
+<br><br><b>・総計92点</b><br><br>
 
 　私個人の教義として、各要素、満点の20点はつけないことにしている。事実上、総計の最高得点は95点なので、悪しからず。
 了</h4>
@@ -1254,7 +1282,7 @@ font-weight:600;
 <br><br>※　本作は、上記作品の観劇時の体験をもとにした個人の感想であり、原作の再現を目的とするものではありません。
 <br>
 <br>※　演劇のラストでテンメンちゃんにコール＆レスポンスをさせる展開を描写しましたが、筆者が観劇した際は、観客のレスポンスはありませんでした。そのため、レスポンスがあった場合、実際には、違う演出が用意されていた可能性があります。
-
+</h4>
   </div>
   </div> 
 </div>
