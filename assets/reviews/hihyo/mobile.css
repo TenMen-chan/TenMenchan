@@ -1,0 +1,205 @@
+/* ============================================
+   mobile.css — スマホ対応レスポンシブスタイル
+   ============================================ */
+
+@media (max-width: 768px) {
+
+  /* サイドタイトルはスマホでは非表示 */
+  .side-title {
+    display: none;
+  }
+
+  /* side-characters：スマホでは通常フローで表示（hrの直後、blue-tagの前） */
+  .side-characters {
+    position: static;
+    width: 100%;
+    opacity: 1;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+
+  .side-char {
+    margin-bottom: 0;
+    flex: 0 0 auto;
+    width: 120px;
+  }
+
+  .side-char img {
+    width: 100px;
+  }
+
+  body {
+    padding: 8px;
+    font-size: 15px;
+  }
+
+  .page {
+    padding-left: 12px;
+    padding-right: 12px;
+    border-left: none;
+    border-right: none;
+  }
+
+  /* 見出しサイズ縮小 */
+  h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  h4 {
+    font-size: 15px;
+  }
+
+  .title-card h1 {
+    font-size: 22px;
+  }
+
+  .lead-label {
+    font-size: 16px;
+  }
+
+  /* タグ類 */
+  .question,
+  .blue-tag,
+  .green-tag {
+    font-size: 18px;
+    padding: 8px 12px;
+  }
+
+  /* チャット */
+  .chat {
+    gap: 8px;
+  }
+
+  .avatar-block {
+    width: 60px;
+  }
+
+  .avatar {
+    width: 52px;
+    height: 52px;
+  }
+
+  .name {
+    font-size: 11px;
+  }
+
+  .bubble {
+    font-size: 15px;
+    padding: 10px 14px;
+    max-width: 100%;
+  }
+
+  .bubble::before {
+    top: 18px;
+    left: -10px;
+    border-right-width: 10px;
+  }
+
+  .bubble::after {
+    top: 18px;
+    left: -7px;
+    border-right-width: 9px;
+  }
+
+  /* アクション */
+  .action {
+    font-size: 14px;
+  }
+
+  .action.vertical {
+    font-size: 15px;
+    max-height: 360px;
+    padding: 14px 12px;
+  }
+
+  /* シーン背景ブロック */
+  .scene,
+  .scene2,
+  .scene3,
+  .scene4 {
+    padding: 24px 12px;
+  }
+
+  /* スコアテーブル */
+  .score-table th {
+    font-size: 16px;
+  }
+
+  /* テンメンセル：固定高を解除して縦中央寄せ */
+  .tenmen-cell {
+    height: auto;
+    vertical-align: middle;
+  }
+
+  .big-score {
+    font-size: 40px;
+    margin-top: 0;
+  }
+
+  .big-score span {
+    font-size: 20px;
+  }
+
+  .tenmen-comment {
+    font-size: 14px;
+  }
+
+  .yamamoto-cell {
+    font-size: 14px;
+  }
+
+  /* スコアグリッド → 1カラムに */
+  .score-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* 奇数行の右ボーダーとパディングをリセット */
+  .score-row:nth-child(odd) {
+    border-right: none;
+    padding-right: 0;
+  }
+
+  .bottom-total {
+    font-size: 22px;
+  }
+
+  /* nowrap維持のままフォントを縮小して一行に収める */
+  .bottom-total.nowrap {
+    font-size: 13px;
+  }
+
+  /* プロフィール */
+  .profile-icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  .profile-name {
+    font-size: 20px;
+  }
+
+  .profile-tip {
+    font-size: 13px;
+  }
+
+  /* ポスター */
+  .poster {
+    max-width: 100%;
+  }
+
+  /* ダイアログボックス */
+  .dialogue-box {
+    padding: 16px;
+    max-width: 100%;
+  }
+}

@@ -2,6 +2,8 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
+<!-- スマホでもPC版レイアウトを縮小表示する。 -->
+<meta name="viewport" content="width=1200">
 <title>testsite</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -24,6 +26,7 @@ body {
   filter: blur(2px);
   transform: scale(1.02);
   transition: opacity 2s ease;
+  pointer-events: none;
 }
 
 #page1 {
@@ -46,33 +49,37 @@ body {
   /* 背景なし → fixed の #bg-photos が透けて見える */
 }
 
-/* 4:3 の画面エリア */
+/* page2 黄色枠：中央を抜き、上下左右50pxだけ画像を残す */
+.page2-frame {
+  position: absolute;
+  inset: 0;
+  padding: 50px;
+  background: url('assets/common/ui/黄色びかびか.png') center center / cover no-repeat;
+  pointer-events: none;
+  z-index: 1;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+/* page2 全体の配置エリア */
 #page2-inner {
   position: relative;
-  aspect-ratio: 4 / 3;
-  width: min(100vw, calc(100vh * 4 / 3));
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   padding-top: 6%;
   gap: 28px;
-  background: url('assets/ui/555.png') center center / cover no-repeat;
-  overflow: hidden;
+  overflow: visible;
   z-index: 2;
-
-  /* ベゼル風の枠 */
-  border: 6px solid #1c1c1c;
-  border-radius: 6px;
-  outline: 2px solid #555;
-  outline-offset: -1px;
-
-  /* 外側の影（奥行き感）＋うっすら画面グロー */
-  box-shadow:
-    0 0 0 8px #2a2a2a,          /* ベゼル外縁 */
-    0 16px 60px rgba(0,0,0,0.9),/* 落ち影 */
-    0 0 120px rgba(0,0,0,0.55), /* アンビエント影 */
-    inset 0 0 90px rgba(0,0,0,0.30); /* スクリーン内側ビネット */
 }
 
 /* ゲーム風セリフウィンドウ */
@@ -99,6 +106,7 @@ body {
   box-shadow:
     inset 0 0 0 1px rgba(80, 120, 255, 0.18),
     0 -4px 30px rgba(20, 50, 200, 0.25);
+  z-index: 3;
 }
 
 /* ページ遷移オーバーレイ */
@@ -145,29 +153,36 @@ body {
   width: clamp(220px, 36vw, 520px);
   height: auto;
   pointer-events: none;
+  position: relative;
+  z-index: 3;
 }
 
 #page2-nav {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 1.5vw, 24px);
+  position: relative;
+  z-index: 3;
 }
 
 #page2-nav a.btn {
   display: block;
-  padding: 14px 48px;
-  text-align: center;
   text-decoration: none;
-  color: #111;
-  border: 2px solid #111;
-  font-size: 1.1rem;
-  background: #fff;
 }
 
-#page2-nav a.btn:hover {
-  background: #111;
-  color: #fff;
-  box-shadow: 0 0 0 3px #ffe000, 0 0 12px rgba(255, 224, 0, 0.55);
+/* メニュー画像とボタン群を同じ量だけ上へ移動 */
+#page2-menyu,
+#page2-nav {
+  transform: translateY(-60px);
+}
+
+.p2-menu-button {
+  display: block;
+  width: clamp(180px, 22.5vw, 315px);
+  height: auto;
+  flex: 0 1 auto;
 }
 
 #page-divider {
@@ -175,12 +190,33 @@ body {
   width: 100%;
   z-index: 1;
   line-height: 0;
+  background: #fff;
 }
 
-#page-divider img {
+#page-divider .divider-line {
   width: 100%;
   height: auto;
   display: block;
+  pointer-events: none;
+}
+
+.divider-text-area {
+  min-height: clamp(160px, 22vh, 260px);
+  padding: clamp(28px, 5vw, 72px);
+  background: #fff;
+  color: #111;
+  font-size: clamp(16px, 2vw, 24px);
+  line-height: 1.8;
+  white-space: pre-wrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.divider-text-area p {
+  width: min(100%, 1000px);
+  margin: 0;
 }
 
 .p2-sakebi {
@@ -252,6 +288,7 @@ body {
   position: absolute;
   bottom: 0;
   left: -150px;
+  z-index: 2;
 }
 
 .p2-left-chars img {
@@ -264,12 +301,31 @@ body {
   position: absolute;
   bottom: 0;
   right: 0;
+  z-index: 2;
 }
 
 .p2-right-chars img {
   height: 60vh;
   width: auto;
   display: block;
+}
+
+/* page2 解説画像：キャラクターとは独立配置で、その背面に表示 */
+.p2-explainer {
+  position: absolute;
+  bottom: calc(clamp(160px, 24vh, 260px) + 150px);
+  width: clamp(260px, 32vw, 620px);
+  height: auto;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.p2-explainer-bundodo {
+  left: clamp(12px, 3vw, 58px);
+}
+
+.p2-explainer-cherry {
+  right: clamp(12px, 3vw, 58px);
 }
 
 
@@ -318,6 +374,26 @@ body {
   left: -70px;
 }
 
+/* 作者表記と背景：同じ位置・サイズでpage1の右下端に固定 */
+.page1-author,
+.page1-author-background {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  height: min(72vh, 760px);
+  width: auto;
+  pointer-events: none;
+}
+
+/* 背景 → キャラクター → 作者文字 の順に重ねる */
+.page1-author-background {
+  z-index: 1;
+}
+
+.page1-author {
+  z-index: 3;
+}
+
 .title-img {
   position: absolute;
   left: 45%;
@@ -341,6 +417,11 @@ body {
   opacity: 0.92;
   background: white;
   box-shadow: 0 0 0 3px white;
+}
+
+/* 虹色ぐるぐるの表示切替：再表示するときは canvas の is-hidden を外す */
+#radial-canvas.is-hidden {
+  display: none;
 }
 
 .hukidashi-img {
@@ -1328,34 +1409,50 @@ body {
 </div>
 
 <div class="stage">
-  <img id="chara2" class="chara" src="assets/chara/2_1.png" alt="">
+  <img class="page1-author-background" src="assets/common/ui/作者背景.png" alt="">
+  <img class="page1-author" src="assets/common/ui/作者.png" alt="作者">
+  <img id="chara2" class="chara" src="assets/pages/home/chara/2_1.png" alt="">
   <canvas id="radial-canvas"></canvas>
-  <img class="title-img" src="assets/ui/title.png" alt="">
-  <img id="chara1" class="chara" src="assets/chara/1.png" alt="">
-  <img class="hukidashi-img" src="assets/hukidashi/Hukidashi1-1.png" alt="">
+  <img class="title-img" src="assets/common/ui/title.png" alt="">
+  <img id="chara1" class="chara" src="assets/pages/home/chara/1.png" alt="">
+  <img class="hukidashi-img" src="assets/pages/home/hukidashi/Hukidashi1-1.png" alt="">
 </div>
 
 </div><!-- /#page1 -->
 
 <div id="page-divider">
-  <img src="assets/ui/Nijisen.png" alt="">
+  <img class="divider-line" src="assets/common/ui/Nijisen.png" alt="">
+  <div class="divider-text-area">
+    <!-- ★ 区切り部分の文言は、直下の <p> と </p> の間に入力してください -->
+    <p><b>ようこそ！！　レビューサイト「言語化ヘタクソ派」へ！！</b>
+    このサイトは、言語化がヘタクソすぎる激カワキャラクターたちが、小説ゲーム演劇マンガ、いろんなもんをレビューをしてくれる、ちょっと変わったレビューサイトだ！！
+    <br>
+    対象物は基本、サイト運営者が応援したいものが中心です
+    現在最新のレビューが見たい人は、ここをクリック！！→→
+    もしくは、下のメニューから見たいコンテンツを選択してね！！
+    </p>
+  </div>
+  <img class="divider-line" src="assets/common/ui/Nijisen.png" alt="">
 </div>
 
 <div id="page2">
+  <div class="page2-frame" aria-hidden="true"></div>
   <div id="page2-inner">
+    <img class="p2-explainer p2-explainer-bundodo" src="assets/common/ui/ブンドド解説.png" alt="ブンドドの解説">
+    <img class="p2-explainer p2-explainer-cherry" src="assets/common/ui/チェリーピッキング解説.png" alt="チェリーピッキングの解説">
     <div class="p2-left-chars">
-      <img src="assets/chara/2_9.png" alt="">
+      <img src="assets/pages/home/chara/2_9.png" alt="">
     </div>
     <div class="p2-right-chars">
-      <img src="assets/chara/1.png" alt="">
+      <img src="assets/pages/home/chara/1.png" alt="">
     </div>
-    <img id="page2-menyu" src="assets/chara/2_menyu.png" alt="">
+    <img id="page2-menyu" src="assets/common/ui/めにゅー.png" alt="メニュー">
     <nav id="page2-nav">
-      <a class="btn" href="hihyo.html">批評</a>
-      <a class="btn" href="chara.html">キャラプロフィール</a>
-      <a class="btn" href="kenkyushitsu.html">研究室</a>
-      <a class="btn" href="akahoshi.html">赤星ハイネリンク</a>
-      <a class="btn" href="kako.html">過去作品</a>
+      <a class="btn" href="reviews/index.html" aria-label="レビュー一覧へ">
+        <img class="p2-menu-button" src="assets/common/ui/レビューボタン.png" alt="レビュー記事">
+      </a>
+      <img class="p2-menu-button" src="assets/common/ui/プロフボタン.png" alt="プロフィール">
+      <img class="p2-menu-button" src="assets/common/ui/研究所ボタン.png" alt="研究所">
     </nav>
     <div id="p2-dialog">
       <div id="p2-dialog-name">テンメンちゃん</div>
@@ -1462,12 +1559,22 @@ const chara2  = document.getElementById('chara2');
 const label1  = document.getElementById('label1');
 const label2  = document.getElementById('label2');
 
-const CHARA2_SRCS = Array.from({length: 16}, (_, i) => `assets/chara/2_${i + 1}.png`);
+const CHARA1_SRCS = [
+  'assets/pages/home/chara/1.png',
+  'assets/pages/home/chara/1-2.png',
+  'assets/pages/home/chara/1-3.png',
+  'assets/pages/home/chara/1-4.png',
+  'assets/pages/home/chara/1-5.png',
+  'assets/pages/home/chara/1-6.png',
+  'assets/pages/home/chara/1-7.png',
+];
+const CHARA2_SRCS = Array.from({length: 16}, (_, i) => `assets/pages/home/chara/2_${i + 1}.png`);
+let chara1CurrentSrc = 0;
 let chara2CurrentSrc = 0;
 
-function pickNextSrc(current) {
+function pickNextSrc(current, sourceCount) {
   let next;
-  do { next = Math.floor(Math.random() * CHARA2_SRCS.length); } while (next === current);
+  do { next = Math.floor(Math.random() * sourceCount); } while (next === current);
   return next;
 }
 
@@ -1479,7 +1586,7 @@ function switchChara2(onDone) {
 
   function doSwitch() {
     chara2.style.transition = '';
-    chara2CurrentSrc = pickNextSrc(chara2CurrentSrc);
+    chara2CurrentSrc = pickNextSrc(chara2CurrentSrc, CHARA2_SRCS.length);
     chara2.src = CHARA2_SRCS[chara2CurrentSrc];
     setAnim(chara2, label2, true);
     if (onDone) onDone(ANIMS.find(a => chara2.classList.contains(a)));
@@ -1497,11 +1604,13 @@ function switchChara2(onDone) {
 }
 
 // 初回（両方即座に開始）
-setAnim(chara1, label1, false);    // aggressive 除外
+scheduleChara1();
 scheduleChara2();
 
-// ====== chara1 スケジューラ（passive対応・再帰setTimeout）======
+// ====== chara1 スケジューラ（立ち絵差分・passive対応・再帰setTimeout）======
 function scheduleChara1() {
+  chara1CurrentSrc = pickNextSrc(chara1CurrentSrc, CHARA1_SRCS.length);
+  chara1.src = CHARA1_SRCS[chara1CurrentSrc];
   const current = ANIMS.find(a => chara1.classList.contains(a)) || null;
   const next = pickRandom(current, false, true);  // passive許可、aggressive除外
   ANIMS.forEach(a => chara1.classList.remove(a));
@@ -1517,10 +1626,6 @@ function scheduleChara2() {
   });
 }
 
-const _initAnim1 = ANIMS.find(a => chara1.classList.contains(a));
-setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
-
-
 // ====== 吹き出しランダム配置 ======
 (function() {
   const stage  = document.querySelector('.stage');
@@ -1534,13 +1639,11 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
   }
 
   const SRCS_GROUPS = [
-    { side: 'both',   srcs: ['assets/hukidashi/Hukidashi1-1.png','assets/hukidashi/Hukidashi1-2.png','assets/hukidashi/Hukidashi1-3.png','assets/hukidashi/Hukidashi1-4.png','assets/hukidashi/Hukidashi1-5.png'] },
-    { side: 'chara2', srcs: ['assets/hukidashi/Hukidashi2-1.png','assets/hukidashi/Hukidashi2-2.png','assets/hukidashi/Hukidashi2-3.png','assets/hukidashi/Hukidashi2-4.png','assets/hukidashi/Hukidashi2-5.png','assets/hukidashi/Hukidashi2-6.png'] },
-    { side: 'chara1', srcs: ['assets/hukidashi/Hukidashi3-1.png','assets/hukidashi/Hukidashi3-2.png','assets/hukidashi/Hukidashi3-3.png','assets/hukidashi/Hukidashi3-4.png','assets/hukidashi/Hukidashi3-5.png'] },
-    { side: 'chara1', srcs: ['assets/hukidashi/Hukidashi4-1.png','assets/hukidashi/Hukidashi4-2.png','assets/hukidashi/Hukidashi4-3.png','assets/hukidashi/Hukidashi4-4.png'] },
-    { side: 'chara2', srcs: ['assets/hukidashi/Hukidashi5-1.png','assets/hukidashi/Hukidashi5-2.png','assets/hukidashi/Hukidashi5-3.png','assets/hukidashi/Hukidashi5-4.png','assets/hukidashi/Hukidashi5-5.png'] },
-    { side: 'chara1', srcs: ['assets/hukidashi/Hukidashi6-1.png','assets/hukidashi/Hukidashi6-2.png','assets/hukidashi/Hukidashi6-3.png','assets/hukidashi/Hukidashi6-4.png'] },
-    { side: 'chara1', srcs: ['assets/hukidashi/Hukidashi7-1.png','assets/hukidashi/Hukidashi7-2.png','assets/hukidashi/Hukidashi7-3.png','assets/hukidashi/Hukidashi7-4.png'] },
+    { side: 'both',   srcs: ['assets/pages/home/hukidashi/Hukidashi1-1.png','assets/pages/home/hukidashi/Hukidashi1-2.png','assets/pages/home/hukidashi/Hukidashi1-3.png','assets/pages/home/hukidashi/Hukidashi1-4.png','assets/pages/home/hukidashi/Hukidashi1-5.png'] },
+    { side: 'chara2', srcs: ['assets/pages/home/hukidashi/Hukidashi2-1.png','assets/pages/home/hukidashi/Hukidashi2-2.png','assets/pages/home/hukidashi/Hukidashi2-3.png','assets/pages/home/hukidashi/Hukidashi2-4.png','assets/pages/home/hukidashi/Hukidashi2-5.png','assets/pages/home/hukidashi/Hukidashi2-6.png'] },
+    { side: 'chara1', srcs: ['assets/pages/home/hukidashi/Hukidashi3-1.png','assets/pages/home/hukidashi/Hukidashi3-2.png','assets/pages/home/hukidashi/Hukidashi3-3.png','assets/pages/home/hukidashi/Hukidashi3-4.png','assets/pages/home/hukidashi/Hukidashi3-5.png'] },
+    { side: 'chara1', srcs: ['assets/pages/home/hukidashi/Hukidashi4-1.png','assets/pages/home/hukidashi/Hukidashi4-2.png','assets/pages/home/hukidashi/Hukidashi4-3.png','assets/pages/home/hukidashi/Hukidashi4-4.png'] },
+    { side: 'chara2', srcs: ['assets/pages/home/hukidashi/Hukidashi5-1.png','assets/pages/home/hukidashi/Hukidashi5-2.png','assets/pages/home/hukidashi/Hukidashi5-3.png','assets/pages/home/hukidashi/Hukidashi5-4.png','assets/pages/home/hukidashi/Hukidashi5-5.png'] },
   ];
 
   const SHOW_MIN  = 2200;
@@ -1563,14 +1666,14 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
       // chara1（右キャラ）の右上：バブルの左下をキャラの右肩に合わせる
       const r = chara1.getBoundingClientRect();
       const shrunk = shrinkAnims.some(a => chara1.classList.contains(a));
-      bx = r.right - stageRect.left + 10 + rand(150) + (shrunk ? 100 : 0);
-      by = r.top   - stageRect.top + r.height * 0.1 - bh + rand(130) + 200 - (shrunk ? 50 : 0);
+      bx = r.right - stageRect.left + 10 + rand(250) + (shrunk ? 100 : 0);
+      by = r.top   - stageRect.top + r.height * 0.1 - bh + rand(230) + 200 - (shrunk ? 50 : 0);
     } else {
       // chara2（左キャラ）の左上：バブルの右下をキャラの左肩に合わせる（画像反転）
       const r = chara2.getBoundingClientRect();
       const shrunk = shrinkAnims.some(a => chara2.classList.contains(a));
-      bx = r.left  - stageRect.left - bw + 10 + rand(100) - 20 - (shrunk ? 100 : 0);
-      by = r.top   - stageRect.top + r.height * 0.1 - bh + rand(80) + 5 + 200 - (shrunk ? 50 : 0);
+      bx = r.left  - stageRect.left - bw + 10 + rand(200) - 20 - (shrunk ? 100 : 0);
+      by = r.top   - stageRect.top + r.height * 0.1 - bh + rand(180) + 5 + 200 - (shrunk ? 50 : 0);
     }
 
     el.style.left            = bx + 'px';
@@ -1597,10 +1700,14 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
   function burst() {
     const flipped = (turn === 1);
     turn = 1 - turn;
-    const count = flipped ? Math.ceil(Math.random() * 3) : Math.floor(Math.random() * 10) + 3;
+    const count = flipped ? Math.ceil(Math.random() * 5) : Math.floor(Math.random() * 10) + 3;
     const side = flipped ? 'chara2' : 'chara1';
     const available = SRCS_GROUPS.filter(g => g.side === 'both' || g.side === side);
-    const group = available[Math.floor(Math.random() * available.length)].srcs;
+    // 50%: ひとつの形グループに統一 / 50%: このキャラ用の全形を混ぜて使用
+    const useMixedShapes = Math.random() < 0.5;
+    const group = useMixedShapes
+      ? available.flatMap(g => g.srcs)
+      : available[Math.floor(Math.random() * available.length)].srcs;
     for (let i = 0; i < count; i++) {
       setTimeout(() => popOne(els[i], flipped, group), i * BURST_GAP);
     }
@@ -1618,6 +1725,7 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
 // ====== タイトル下 放射虹アニメーション ======
 (function() {
   const canvas = document.getElementById('radial-canvas');
+  if (canvas.classList.contains('is-hidden')) return;
   const ctx    = canvas.getContext('2d');
   const W = 520, H = 260;
   canvas.width = W; canvas.height = H;
@@ -1692,6 +1800,7 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
 // ====== 放射キャンバスのサイズ・位置をページ読み込み時に一度だけpx固定 ======
 (function() {
   const canvas   = document.getElementById('radial-canvas');
+  if (canvas.classList.contains('is-hidden')) return;
   const titleImg = document.querySelector('.title-img');
   const stage    = document.querySelector('.stage');
 
@@ -1719,23 +1828,71 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
 
 // ====== 背景写真スライドショー ======
 (function() {
+  // BG_PHOTOS_START (managed by update-background-list.ps1)
   const PHOTOS = [
-    'assets/bg/IMG_0096.jpeg','assets/bg/IMG_0481.jpeg',
-    'assets/bg/IMG_0613.JPG', 'assets/bg/IMG_1443.jpeg','assets/bg/IMG_2632.jpeg',
-    'assets/bg/IMG_2757.jpeg','assets/bg/IMG_3307.jpeg','assets/bg/IMG_3310.jpeg',
-    'assets/bg/IMG_3321.jpeg','assets/bg/IMG_3569.jpeg',
-    'assets/bg/IMG_3573.jpeg','assets/bg/IMG_3601.jpeg','assets/bg/IMG_3661.jpeg',
-    'assets/bg/IMG_3695.jpeg','assets/bg/IMG_3696.jpeg','assets/bg/IMG_3697.jpeg',
-    'assets/bg/IMG_3728.jpeg','assets/bg/IMG_3852.JPG',
-    'assets/bg/IMG_4094.jpeg','assets/bg/IMG_5903.jpeg',
-    'assets/bg/IMG_6320.jpeg','assets/bg/IMG_6457.jpeg','assets/bg/IMG_6500.jpeg',
-    'assets/bg/IMG_6714.jpeg','assets/bg/IMG_6928.jpeg',
-    'assets/bg/IMG_3818.jpeg',
-    'assets/bg/IMG_3840.jpeg','assets/bg/IMG_3841.jpeg','assets/bg/IMG_3842.jpeg',
-    'assets/bg/IMG_3843.jpeg','assets/bg/IMG_3874.jpeg',
-    'assets/bg/IMG_3877.jpeg','assets/bg/IMG_3878.jpeg','assets/bg/IMG_3879.jpeg',
-    'assets/bg/IMG_3880.jpeg','assets/bg/IMG_3990.jpeg',
+    'assets/pages/home/bg/IMG_0096.jpeg',
+    'assets/pages/home/bg/IMG_0278.jpeg',
+    'assets/pages/home/bg/IMG_0481.jpeg',
+    'assets/pages/home/bg/IMG_0613.JPG',
+    'assets/pages/home/bg/IMG_2632.jpeg',
+    'assets/pages/home/bg/IMG_3307.jpeg',
+    'assets/pages/home/bg/IMG_3310.jpeg',
+    'assets/pages/home/bg/IMG_3321.jpeg',
+    'assets/pages/home/bg/IMG_3573.jpeg',
+    'assets/pages/home/bg/IMG_3661.jpeg',
+    'assets/pages/home/bg/IMG_3695.jpeg',
+    'assets/pages/home/bg/IMG_3696.jpeg',
+    'assets/pages/home/bg/IMG_3697.jpeg',
+    'assets/pages/home/bg/IMG_3818.jpeg',
+    'assets/pages/home/bg/IMG_3840.jpeg',
+    'assets/pages/home/bg/IMG_3841.jpeg',
+    'assets/pages/home/bg/IMG_3842.jpeg',
+    'assets/pages/home/bg/IMG_3843.jpeg',
+    'assets/pages/home/bg/IMG_3879.jpeg',
+    'assets/pages/home/bg/IMG_3880.jpeg',
+    'assets/pages/home/bg/IMG_3990.jpeg',
+    'assets/pages/home/bg/IMG_4553.jpeg',
+    'assets/pages/home/bg/IMG_5234.jpg',
+    'assets/pages/home/bg/IMG_5274.jpg',
+    'assets/pages/home/bg/IMG_5277.jpg',
+    'assets/pages/home/bg/IMG_5335.jpg',
+    'assets/pages/home/bg/IMG_5409.jpg',
+    'assets/pages/home/bg/IMG_5411.jpg',
+    'assets/pages/home/bg/IMG_5412.jpg',
+    'assets/pages/home/bg/IMG_5532.jpg',
+    'assets/pages/home/bg/IMG_5535.jpg',
+    'assets/pages/home/bg/IMG_5678.JPG',
+    'assets/pages/home/bg/IMG_5679.JPG',
+    'assets/pages/home/bg/IMG_5692.JPG',
+    'assets/pages/home/bg/IMG_5709.JPG',
+    'assets/pages/home/bg/IMG_5747.JPG',
+    'assets/pages/home/bg/IMG_5748.JPG',
+    'assets/pages/home/bg/IMG_5750.JPG',
+    'assets/pages/home/bg/IMG_5762.JPG',
+    'assets/pages/home/bg/IMG_5874.JPG',
+    'assets/pages/home/bg/IMG_5875.JPG',
+    'assets/pages/home/bg/IMG_5914.JPG',
+    'assets/pages/home/bg/IMG_5918.JPG',
+    'assets/pages/home/bg/IMG_5920.JPG',
+    'assets/pages/home/bg/IMG_5995.JPG',
+    'assets/pages/home/bg/IMG_6078.JPG',
+    'assets/pages/home/bg/IMG_6139.JPG',
+    'assets/pages/home/bg/IMG_6147.JPG',
+    'assets/pages/home/bg/IMG_6148.JPG',
+    'assets/pages/home/bg/IMG_6150.JPG',
+    'assets/pages/home/bg/IMG_6178.JPG',
+    'assets/pages/home/bg/IMG_6180.JPG',
+    'assets/pages/home/bg/IMG_6181.JPG',
+    'assets/pages/home/bg/IMG_6186.JPG',
+    'assets/pages/home/bg/IMG_6253.JPG',
+    'assets/pages/home/bg/IMG_6254.JPG',
+    'assets/pages/home/bg/IMG_6255.JPG',
+    'assets/pages/home/bg/IMG_6457.jpeg',
+    'assets/pages/home/bg/IMG_6500.jpeg',
+    'assets/pages/home/bg/IMG_6714.jpeg',
+    'assets/pages/home/bg/IMG_6928.jpeg',
   ];
+  // BG_PHOTOS_END
   (function shuffle(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -1797,7 +1954,7 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
 
     // ボタンホバー：ボタンごとに個別設定（href のファイル名がキー）
     btn_hover: {
-      hihyo: [
+      'reviews/index': [
         { name: 'テンメンちゃん',    text: 'あ知ってる！　批評ってあれでしょ、感想！' },
         { name: '山本ディレッタント', text: '批評ホバー：テキスト２' },
         { name: 'テンメンちゃん',    text: '批評ホバー：テキスト３' },
@@ -1954,7 +2111,7 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
   const rightImg = document.querySelector('.p2-right-chars img');  // 1.png
 
   // 左キャラ（2_9）: ホバーでぴょんぴょん + 立ち絵差分を高速切り替え
-  const CHARA2_ALL = Array.from({length: 13}, (_, i) => `assets/chara/2_${i + 1}.png`);
+  const CHARA2_ALL = Array.from({length: 13}, (_, i) => `assets/pages/home/chara/2_${i + 1}.png`);
   let flipTimer = null;
   let flipIdx   = 0;
 
@@ -1972,7 +2129,7 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
     clearInterval(flipTimer);
     flipTimer = null;
     flipIdx   = 0;
-    leftImg.src = 'assets/chara/2_9.png';
+    leftImg.src = 'assets/pages/home/chara/2_9.png';
   });
 
   // 右キャラ（1.png）: ホバーで逃走 → 自動で様子見帰還 → ポインタがあればまた逃げる
@@ -2021,3 +2178,4 @@ setTimeout(scheduleChara1, ONE_SHOT_10S.has(_initAnim1) ? 10000 : 5000);
 
 </body>
 </html>
+

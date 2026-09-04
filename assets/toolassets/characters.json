@@ -1,0 +1,594 @@
+{
+  "101.jpg": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/101.jpg"
+  },
+  "Manfu-bikkuri.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "！",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-bikkuri.png"
+  },
+  "Manfu-haltu.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "ピコーン",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-haltu.png"
+  },
+  "Manfu-hatena.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "？",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-hatena.png"
+  },
+  "Manfu-hiyaase.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "汗",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-hiyaase.png"
+  },
+  "Manfu-jitabata.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "じたばた",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-jitabata.png"
+  },
+  "Manfu-kirakira.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "きらきら",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-kirakira.png"
+  },
+  "Manfu-komaru.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "ぐるぐる",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-komaru.png"
+  },
+  "Manfu-love.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "ハート",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-love.png"
+  },
+  "Manfu-onpu.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "音符",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-onpu.png"
+  },
+  "Manfu-warai.png": {
+    "type": "symbol",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "笑い",
+    "charColor": "",
+    "src": "../assets/toolassets/Manfu-warai.png"
+  },
+  "t-angry-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "おこ",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-angry-1.png"
+  },
+  "t-book-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "読書",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-book-1.png"
+  },
+  "t-book-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "読書２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-book-2.png"
+  },
+  "t-book-3.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "読書３",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-book-3.png"
+  },
+  "t-cute-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "かわいげ",
+    "symbolLabel": "",
+    "charColor": "#c8ac34",
+    "src": "../assets/toolassets/t-cute-1.png"
+  },
+  "t-cute-2.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-cute-2.png"
+  },
+  "t-cute-3.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-cute-3.png"
+  },
+  "t-down-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "下向き",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-down-1.png"
+  },
+  "t-eat-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "食欲",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-eat-1.png"
+  },
+  "t-eat-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "食欲",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-eat-2.png"
+  },
+  "t-elegant-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "エレガント",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-elegant-1.png"
+  },
+  "t-elegant-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "エレガント２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-elegant-2.png"
+  },
+  "t-gogo-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "ＧＯＧＯ！",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-gogo-1.png"
+  },
+  "t-gogo-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "ＧＯＧＯ！２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-gogo-2.png"
+  },
+  "t-happy-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "うれしい",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-happy-1.png"
+  },
+  "t-happy-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "うれしい２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-happy-2.png"
+  },
+  "t-happy-3.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-happy-3.png"
+  },
+  "t-hello-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "はろー",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-hello-2.png"
+  },
+  "t-hello-3.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "はろー２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-hello-3.png"
+  },
+  "t-mesorashi-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "思案",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-mesorashi-1.png"
+  },
+  "t-mesorashi-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "思案２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-mesorashi-2.png"
+  },
+  "t-mesorashi-3.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "思案３",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-mesorashi-3.png"
+  },
+  "t-nagomi-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "なごみ",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-nagomi-1.png"
+  },
+  "t-nagomi-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "なごみ２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-nagomi-2.png"
+  },
+  "t-nagomi-3.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "なごみ３",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-nagomi-3.png"
+  },
+  "t-nagomi-4.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "ふつう２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-nagomi-4.png"
+  },
+  "t-normal-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "ふつう",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-normal-1.png"
+  },
+  "t-phone-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "スマホ",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-phone-1.png"
+  },
+  "t-phone-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "スマホ２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-phone-2.png"
+  },
+  "t-phone-self-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "自撮り",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-phone-self-1.png"
+  },
+  "t-phone-self-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "自撮り２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-phone-self-2.png"
+  },
+  "t-phone-self-3.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "自撮り３",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-phone-self-3.png"
+  },
+  "t-phone-self-4.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-phone-self-4.png"
+  },
+  "t-question-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "わからん",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-question-1.png"
+  },
+  "t-question-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "わからん２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-question-2.png"
+  },
+  "t-question-3.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "わからん",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-question-3.png"
+  },
+  "t-question-4.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-question-4.png"
+  },
+  "t-question-5.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-question-5.png"
+  },
+  "t-question-6.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-question-6.png"
+  },
+  "t-sad-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "かなしい",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-sad-1.png"
+  },
+  "t-sleep-1.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "眠り",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-sleep-1.png"
+  },
+  "t-sleep-2.png": {
+    "type": "char",
+    "charName": "テンメンちゃん",
+    "exprLabel": "眠り２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/t-sleep-2.png"
+  },
+  "y-angry-3.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "怒り",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-angry-3.png"
+  },
+  "y-happy-1.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "ハッピー",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-happy-1.png"
+  },
+  "y-happy-2.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "ハッピー２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-happy-2.png"
+  },
+  "y-happy-3.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "ハッピー３",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-happy-3.png"
+  },
+  "y-lol-1.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "皮肉",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-lol-1.png"
+  },
+  "y-normal-1.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "ふつう",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-normal-1.png"
+  },
+  "y-sad-1.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "悲しい",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-sad-1.png"
+  },
+  "y-surprise-1.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "驚き",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-surprise-1.png"
+  },
+  "y-surprise-2.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "驚き２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-surprise-2.png"
+  },
+  "y-talk-1.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "トーク正面",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-talk-1.png"
+  },
+  "y-talk-2.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "トーク目逸らし",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-talk-2.png"
+  },
+  "y-talk-3.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "トーク目閉じ",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-talk-3.png"
+  },
+  "y-talk-4.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "トーク下向き",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-talk-4.png"
+  },
+  "y-talk-dream.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "トーク夢見がち",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-talk-dream.png"
+  },
+  "y-thinking-1.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "思案",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/y-thinking-1.png"
+  },
+  "Y.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "ｔｓｔ",
+    "symbolLabel": "",
+    "charColor": "#69a12f",
+    "src": "../assets/toolassets/Y.png"
+  },
+  "スマホ 16850.JPG": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/スマホ 16850.JPG"
+  },
+  "テストテンメン.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/テストテンメン.png"
+  },
+  "テストテンメン２.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/テストテンメン２.png"
+  },
+  "テスト山本.png": {
+    "type": "char",
+    "charName": "",
+    "exprLabel": "",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/テスト山本.png"
+  },
+  "テスト山本４.png": {
+    "type": "char",
+    "charName": "山本ディレッタント",
+    "exprLabel": "ｔｓｔ２",
+    "symbolLabel": "",
+    "charColor": "",
+    "src": "../assets/toolassets/テスト山本４.png"
+  }
+}

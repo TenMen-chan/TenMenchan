@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>レビュー一覧</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: #f7f7f4 url("../assets/common/ui/工事中.png") center top / cover fixed no-repeat;
+    color: #333;
+    font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  }
+  .page {
+    width: min(100% - 32px, 980px);
+    margin: 0 auto;
+    padding: 56px 0 72px;
+  }
+  .eyebrow {
+    margin: 0 0 10px;
+    color: #777;
+    font-size: 14px;
+    letter-spacing: .12em;
+  }
+  h1 {
+    margin: 0 0 36px;
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1.2;
+  }
+  .review-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .review-card {
+    display: grid;
+    grid-template-columns: 128px 1fr;
+    gap: 18px;
+    min-height: 180px;
+    padding: 18px;
+    border: 1px solid #d9d9d3;
+    border-radius: 12px;
+    background: #fff;
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 5px 14px rgba(0, 0, 0, .05);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .review-card:hover,
+  .review-card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .12);
+  }
+  .cover {
+    width: 128px;
+    height: 144px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background: #eee;
+  }
+  .review-number {
+    margin: 3px 0 8px;
+    color: #777;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .08em;
+  }
+  h2 {
+    margin: 0;
+    font-size: clamp(19px, 2.5vw, 26px);
+    line-height: 1.4;
+  }
+  .open-label {
+    display: inline-block;
+    margin-top: 16px;
+    color: #527da2;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .back {
+    display: inline-block;
+    margin-top: 42px;
+    color: #666;
+  }
+  @media (max-width: 520px) {
+    .page { width: min(100% - 24px, 980px); padding-top: 36px; }
+    .review-card { grid-template-columns: 96px 1fr; gap: 14px; min-height: 140px; padding: 14px; }
+    .cover { width: 96px; height: 112px; }
+  }
+</style>
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">なんでもレビュー劇</p>
+    <h1>レビュー一覧</h1>
+
+    <section class="review-list" aria-label="レビュー記事">
+      <a class="review-card" href="02-眠り姫たちの森.html">
+        <img class="cover" src="../assets/reviews/02-眠り姫たちの森/poster/poster.jpg" alt="眠り姫たちの森の表紙">
+        <div>
+          <p class="review-number">REVIEW 02</p>
+          <h2>眠り姫たちの森①　眠り姫たちの森②</h2>
+          <span class="open-label">レビューを読む →</span>
+        </div>
+      </a>
+
+      <a class="review-card" href="hihyo.html">
+        <img class="cover" src="../assets/reviews/hihyo/images/hyoushi.jpeg" alt="魔法使いの弟子たちの美しくて馬鹿げたシナリオの表紙">
+        <div>
+          <p class="review-number">REVIEW 01</p>
+          <h2>「魔法使いの弟子たちの美しくて馬鹿げたシナリオ」</h2>
+          <span class="open-label">レビューを読む →</span>
+        </div>
+      </a>
+    </section>
+
+    <a class="back" href="../index.html">トップへ戻る</a>
+  </main>
+</body>
+</html>

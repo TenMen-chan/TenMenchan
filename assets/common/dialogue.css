@@ -1,0 +1,369 @@
+/* Shared dialogue block styles for review articles. */
+.dialogue-area {
+  --dialogue-outline-color: #b8b8b8;
+  --dialogue-bubble-outline-color: #b8b8b8;
+  --dialogue-bubble-shadow: none;
+  --dialogue-thought-dot-shadow: none;
+  --dialogue-svg-shadow-display: none;
+  --dialogue-action-shadow: none;
+  color: #444;
+}
+
+.dialogue-area .blue-tag {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 32px 0 18px;
+  padding: 10px 42px 10px 16px;
+  border-left: 8px solid #74a7d8;
+  background: #e9f3ff;
+  color: #365d83;
+  font-family: 'Kosugi Maru', 'Hiragino Maru Gothic ProN', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - 20px) 25%,
+    100% 50%,
+    calc(100% - 20px) 75%,
+    100% 100%,
+    0 100%
+  );
+}
+
+.dialogue-area .dialogue-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 18px;
+  margin-bottom: 32px;
+  border: 1px solid #d3d3d3;
+  background: #eee;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.dialogue-area .dialogue-card-background {
+  position: absolute;
+  top: -18px;
+  left: -18px;
+  z-index: 0;
+  width: calc(100% + 36px);
+  height: calc(100% + 36px);
+  object-fit: cover;
+  filter: brightness(0.78) blur(4px);
+  transform: scale(1.04);
+  pointer-events: none;
+}
+
+.dialogue-area .dialogue-card-panel {
+  position: relative;
+  z-index: 1;
+  padding: 28px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.68);
+}
+
+.dialogue-area .dialogue-card-panel > :last-child {
+  margin-bottom: 0;
+}
+
+.dialogue-area .chat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 0;
+}
+
+.dialogue-area .chat .bubble,
+.dialogue-area .chat .bubble-think,
+.dialogue-area .chat .bubble-path {
+  min-width: 0;
+  max-width: 520px;
+  left: -10px;
+}
+
+.dialogue-area .avatar-block {
+  width: 140px;
+  flex-shrink: 0;
+  text-align: center;
+  position: relative;
+  transform: translateX(-10px);
+}
+
+.dialogue-area .avatar {
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+}
+
+/* Older exported blocks kept a 4px wrapper gap that the editor preview does not have. */
+.dialogue-area .avatar-block > div[style*="margin-bottom:4px"] {
+  margin-bottom: 0 !important;
+}
+
+.dialogue-area .name {
+  margin-top: 1px;
+  color: #555;
+  font-family: 'Kosugi Maru', 'Hiragino Maru Gothic ProN', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.dialogue-area .nametag-img {
+  display: block;
+  width: 100%;
+  max-width: 130px;
+  height: auto;
+  margin: 4px auto 0;
+  object-fit: contain;
+}
+
+.dialogue-area .bubble,
+.dialogue-area .bubble-think {
+  position: relative;
+  box-sizing: border-box;
+  max-width: 520px;
+  padding: 18px 24px;
+  margin-top: 32px;
+  background: #fff;
+  color: #444;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+  box-shadow: var(--dialogue-bubble-shadow);
+  filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.4));
+}
+
+.dialogue-area .bubble {
+  border: 2px solid var(--dialogue-bubble-outline-color);
+  border-radius: 22px;
+}
+
+.dialogue-area .bubble::before,
+.dialogue-area .bubble::after {
+  content: '';
+  position: absolute;
+  clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
+}
+
+.dialogue-area .bubble::before {
+  top: 11px;
+  left: -15px;
+  z-index: 2;
+  width: 18px;
+  height: 26px;
+  background: var(--dialogue-bubble-outline-color);
+}
+
+.dialogue-area .bubble::after {
+  top: 13px;
+  left: -13px;
+  z-index: 3;
+  width: 14px;
+  height: 22px;
+  background: #fff;
+}
+
+.dialogue-area .bubble-think {
+  border: 3px solid var(--dialogue-bubble-outline-color);
+  border-radius: 30px;
+}
+
+.dialogue-area .bubble-think::before,
+.dialogue-area .bubble-think::after {
+  content: '';
+  position: absolute;
+  box-sizing: border-box;
+  border: 3px solid var(--dialogue-bubble-outline-color);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--dialogue-thought-dot-shadow);
+}
+
+.dialogue-area .bubble-think::before {
+  top: 18px;
+  left: -22px;
+  width: 14px;
+  height: 14px;
+}
+
+.dialogue-area .bubble-think::after {
+  top: 28px;
+  left: -36px;
+  width: 8px;
+  height: 8px;
+}
+
+.dialogue-area .bubble-path {
+  position: relative;
+  min-height: 76px;
+  max-width: 520px;
+  padding: 24px 38px;
+  margin-top: 24px;
+  color: #444;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.dialogue-area .bubble-normal-path,
+.dialogue-area .bubble-prickly-path {
+  min-height: auto;
+  padding: 18px 24px;
+  margin-top: 32px;
+}
+
+.dialogue-area .bubble-spiky-path,
+.dialogue-area .bubble-cloud-path {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.dialogue-area .bubble-path > svg {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.4));
+}
+
+.dialogue-area .bubble-path > svg path {
+  fill: #fff;
+  stroke: var(--dialogue-bubble-outline-color);
+  stroke-width: 2px;
+}
+
+.dialogue-area .bubble-path > svg .svg-bubble-shadow,
+.dialogue-area .bubble-path > svg .svg-dot-shadow {
+  display: var(--dialogue-svg-shadow-display);
+  fill: var(--bc-shadow, rgba(207, 207, 207, 0.55));
+  stroke: none;
+}
+
+.dialogue-area .bubble-spiky-path > svg path {
+  stroke-linejoin: miter;
+  stroke-miterlimit: 3;
+}
+
+.dialogue-area .bubble-cloud-path > svg path,
+.dialogue-area .bubble-normal-path > svg path,
+.dialogue-area .bubble-prickly-path > svg path {
+  stroke-linejoin: round;
+}
+
+.dialogue-area .bubble-path-text {
+  position: relative;
+  z-index: 1;
+}
+
+.dialogue-area .cloud-thought-dot {
+  fill: #fff;
+  stroke: var(--dialogue-bubble-outline-color);
+  stroke-width: 2px;
+}
+
+.dialogue-area .action {
+  box-sizing: border-box;
+  padding: 10px 16px;
+  margin-top: 5px;
+  margin-bottom: 24px;
+  border: 3px solid var(--dialogue-outline-color);
+  border-radius: 0;
+  background: #fff;
+  color: #333;
+  font-size: 20px;
+  font-weight: 500;
+  box-shadow: var(--dialogue-action-shadow);
+}
+
+.dialogue-area .photo-block {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.dialogue-area .photo-block.is-paper {
+  display: block;
+  box-sizing: border-box;
+  width: fit-content;
+  max-width: 100%;
+  padding: 12px;
+  margin-right: auto;
+  margin-left: auto;
+  border: 2px solid rgba(80, 80, 80, 0.24);
+  border-radius: 0;
+  background: #fff;
+  filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.4));
+}
+
+.dialogue-area .photo-block img {
+  display: block;
+  max-width: 100%;
+  max-height: 500px;
+  margin: 0 auto;
+  border-radius: 8px;
+  object-fit: contain;
+}
+
+.dialogue-area .photo-block.is-paper img {
+  width: 100%;
+  border-radius: 0;
+}
+
+@media (max-width: 640px) {
+  .dialogue-area .blue-tag {
+    margin-top: 24px;
+    padding: 8px 32px 8px 12px;
+    font-size: 22px;
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      calc(100% - 14px) 25%,
+      100% 50%,
+      calc(100% - 14px) 75%,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .dialogue-area .dialogue-card-panel {
+    padding: 18px 12px;
+  }
+
+  .dialogue-area .chat {
+    gap: 8px;
+  }
+
+  .dialogue-area .avatar-block {
+    width: 104px;
+    transform: none;
+  }
+
+  .dialogue-area .avatar {
+    width: 104px !important;
+    height: 104px !important;
+  }
+
+  .dialogue-area .name {
+    font-size: 12px;
+  }
+
+  .dialogue-area .bubble,
+  .dialogue-area .bubble-think,
+  .dialogue-area .bubble-path,
+  .dialogue-area .action {
+    font-size: 17px;
+  }
+}
+
+.dialogue-area .photo-caption {
+  margin-top: 8px;
+  color: #888;
+  font-size: 16px;
+  font-style: italic;
+}
