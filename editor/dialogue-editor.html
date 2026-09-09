@@ -1,0 +1,3255 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>複数会話ブロックエディター newUI2</title>
+<link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+  background: #e8e8e8;
+  color: #333;
+  font-size: 14px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 繝倥ャ繝繝ｼ */
+header {
+  background: #2c2c2c;
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-bottom: 1px solid #111;
+}
+header h1 { font-size: 15px; font-weight: 600; margin-right: auto; letter-spacing: 0.5px; }
+header button {
+  padding: 6px 14px;
+  border: 1px solid #555;
+  background: #3a3a3a;
+  color: #eee;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+header button:hover { background: #555; }
+header button.accent {
+  background: #1a6fc4;
+  border-color: #155aa0;
+  color: #fff;
+}
+header button.accent:hover { background: #2280d8; }
+
+/* 3繝壹う繝ｳ繝ｬ繧､繧｢繧ｦ繝・*/
+.main {
+  display: grid;
+  grid-template-columns: 270px 1fr 340px;
+  flex: 1;
+  overflow: hidden;
+  gap: 0;
+}
+
+/* 繝代ロ繝ｫ蜈ｱ騾・*/
+.panel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f4f4f4;
+  border-right: 1px solid #ccc;
+}
+.panel:last-child { border-right: none; }
+
+.panel-header {
+  background: #ddd;
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 12px;
+  color: #444;
+  border-bottom: 1px solid #c4c4c4;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.panel-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+/* =========== 蟾ｦ繝壹う繝ｳ: 逕ｻ蜒冗匳骭ｲ =========== */
+.btn-folder {
+  display: block;
+  width: 100%;
+  padding: 11px;
+  background: #1a6fc4;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 8px;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.btn-folder:hover { background: #2280d8; }
+
+.folder-info {
+  font-size: 11px;
+  color: #888;
+  background: #ececec;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.btn-save-chars {
+  display: block;
+  width: 100%;
+  padding: 7px;
+  background: #f5f5f5;
+  color: #444;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.btn-save-chars:hover { background: #e8e8e8; }
+.asset-update-buttons {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+.btn-asset-update {
+  display: block;
+  width: 100%;
+  padding: 7px;
+  background: #eef5ff;
+  color: #1a5f9f;
+  border: 1px solid #a9ccef;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.btn-asset-update:hover { background: #ddeeff; }
+.btn-asset-update.secondary {
+  background: #f5f5f5;
+  color: #555;
+  border-color: #ccc;
+}
+.asset-update-info {
+  font-size: 11px;
+  color: #777;
+  margin: -2px 0 8px;
+  line-height: 1.45;
+}
+
+#drop-zone {
+  border: 2px dashed #bbb;
+  border-radius: 8px;
+  padding: 18px 12px;
+  text-align: center;
+  color: #999;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: border-color 0.2s, background 0.2s;
+  font-size: 13px;
+  line-height: 1.6;
+}
+#drop-zone:hover { border-color: #1a6fc4; color: #1a6fc4; background: #f0f6ff; }
+#drop-zone.drag-over { border-color: #1a6fc4; background: #e4f0ff; }
+
+.image-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.img-card {
+  background: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 7px;
+  padding: 7px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+  position: relative;
+}
+.img-card:hover { border-color: #1a6fc4; }
+.img-card.selected { border-color: #1a6fc4; background: #eef5ff; }
+
+.img-card .img-thumb {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  margin-bottom: 5px;
+  background: #eee;
+}
+
+.img-card .img-filename {
+  font-size: 10px;
+  color: #aaa;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 4px;
+}
+
+.img-card input[type=text] {
+  width: 100%;
+  font-size: 11px;
+  padding: 3px 5px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  background: #fafafa;
+  font-family: inherit;
+}
+.img-card input[type=text]:focus {
+  outline: none;
+  border-color: #1a6fc4;
+  background: #fff;
+}
+.img-card input[type=text]:last-child { margin-bottom: 0; }
+
+.img-card .btn-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: rgba(180,0,0,0.75);
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  cursor: pointer;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.img-card:hover .btn-remove { display: flex; }
+
+/* =========== 荳ｭ繝壹う繝ｳ: 莨夊ｩｱ邱ｨ髮・=========== */
+.add-form {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+.add-form .form-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #666;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.form-row { margin-bottom: 9px; }
+.form-row label {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  margin-bottom: 3px;
+  font-weight: 600;
+}
+.form-row select,
+.form-row input[type=text] {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  background: #fff;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+.form-row select:focus,
+.form-row input[type=text]:focus { outline: none; border-color: #1a6fc4; }
+
+#expr-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 28px;
+}
+.expr-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 56px;
+}
+.expr-thumb-clip {
+  width: 56px; height: 56px; overflow: hidden; position: relative;
+  border-radius: 5px; border: 2px solid #e0e0e0; transition: border-color 0.12s;
+}
+.expr-thumb-clip:hover { border-color: #1a6fc4; }
+.expr-thumb-clip.selected { border-color: #1a6fc4; box-shadow: 0 0 0 2px #a0c4f8; }
+.expr-thumb-inner {
+  width: 100%; height: 155%;
+  object-fit: cover; object-position: center; display: block;
+  margin-top: -15%;
+}
+/* 蠕梧婿莠呈鋤 */
+.expr-thumb {
+  width: 56px; height: 56px; object-fit: cover;
+  border-radius: 5px; border: 2px solid #e0e0e0; display: block;
+}
+.expr-label {
+  font-size: 10px;
+  color: #888;
+  text-align: center;
+  width: 56px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+/* 繝槭Φ繧ｬ險伜捷繝斐ャ繧ｫ繝ｼ */
+#symbol-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  min-height: 22px;
+}
+.symbol-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  width: 44px;
+}
+.symbol-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 5px;
+  border: 2px solid #e0e0e0;
+  background: #f8f8f8;
+  transition: border-color 0.12s;
+}
+.symbol-thumb:hover { border-color: #1a6fc4; }
+.symbol-thumb.selected { border-color: #1a6fc4; box-shadow: 0 0 0 2px #a0c4f8; }
+.symbol-label {
+  font-size: 9px;
+  color: #888;
+  text-align: center;
+  width: 44px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+/* 險伜捷繝舌ャ繧ｸ・育判蜒上げ繝ｪ繝・ラ・・*/
+.symbol-badge {
+  display: inline-block;
+  background: #6c5ce7;
+  color: #fff;
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-bottom: 3px;
+  font-weight: 700;
+}
+
+.bubble-shape-toggle {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+}
+.bubble-shape-btn {
+  padding: 5px 4px;
+  border: 1px solid #ccc;
+  background: #f5f5f5;
+  border-radius: 4px;
+  color: #666;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+}
+.bubble-shape-btn.active {
+  color: #fff;
+  background: #1a6fc4;
+  border-color: #155aa0;
+}
+#bubble-text {
+  width: 100%;
+  height: 72px;
+  padding: 7px 9px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+#bubble-text:focus { outline: none; border-color: #1a6fc4; }
+
+.btn-primary {
+  width: 100%;
+  padding: 8px;
+  background: #1a6fc4;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: #2280d8; }
+.btn-primary.is-update { background: #1e9e50; }
+.btn-primary.is-update:hover { background: #27b85e; }
+
+.btn-cancel {
+  display: none;
+  width: 100%;
+  padding: 6px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  background: #f2f2f2;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+}
+.btn-cancel:hover { background: #e8e8e8; }
+
+/* 莨夊ｩｱ繝ｪ繧ｹ繝・*/
+.dialogue-list { display: flex; flex-direction: column; gap: 5px; }
+
+.left-history-section {
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.left-image-section {
+  padding-top: 2px;
+}
+
+.section-title {
+  margin: 0 0 8px;
+  color: #555;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.section-note {
+  margin: -4px 0 8px;
+  color: #888;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.block-manager-section {
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.block-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-bottom: 8px;
+}
+
+.block-controls button {
+  padding: 6px 4px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: inherit;
+  color: #555;
+}
+
+.block-controls button:hover { background: #eef5ff; border-color: #9fc5ef; }
+.block-controls .danger { color: #c00; border-color: #f0cccc; }
+.block-controls .danger:hover { background: #fff0f0; }
+
+.block-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.block-list:empty::before {
+  content: "\u30d6\u30ed\u30c3\u30af\u306f\u307e\u3060\u3042\u308a\u307e\u305b\u3093";
+  display: block;
+  padding: 10px;
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+  background: #fff;
+  border: 1px dashed #d7d7d7;
+  border-radius: 6px;
+}
+
+.block-item {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 7px 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.block-item:hover { border-color: #9fc5ef; background: #f8fbff; }
+.block-item.active { border-color: #1a6fc4; background: #eef5ff; }
+.block-item.dragging { opacity: 0.35; }
+.block-item.drop-above { border-top: 2px solid #1a6fc4; }
+.block-item.drop-below { border-bottom: 2px solid #1a6fc4; }
+
+.block-title-line {
+  font-size: 12px;
+  color: #444;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.block-meta-line {
+  margin-top: 3px;
+  font-size: 10px;
+  color: #999;
+}
+
+.left-history-section .dialogue-list:empty::before {
+  content: "\u307e\u3060\u5c65\u6b74\u306f\u3042\u308a\u307e\u305b\u3093";
+  display: block;
+  padding: 10px;
+  color: #999;
+  font-size: 12px;
+  text-align: center;
+  background: #fff;
+  border: 1px dashed #d7d7d7;
+  border-radius: 6px;
+}
+
+.left-history-section .dlg-item {
+  align-items: flex-start;
+  gap: 7px;
+  padding: 7px;
+}
+
+.left-history-section .dlg-avatar,
+.left-history-section .dlg-no-avatar {
+  width: 32px;
+  height: 32px;
+}
+
+.left-history-section .dlg-actions {
+  flex-direction: column;
+  gap: 3px;
+}
+
+.left-history-section .dlg-actions button {
+  padding: 2px 6px;
+}
+
+.dlg-item {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: grab;
+  user-select: none;
+  transition: box-shadow 0.1s;
+}
+.dlg-item:hover { box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+.dlg-item:active { cursor: grabbing; }
+.dlg-item.dragging { opacity: 0.35; }
+.dlg-item.drop-above { border-top: 2px solid #1a6fc4; }
+.dlg-item.drop-below { border-bottom: 2px solid #1a6fc4; }
+
+.dlg-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid #e0e0e0;
+}
+.dlg-no-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e8e8e8;
+  flex-shrink: 0;
+}
+.dlg-info { flex: 1; min-width: 0; }
+.dlg-name { font-size: 11px; color: #888; font-weight: 700; margin-bottom: 2px; }
+.dlg-text { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.dlg-actions { display: flex; gap: 4px; flex-shrink: 0; }
+.dlg-actions button {
+  padding: 3px 8px;
+  font-size: 11px;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.dlg-actions button:hover { background: #eaeaea; }
+.dlg-actions .btn-del { color: #c00; border-color: #f0cccc; }
+.dlg-actions .btn-del:hover { background: #fff0f0; }
+
+/* =========== 蜿ｳ繝壹う繝ｳ: 繝励Ξ繝薙Η繝ｼ =========== */
+.export-section {
+  margin-bottom: 12px;
+}
+.btn-copy {
+  display: block;
+  width: 100%;
+  padding: 9px;
+  background: #1e9e50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.btn-copy:hover { background: #27b85e; }
+.btn-copy.secondary {
+  margin-top: 7px;
+  background: #1a6fc4;
+}
+.btn-copy.secondary:hover { background: #2280d8; }
+.copy-toast {
+  display: none;
+  margin-top: 6px;
+  background: #333;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  text-align: center;
+}
+
+/* 繝励Ξ繝薙Η繝ｼ螟匁棧 */
+#preview-area {
+  background: #fff;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+/*
+  #preview-inner 繧貞ｮ滄圀縺ｮ繝壹・繧ｸ縺ｨ蜷後§蟇ｸ豕輔〒繝ｬ繝ｳ繝繝ｪ繝ｳ繧ｰ縺励・  zoom 縺ｧ邵ｮ蟆上☆繧九％縺ｨ縺ｧ謾ｹ陦御ｽ咲ｽｮ繧貞ｮ溽黄縺ｨ螳悟・荳閾ｴ縺輔○繧九・  蟷・830px ﾃ・zoom 0.38 竕・315px・医ヱ繝阪Ν蟷・340 - padding 24・・*/
+#preview-inner {
+  width: 830px;
+  zoom: 0.38;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* 莉･荳九・ existing.html 縺ｮ蛟､繧偵◎縺ｮ縺ｾ縺ｾ菴ｿ逕ｨ */
+#preview-inner .chat,
+#preview-modal-inner .chat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 0;
+}
+#preview-inner .chat .bubble,
+#preview-modal-inner .chat .bubble,
+#preview-inner .chat .bubble-think,
+#preview-modal-inner .chat .bubble-think,
+#preview-inner .chat .bubble-path,
+#preview-modal-inner .chat .bubble-path {
+  max-width: 520px;
+  left: -10px;
+}
+#preview-inner .avatar-block,
+#preview-modal-inner .avatar-block {
+  width: 150px;
+  flex-shrink: 0;
+  text-align: center;
+  position: relative;
+}
+#preview-inner .chat .avatar-block,
+#preview-modal-inner .chat .avatar-block {
+  transform: translateX(-10px);
+}
+#preview-inner .symbol-overlay,
+#preview-modal-inner .symbol-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 134px;
+  height: 134px;
+  object-fit: contain;
+  pointer-events: none;
+  z-index: 2;
+}
+#preview-inner .avatar-wrap,
+#preview-modal-inner .avatar-wrap {
+  display: inline-block;
+  position: relative;
+  isolation: isolate;
+  filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.4));
+  transform: translate(5px, 0);
+}
+#preview-inner .avatar-wrap::before,
+#preview-modal-inner .avatar-wrap::before {
+  content: none;
+}
+#preview-inner .avatar,
+#preview-modal-inner .avatar {
+  width: 134px;
+  height: 134px;
+  object-fit: contain;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0 95%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0 95%, transparent 100%);
+  border-radius: 6px;
+  display: block;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+#preview-inner,
+#preview-modal-inner {
+  --dialogue-outline-color: #b8b8b8;
+  --dialogue-bubble-outline-color: #b8b8b8;
+  --dialogue-bubble-shadow: none;
+  --dialogue-tail-shadow-display: none;
+  --dialogue-thought-dot-shadow: none;
+  --dialogue-svg-shadow-display: none;
+  --dialogue-action-shadow: none;
+}
+#preview-inner.use-dialogue-shadows,
+#preview-modal-inner.use-dialogue-shadows {
+  --dialogue-bubble-shadow:
+    4px 5px 0 var(--bc-shadow, rgba(207,207,207,0.55)),
+    1px 2px 5px rgba(0,0,0,0.24);
+  --dialogue-tail-shadow-display: block;
+  --dialogue-thought-dot-shadow:
+    2px 2px 0 var(--bc-shadow, rgba(207,207,207,0.55)),
+    1px 2px 4px rgba(0,0,0,0.20);
+  --dialogue-svg-shadow-display: inline;
+  --dialogue-action-shadow:
+    4px 5px 0 rgba(120,120,120,0.55),
+    1px 2px 5px rgba(0,0,0,0.18);
+}
+#preview-inner .name,
+#preview-modal-inner .name {
+  margin-top: 1px;
+  font-family: 'Kosugi Maru','Hiragino Maru Gothic ProN',sans-serif;
+  font-size: 14px;
+  color: #555;
+  font-weight: 700;
+}
+#preview-inner .bubble,
+#preview-modal-inner .bubble {
+  position: relative;
+  max-width: 520px;
+  padding: 18px 24px;
+  border: 2px solid var(--dialogue-bubble-outline-color);
+  border-radius: 22px;
+  background: #fff;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: 500;
+  color: #444;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+  margin-top: 32px;
+  box-shadow: var(--dialogue-bubble-shadow);
+  filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.4));
+}
+#preview-inner .bubble::before,
+#preview-modal-inner .bubble::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 11px;
+  left: -15px;
+  width: 18px;
+  height: 26px;
+  background: var(--dialogue-bubble-outline-color);
+  clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
+  filter: none;
+  z-index: 2;
+}
+#preview-inner .bubble::after,
+#preview-modal-inner .bubble::after {
+  content: "";
+  position: absolute;
+  top: 13px;
+  left: -13px;
+  width: 14px;
+  height: 22px;
+  background: #fff;
+  clip-path: polygon(100% 0%, 0% 50%, 100% 100%);
+  z-index: 3;
+}
+#preview-inner .bubble-think,
+#preview-modal-inner .bubble-think {
+  position: relative;
+  max-width: 520px;
+  padding: 18px 24px;
+  border: 3px solid var(--dialogue-bubble-outline-color);
+  border-radius: 30px;
+  background: #fff;
+  box-sizing: border-box;
+  font-size: 20px;
+  font-weight: 500;
+  color: #444;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+  margin-top: 32px;
+  box-shadow: var(--dialogue-bubble-shadow);
+  filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.4));
+}
+#preview-inner .bubble-think::before,
+#preview-modal-inner .bubble-think::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: -22px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--dialogue-bubble-outline-color);
+  box-sizing: border-box;
+  box-shadow: var(--dialogue-thought-dot-shadow);
+}
+#preview-inner .bubble-think::after,
+#preview-modal-inner .bubble-think::after {
+  content: "";
+  position: absolute;
+  top: 28px;
+  left: -36px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid var(--dialogue-bubble-outline-color);
+  box-sizing: border-box;
+  box-shadow: var(--dialogue-thought-dot-shadow);
+}
+#preview-inner .bubble-path,
+#preview-modal-inner .bubble-path {
+  position: relative;
+  max-width: 520px;
+  min-height: 76px;
+  padding: 24px 38px;
+  margin-top: 24px;
+  color: #444;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: normal;
+  word-break: break-word;
+}
+#preview-inner .bubble-normal-path,
+#preview-modal-inner .bubble-normal-path,
+#preview-inner .bubble-prickly-path,
+#preview-modal-inner .bubble-prickly-path {
+  min-height: auto;
+  padding: 18px 24px;
+  margin-top: 32px;
+}
+#preview-inner .bubble-path > svg,
+#preview-modal-inner .bubble-path > svg {
+  position: absolute;
+  overflow: visible;
+  pointer-events: none;
+  filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.4));
+}
+#preview-inner .bubble-spiky-path > svg,
+#preview-modal-inner .bubble-spiky-path > svg {
+}
+#preview-inner .bubble-path > svg path,
+#preview-modal-inner .bubble-path > svg path {
+  fill: #fff;
+  stroke: var(--dialogue-bubble-outline-color);
+  stroke-width: 2px;
+}
+#preview-inner .bubble-path > svg .svg-bubble-shadow,
+#preview-modal-inner .bubble-path > svg .svg-bubble-shadow,
+#preview-inner .bubble-path > svg .svg-dot-shadow,
+#preview-modal-inner .bubble-path > svg .svg-dot-shadow {
+  display: var(--dialogue-svg-shadow-display);
+  fill: var(--bc-shadow, rgba(207,207,207,0.55));
+  stroke: none;
+}
+#preview-inner .bubble-spiky-path > svg path,
+#preview-modal-inner .bubble-spiky-path > svg path {
+  stroke-linejoin: miter;
+  stroke-miterlimit: 3;
+}
+#preview-inner .bubble-cloud-path > svg path,
+#preview-modal-inner .bubble-cloud-path > svg path {
+  stroke-linejoin: round;
+}
+#preview-inner .bubble-normal-path > svg path,
+#preview-modal-inner .bubble-normal-path > svg path,
+#preview-inner .bubble-prickly-path > svg path,
+#preview-modal-inner .bubble-prickly-path > svg path {
+  stroke-linejoin: round;
+}
+#preview-inner .bubble-path-text,
+#preview-modal-inner .bubble-path-text {
+  position: relative;
+  z-index: 1;
+}
+#preview-inner .bubble-spiky-path,
+#preview-modal-inner .bubble-spiky-path {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+#preview-inner .bubble-cloud-path,
+#preview-modal-inner .bubble-cloud-path {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+#preview-inner .cloud-thought-dot,
+#preview-modal-inner .cloud-thought-dot {
+  fill: #fff;
+  stroke: var(--dialogue-bubble-outline-color);
+  stroke-width: 2px;
+}
+#preview-empty {
+  color: #bbb;
+  font-size: 28px;
+  text-align: center;
+  padding: 40px 0;
+}
+#preview-inner .action,
+#preview-modal-inner .action {
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 5px;
+  margin-bottom: 24px;
+  color: #333;
+  padding: 10px 16px;
+  background: #fff;
+  border: 3px solid var(--dialogue-outline-color);
+  border-width: 3px;
+  border-radius: 0;
+  box-sizing: border-box;
+  box-shadow: var(--dialogue-action-shadow);
+}
+#preview-inner .blue-tag,
+#preview-modal-inner .blue-tag {
+  display: block;
+  width: 100%;
+  margin: 0 0 18px 0;
+  padding: 12px 42px 12px 18px;
+  border: 2px solid rgba(80,80,80,0.24);
+  border-radius: 0;
+  box-shadow: none;
+  font-family: 'Kosugi Maru','Hiragino Maru Gothic ProN',sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #333;
+  background: #fff;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 4;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - 20px) 25%,
+    100% 50%,
+    calc(100% - 20px) 75%,
+    100% 100%,
+    0 100%
+  );
+}
+#preview-inner #preview-block-title.has-bg-title .blue-tag,
+#preview-modal-inner #preview-block-title.has-bg-title .blue-tag,
+#preview-modal-inner .preview-block-title.has-bg-title .blue-tag {
+  margin-left: -18px;
+  margin-right: -18px;
+}
+
+/* 繝｢繝ｼ繝牙・譖ｿ */
+.mode-toggle { display: flex; gap: 5px; margin-bottom: 10px; }
+.mode-btn {
+  flex: 1; padding: 5px; border: 1px solid #ccc; background: #f0f0f0;
+  border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;
+  font-family: inherit; color: #666; transition: background 0.12s;
+}
+.mode-btn.active { background: #1a6fc4; color: #fff; border-color: #155aa0; }
+
+/* 繝・く繧ｹ繝医お繝ｪ繧｢荳翫ヤ繝ｼ繝ｫ繝舌・ */
+.textarea-toolbar { display: flex; gap: 4px; margin-bottom: 4px; flex-wrap: wrap; }
+.toolbar-btn {
+  padding: 2px 9px; border: 1px solid #ccc; background: #f5f5f5;
+  border-radius: 3px; cursor: pointer; font-size: 12px; font-family: inherit;
+  line-height: 1.6;
+}
+.toolbar-btn:hover { background: #e0e0e0; }
+.toolbar-btn.bold-btn { font-weight: 700; }
+.font-btn {
+  padding: 2px 9px; border: 1px solid #ccc; background: #f5f5f5;
+  border-radius: 3px; cursor: pointer; font-size: 12px; line-height: 1.6; color: #555;
+}
+.font-btn:hover { background: #e0e0e0; }
+.font-btn.active { background: #555; color: #fff; border-color: #444; }
+.toolbar-sep { width: 1px; background: #ddd; margin: 2px 2px; align-self: stretch; }
+
+/* 繝域嶌縺阪い繧､繝・Β */
+.dlg-item.is-action { background: #f8f8f8; }
+.dlg-action-label {
+  font-size: 11px; color: #888; font-weight: 700; white-space: nowrap;
+  padding: 2px 6px; background: #e4e4e4; border-radius: 3px; flex-shrink: 0;
+}
+
+/* 繝励Ξ繝薙Η繝ｼ諡｡螟ｧ繝｢繝ｼ繝繝ｫ */
+#preview-area {
+  cursor: zoom-in;
+  position: relative;
+}
+#preview-hint {
+  position: absolute;
+  bottom: 6px;
+  right: 8px;
+  font-size: 10px;
+  color: #bbb;
+  pointer-events: none;
+  background: rgba(255,255,255,0.85);
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+#preview-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 40px 20px;
+}
+#preview-modal.open { display: block; }
+#preview-modal-box {
+  background: #fff;
+  border-radius: 8px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  position: relative;
+}
+#preview-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #666;
+  background: none;
+  border: none;
+  line-height: 1;
+  font-family: inherit;
+}
+#preview-modal-close:hover { color: #111; }
+#preview-modal-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #888;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+#preview-modal-inner {
+  width: 830px;
+  zoom: 0.85;
+  padding: 16px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+}
+#preview-modal-inner.is-all-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.all-preview-block {
+  width: 100%;
+}
+.all-preview-empty {
+  padding: 20px;
+  color: #999;
+  text-align: center;
+  border: 1px dashed #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+/* 譖ｸ縺榊・縺励ヱ繧ｹ蜈･蜉・*/
+.path-input-wrap { margin-bottom: 8px; }
+.path-input-wrap label { display: block; font-size: 11px; color: #888; margin-bottom: 3px; font-weight: 600; }
+.path-input-wrap input {
+  width: 100%;
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 12px;
+  font-family: inherit;
+  background: #fafafa;
+}
+.path-input-wrap input:focus { outline: none; border-color: #1a6fc4; background: #fff; }
+
+/* 閭梧勹繝励Ξ繝薙Η繝ｼ */
+#preview-area { overflow: hidden; }
+#preview-bg, #preview-modal-bg,
+#preview-bg-overlay, #preview-modal-bg-overlay {
+  display: none !important;
+}
+#preview-inner { position: relative; z-index: 2; }
+#preview-dialogue-box.has-bg,
+#preview-modal-inner .preview-dialogue-box.has-bg {
+  padding: 28px;
+  border-radius: 0;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.9);
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  isolation: isolate;
+}
+#preview-dialogue-box.has-bg::before,
+#preview-modal-inner .preview-dialogue-box.has-bg::before {
+  content: "";
+  position: absolute;
+  inset: -18px;
+  border-radius: 0;
+  background-image: var(--preview-bg-image);
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.78) blur(4px);
+  z-index: 0;
+}
+#preview-dialogue-box.has-bg::after,
+#preview-modal-inner .preview-dialogue-box.has-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.68);
+  z-index: 1;
+}
+#preview-dialogue-box.has-bg > *,
+#preview-modal-inner .preview-dialogue-box.has-bg > * { position: relative; z-index: 2; }
+#preview-hint { z-index: 3; }
+#preview-modal-box { position: relative; overflow: visible; }
+#preview-modal-close, #preview-modal-title { position: relative; z-index: 2; }
+
+/* 閭梧勹繧｢繝・・繝ｭ繝ｼ繝蔚I */
+.bg-section { margin-bottom: 10px; display: flex; gap: 6px; }
+.btn-bg-upload {
+  flex: 1;
+  padding: 6px 10px;
+  background: #555;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.btn-bg-upload:hover { background: #777; }
+.btn-bg-clear {
+  padding: 6px 10px;
+  background: #f0f0f0;
+  color: #555;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-bg-clear:hover { background: #e0e0e0; }
+
+/* 蜀咏悄繝悶Ο繝・け */
+#preview-inner .photo-block,
+#preview-modal-inner .photo-block {
+  text-align: center;
+  margin-bottom: 20px;
+}
+#preview-inner .photo-block.is-paper,
+#preview-modal-inner .photo-block.is-paper {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 12px;
+  background: #fff;
+  border: 2px solid rgba(80,80,80,0.24);
+  border-radius: 0;
+  box-shadow: none;
+  filter: drop-shadow(2px 3px 2px rgba(0,0,0,0.4));
+  box-sizing: border-box;
+}
+#preview-inner .photo-block img,
+#preview-modal-inner .photo-block img {
+  max-width: 100%;
+  max-height: 500px;
+  border-radius: 8px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+#preview-inner .photo-block.is-paper img,
+#preview-modal-inner .photo-block.is-paper img {
+  width: 100%;
+  border-radius: 0;
+}
+#preview-inner .photo-caption,
+#preview-modal-inner .photo-caption {
+  font-size: 16px;
+  color: #888;
+  margin-top: 8px;
+  font-style: italic;
+}
+/* 蜀咏悄繝斐ャ繧ｫ繝ｼ */
+.btn-photo-pick {
+  display: block;
+  width: 100%;
+  padding: 28px 8px;
+  background: #f5f5f5;
+  color: #555;
+  border: 2px dashed #bbb;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s, border-color 0.12s, color 0.12s;
+  text-align: center;
+  margin-top: 4px;
+}
+.btn-photo-pick:hover { background: #eef5ff; border-color: #1a6fc4; color: #1a6fc4; }
+#photo-pick-thumb {
+  max-width: 100%;
+  max-height: 90px;
+  border-radius: 5px;
+  display: block;
+  margin: 7px auto 0;
+  object-fit: contain;
+}
+#photo-pick-name {
+  font-size: 10px;
+  color: #aaa;
+  text-align: center;
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.dlg-item.is-photo { background: #faf8ff; }
+/* 蜀咏悄繧ｵ繧､繧ｺ蛻・崛 */
+.size-toggle,
+.frame-toggle { display: flex; gap: 4px; margin-top: 4px; }
+.size-btn,
+.frame-btn {
+  flex: 1; padding: 4px 2px; border: 1px solid #ccc; background: #f0f0f0;
+  border-radius: 4px; cursor: pointer; font-size: 12px; font-weight: 600;
+  font-family: inherit; color: #666; transition: background 0.12s;
+}
+.size-btn.active,
+.frame-btn.active { background: #1a6fc4; color: #fff; border-color: #155aa0; }
+
+/* 逕ｻ蜒上ち繧､繝怜・譖ｿ繝溘ル繝医げ繝ｫ */
+.img-type-toggle { display: flex; gap: 2px; margin-bottom: 4px; }
+.img-type-btn {
+  flex: 1; padding: 2px 0; font-size: 10px; border: 1px solid #ddd;
+  background: #f5f5f5; border-radius: 3px; cursor: pointer;
+  font-family: inherit; color: #777; transition: background 0.1s;
+}
+.img-type-btn:hover { background: #e8e8e8; }
+.img-type-btn.active { background: #1a6fc4; color: #fff; border-color: #155aa0; }
+
+/* 蜷肴惆繝舌ャ繧ｸ */
+.nametag-badge {
+  display: inline-block; background: #e17055; color: #fff;
+  font-size: 9px; padding: 1px 5px; border-radius: 3px;
+  margin-bottom: 3px; font-weight: 700;
+}
+
+/* 蜷肴惆逕ｻ蜒擾ｼ医・繝ｬ繝薙Η繝ｼ蜀・ｼ・*/
+#preview-inner .nametag-img,
+#preview-modal-inner .nametag-img {
+  max-width: 130px; width: 100%; height: auto;
+  display: block; margin: 4px auto 0; object-fit: contain;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>複数会話ブロックエディター newUI2 avatar114</h1>
+  <button onclick="saveProject()">保存</button>
+  <button onclick="triggerLoad()">読み込み</button>
+  <input type="file" id="load-input" accept=".json" style="display:none" onchange="onLoadFile(event)">
+</header>
+
+<div class="main">
+
+  <div class="panel">
+    <div class="panel-header">履歴編集・画像登録</div>
+    <div class="panel-body">
+      <div class="block-manager-section">
+        <div class="section-title">会話ブロック管理</div>
+        <div class="section-note">クリックで編集対象を切り替え。タイトル・背景・会話履歴をブロックごとに保存します。</div>
+        <div class="block-controls">
+          <button onclick="addBlock()">新規</button>
+          <button onclick="duplicateBlock()">複製</button>
+          <button onclick="moveActiveBlock(-1)">上へ</button>
+          <button onclick="moveActiveBlock(1)">下へ</button>
+          <button class="danger" onclick="deleteActiveBlock()">削除</button>
+        </div>
+        <div class="block-list" id="block-list"></div>
+      </div>
+      <div class="left-history-section">
+        <div class="section-title">作った会話の履歴</div>
+        <div class="section-note">クリックで編集、ドラッグで並び替えできます。</div>
+        <div class="dialogue-list" id="dialogue-list"></div>
+      </div>
+      <div class="left-image-section">
+        <div class="section-title">画像・キャラクター登録</div>
+        <input type="file" id="folder-input" style="display:none" webkitdirectory onchange="onFolderSelect(event)">
+        <input type="file" id="file-input" multiple accept="image/*" style="display:none" onchange="onFileSelect(event)">
+        <button class="btn-folder" onclick="document.getElementById('folder-input').click()">画像フォルダを選択</button>
+        <div class="folder-info" id="folder-info">フォルダ未選択</div>
+        <div class="asset-update-buttons">
+          <button class="btn-asset-update" onclick="openManagedAssetFolder()">素材フォルダを開いて更新</button>
+          <button class="btn-asset-update secondary" onclick="reloadManagedAssetFolder()">開いた素材フォルダを再読み込み</button>
+          <button class="btn-asset-update secondary" onclick="updateCharactersJsonDirect()">characters.jsonを直接更新</button>
+        </div>
+        <div class="asset-update-info" id="asset-update-info">直接更新はChrome/Edge系で、素材フォルダの許可後に使えます。</div>
+        <button class="btn-save-chars" onclick="saveCharacters()">characters.json として保存</button>
+        <div id="drop-zone" onclick="document.getElementById('file-input').click()">
+          画像を追加（クリックまたはドラッグ＆ドロップ）<br>
+          <span style="font-size:11px;">PNG / JPG などの画像ファイル</span>
+        </div>
+        <div class="image-grid" id="image-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">会話編集</div>
+    <div class="panel-body">
+      <div class="add-form">
+        <div class="form-title" id="form-title">ブロックを追加</div>
+        <div class="form-row">
+          <label>タイトル見出し <span style="font-size:10px;color:#aaa">（任意）</span></label>
+          <input type="text" id="block-title-input" placeholder="例：劇場に行こう！" oninput="setBlockTitle(this.value)">
+        </div>
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="mode-chat-btn" onclick="setFormMode('chat')">会話</button>
+          <button class="mode-btn" id="mode-action-btn" onclick="setFormMode('action')">ト書き</button>
+          <button class="mode-btn" id="mode-photo-btn" onclick="setFormMode('photo')">写真</button>
+        </div>
+        <div id="chat-fields">
+          <div class="form-row">
+            <label>キャラクター</label>
+            <select id="char-select" onchange="onCharSelect(true)">
+              <option value="">-- 選択 --</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>表情</label>
+            <div id="expr-grid"></div>
+          </div>
+          <div class="form-row">
+            <label>マンガ記号 <span style="font-size:10px;color:#aaa">（任意）</span></label>
+            <div id="symbol-grid"></div>
+          </div>
+          <div class="form-row">
+            <label>セリフ枠</label>
+            <div class="bubble-shape-toggle">
+              <button type="button" class="bubble-shape-btn active" data-shape="normal" onclick="setBubbleShape('normal')">通常</button>
+              <button type="button" class="bubble-shape-btn" data-shape="think" onclick="setBubbleShape('think')">考え</button>
+              <button type="button" class="bubble-shape-btn" data-shape="spiky" onclick="setBubbleShape('spiky')">トゲトゲ</button>
+              <button type="button" class="bubble-shape-btn" data-shape="prickly" onclick="setBubbleShape('prickly')">ちくちく</button>
+              <button type="button" class="bubble-shape-btn" data-shape="cloud-speech" onclick="setBubbleShape('cloud-speech')">雲しっぽ</button>
+              <button type="button" class="bubble-shape-btn" data-shape="cloud-thought" onclick="setBubbleShape('cloud-thought')">雲考え丸</button>
+            </div>
+          </div>
+        </div>
+        <div id="photo-fields" style="display:none">
+          <div class="form-row">
+            <label>写真</label>
+            <button class="btn-photo-pick" onclick="document.getElementById('photo-pick-input').click()">
+              クリックして画像を選ぶ
+            </button>
+            <input type="file" id="photo-pick-input" accept="image/*" style="display:none" onchange="onPhotoPickSelect(event)">
+            <img id="photo-pick-thumb" style="display:none">
+            <div id="photo-pick-name"></div>
+          </div>
+          <div class="form-row">
+            <label>サイズ</label>
+            <div class="size-toggle">
+              <button class="size-btn" data-size="25%" onclick="setPhotoSize('25%')">25%</button>
+              <button class="size-btn" data-size="50%" onclick="setPhotoSize('50%')">50%</button>
+              <button class="size-btn active" data-size="100%" onclick="setPhotoSize('100%')">100%</button>
+              <button class="size-btn" data-size="150%" onclick="setPhotoSize('150%')">150%</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>フレーム</label>
+            <div class="frame-toggle">
+              <button class="frame-btn active" data-frame="paper" onclick="setPhotoFrame('paper')">紙フレーム</button>
+              <button class="frame-btn" data-frame="none" onclick="setPhotoFrame('none')">フレームなし</button>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <label id="text-label">セリフ</label>
+          <div class="textarea-toolbar">
+            <button class="font-btn" id="font-default-btn" onclick="setFont('default')">デフォ</button>
+            <button class="font-btn" id="font-mincho-btn" onclick="setFont('mincho')" style="font-family:serif;">明朝</button>
+            <button class="font-btn" id="font-pop-btn" onclick="setFont('pop')" style="font-family:'Kosugi Maru',sans-serif;">ポップ</button>
+            <div class="toolbar-sep"></div>
+            <button class="toolbar-btn bold-btn" onclick="insertBold()" title="選択テキストを太字に"><b>B</b></button>
+            <button class="toolbar-btn" onclick="insertSize('large')" title="選択テキストを大きく">大</button>
+            <button class="toolbar-btn" onclick="insertSize('small')" title="選択テキストを小さく">小</button>
+          </div>
+          <textarea id="bubble-text" placeholder="セリフを入力..."></textarea>
+        </div>
+        <button class="btn-primary" id="add-btn" onclick="commitDialogue()">追加</button>
+        <button class="btn-cancel" id="cancel-btn" onclick="cancelEdit()">キャンセル</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">プレビュー・書き出し</div>
+    <div class="panel-body">
+      <div id="preview-area" onclick="openPreviewModal()">
+        <div id="preview-bg"></div>
+        <div id="preview-bg-overlay"></div>
+        <div id="preview-inner">
+          <div id="preview-block-title"></div>
+          <div id="preview-dialogue-box">
+            <div id="preview-empty">会話を追加するとここに表示されます</div>
+          </div>
+        </div>
+        <div id="preview-hint">クリックで拡大</div>
+      </div>
+      <div class="bg-section">
+        <button class="btn-bg-upload" onclick="document.getElementById('bg-input').click()">背景画像をセット</button>
+        <button class="btn-bg-clear" id="btn-bg-clear" style="display:none" onclick="clearBgImage()">クリア</button>
+        <input type="file" id="bg-input" accept="image/*" style="display:none" onchange="onBgSelect(event)">
+      </div>
+      <div class="export-section">
+        <button class="btn-copy secondary" onclick="openAllPreviewModal()">一括プレビュー</button>
+      </div>
+      <div class="export-section">
+        <div class="path-input-wrap">
+          <label>書き出し画像パス</label>
+          <input type="text" id="export-path" value="../assets/toolassets/" placeholder="example: ../assets/toolassets/">
+        </div>
+        <div class="path-input-wrap">
+          <label>写真パス（記事内写真）</label>
+          <input type="text" id="export-photo-path" value="../assets/reviews/hihyo/photos/" placeholder="example: ../assets/reviews/hihyo/photos/">
+        </div>
+        <div class="path-input-wrap">
+          <label>背景画像パス（会話カード）</label>
+          <input type="text" id="export-background-path" value="" placeholder="例: ../assets/reviews/00-共通/gesen1.jpeg" oninput="syncBackgroundExportPath(this.value)">
+        </div>
+        <button class="btn-copy" onclick="copyHTML()">現在ブロックのHTMLをコピー</button>
+        <button class="btn-copy secondary" onclick="copyAllHTML()">全ブロックのHTMLをコピー</button>
+        <button class="btn-copy secondary" onclick="exportDialogueText()">会話テキストを書き出し</button>
+        <div class="copy-toast" id="copy-toast">クリップボードにコピーしました</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div id="preview-modal" onclick="onModalBgClick(event)">
+  <div id="preview-modal-box">
+    <div id="preview-modal-bg"></div>
+    <div id="preview-modal-bg-overlay"></div>
+    <button id="preview-modal-close" onclick="closePreviewModal()">x</button>
+    <div id="preview-modal-title">プレビュー</div>
+    <div id="preview-modal-inner"></div>
+  </div>
+</div>
+
+<script>
+let images = [];
+let assetDirHandle = null;
+let dialogue = [];
+let blockTitle = '';
+let editingId = null;
+let selectedImageId = null;
+let selectedSymbolId = null;
+let dragSrcId = null;
+let blockDragSrcId = null;
+let formMode = 'chat';
+let bgDataUrl = null;
+let bgExportPath = '';
+let selectedPhotoDataUrl = null;
+let selectedPhotoFilename = null;
+let selectedPhotoSize = '100%';
+let selectedPhotoFrame = 'paper';
+let selectedFont = 'default';
+let selectedBubbleShape = 'normal';
+let blocks = [];
+let activeBlockId = null;
+
+const BUBBLE_SHAPES = {
+  normal: '通常',
+  think: '考え',
+  spiky: 'トゲトゲ',
+  prickly: 'ちくちく',
+  'cloud-speech': '雲しっぽ',
+  'cloud-thought': '雲考え丸'
+};
+
+const FONTS = {
+  default: { label: '\u30c7\u30d5\u30a9', css: "'Hiragino Sans','Yu Gothic',sans-serif" },
+  mincho:  { label: '\u660e\u671d\u4f53', css: "'Yu Mincho','Hiragino Mincho ProN',serif" },
+  pop:     { label: '\u30dd\u30c3\u30d7', css: "'Kosugi Maru','Hiragino Maru Gothic ProN',sans-serif" }
+};
+
+function setFont(font) {
+  const activeEl = document.activeElement;
+  const fromFontButton =
+    (window.event?.target?.classList?.contains?.('font-btn')) ||
+    (activeEl?.classList?.contains?.('font-btn'));
+  if (fromFontButton) {
+    insertFont(font);
+    return;
+  }
+  selectedFont = FONTS[font] ? font : 'default';
+  document.querySelectorAll('.font-btn').forEach(btn => btn.classList.remove('active'));
+}
+
+function setBubbleShape(shape) {
+  selectedBubbleShape = BUBBLE_SHAPES[shape] ? shape : 'normal';
+  document.querySelectorAll('.bubble-shape-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.shape === selectedBubbleShape);
+  });
+}
+
+function resetDialogueDecorations() {
+  selectedSymbolId = null;
+  setBubbleShape('normal');
+  renderSymbolGrid();
+}
+
+const AVATAR_BASE = 134;
+
+function avatarStyle() {
+  return `width:${AVATAR_BASE}px;height:${AVATAR_BASE}px;`;
+}
+
+function uid() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
+function normalizeDialogueItem(item) {
+  return { type: 'chat', bubbleShape: 'normal', ...item, side: 'left' };
+}
+
+function cloneDialogueItems(items) {
+  return (items || []).map(item => ({ ...normalizeDialogueItem(item) }));
+}
+
+function createBlock(title = '') {
+  return {
+    id: uid(),
+    blockTitle: title,
+    bgDataUrl: null,
+    bgExportPath: '',
+    dialogue: []
+  };
+}
+
+function getActiveBlock() {
+  return blocks.find(b => b.id === activeBlockId) || blocks[0] || null;
+}
+
+function syncActiveBlockFromState() {
+  const block = getActiveBlock();
+  if (!block) return;
+  block.blockTitle = blockTitle;
+  block.bgDataUrl = bgDataUrl;
+  block.bgExportPath = bgExportPath;
+  block.dialogue = cloneDialogueItems(dialogue);
+  renderBlockList();
+}
+
+function loadBlockIntoState(block) {
+  if (!block) return;
+  activeBlockId = block.id;
+  editingId = null;
+  blockTitle = block.blockTitle || '';
+  bgDataUrl = block.bgDataUrl || null;
+  bgExportPath = block.bgExportPath || '';
+  dialogue = cloneDialogueItems(block.dialogue);
+  document.getElementById('block-title-input').value = blockTitle;
+  document.getElementById('export-background-path').value = bgExportPath;
+  cancelEdit();
+  applyPreviewBg();
+  renderBlockList();
+  renderDialogueList();
+  renderPreview();
+}
+
+function initBlockManager() {
+  if (blocks.length === 0) blocks.push(createBlock(''));
+  activeBlockId = activeBlockId || blocks[0].id;
+  loadBlockIntoState(getActiveBlock());
+}
+
+function selectBlock(id) {
+  if (id === activeBlockId) return;
+  syncActiveBlockFromState();
+  const next = blocks.find(b => b.id === id);
+  if (next) loadBlockIntoState(next);
+}
+
+function addBlock() {
+  syncActiveBlockFromState();
+  const block = createBlock('');
+  blocks.push(block);
+  loadBlockIntoState(block);
+}
+
+function duplicateBlock() {
+  syncActiveBlockFromState();
+  const current = getActiveBlock();
+  if (!current) return;
+  const idx = blocks.findIndex(b => b.id === current.id);
+  const block = {
+    id: uid(),
+    blockTitle: `${current.blockTitle || '無題'} コピー`,
+    bgDataUrl: current.bgDataUrl || null,
+    bgExportPath: current.bgExportPath || '',
+    dialogue: cloneDialogueItems(current.dialogue)
+  };
+  blocks.splice(idx + 1, 0, block);
+  loadBlockIntoState(block);
+}
+
+function deleteActiveBlock() {
+  if (blocks.length <= 1) {
+    if (!confirm('最後のブロックを空にしますか？')) return;
+    blocks = [createBlock('')];
+    activeBlockId = blocks[0].id;
+    loadBlockIntoState(blocks[0]);
+    return;
+  }
+  const current = getActiveBlock();
+  if (!current || !confirm('現在の会話ブロックを削除しますか？')) return;
+  const idx = blocks.findIndex(b => b.id === current.id);
+  blocks.splice(idx, 1);
+  loadBlockIntoState(blocks[Math.max(0, idx - 1)]);
+}
+
+function moveActiveBlock(delta) {
+  syncActiveBlockFromState();
+  const idx = blocks.findIndex(b => b.id === activeBlockId);
+  const nextIdx = idx + delta;
+  if (idx < 0 || nextIdx < 0 || nextIdx >= blocks.length) return;
+  const [moved] = blocks.splice(idx, 1);
+  blocks.splice(nextIdx, 0, moved);
+  renderBlockList();
+}
+
+function renderBlockList() {
+  const list = document.getElementById('block-list');
+  if (!list) return;
+  list.innerHTML = '';
+  blocks.forEach((block, idx) => {
+    const div = document.createElement('div');
+    div.className = 'block-item' + (block.id === activeBlockId ? ' active' : '');
+    div.draggable = true;
+    div.dataset.id = block.id;
+    const title = block.blockTitle || `無題ブロック ${idx + 1}`;
+    const count = (block.dialogue || []).length;
+    div.innerHTML = `
+      <div class="block-title-line">${idx + 1}. ${h(title)}</div>
+      <div class="block-meta-line">${count}件${block.bgDataUrl ? '・背景あり' : ''}</div>
+    `;
+    div.addEventListener('click', () => selectBlock(block.id));
+    div.addEventListener('dragstart', e => {
+      blockDragSrcId = block.id;
+      setTimeout(() => div.classList.add('dragging'), 0);
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    div.addEventListener('dragend', () => {
+      div.classList.remove('dragging');
+      list.querySelectorAll('.block-item').forEach(el => el.classList.remove('drop-above', 'drop-below'));
+    });
+    div.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (blockDragSrcId === block.id) return;
+      const mid = div.getBoundingClientRect().top + div.offsetHeight / 2;
+      list.querySelectorAll('.block-item').forEach(el => el.classList.remove('drop-above', 'drop-below'));
+      div.classList.add(e.clientY < mid ? 'drop-above' : 'drop-below');
+    });
+    div.addEventListener('dragleave', () => div.classList.remove('drop-above', 'drop-below'));
+    div.addEventListener('drop', e => {
+      e.preventDefault();
+      if (blockDragSrcId === block.id) return;
+      syncActiveBlockFromState();
+      const mid = div.getBoundingClientRect().top + div.offsetHeight / 2;
+      const insertBefore = e.clientY < mid;
+      const srcIdx = blocks.findIndex(b => b.id === blockDragSrcId);
+      const [moved] = blocks.splice(srcIdx, 1);
+      const tgtIdx = blocks.findIndex(b => b.id === block.id);
+      blocks.splice(insertBefore ? tgtIdx : tgtIdx + 1, 0, moved);
+      renderBlockList();
+    });
+    list.appendChild(div);
+  });
+}
+
+function setFormMode(mode) {
+  formMode = mode;
+  document.getElementById('mode-chat-btn').classList.toggle('active', mode === 'chat');
+  document.getElementById('mode-action-btn').classList.toggle('active', mode === 'action');
+  document.getElementById('mode-photo-btn').classList.toggle('active', mode === 'photo');
+  document.getElementById('chat-fields').style.display = mode === 'chat' ? '' : 'none';
+  document.getElementById('photo-fields').style.display = mode === 'photo' ? '' : 'none';
+  document.querySelector('.textarea-toolbar').style.display = mode === 'photo' ? 'none' : '';
+  if (mode === 'chat') {
+    document.getElementById('text-label').textContent = 'セリフ';
+    document.getElementById('bubble-text').placeholder = 'セリフを入力...';
+  } else if (mode === 'action') {
+    document.getElementById('text-label').textContent = 'ト書き';
+    document.getElementById('bubble-text').placeholder = 'ト書きを入力...';
+  } else {
+    document.getElementById('text-label').textContent = 'キャプション（任意）';
+    document.getElementById('bubble-text').placeholder = 'キャプションを入力...（省略可）';
+  }
+}
+
+function setBlockTitle(value) {
+  blockTitle = value.trim();
+  const block = getActiveBlock();
+  if (block) block.blockTitle = blockTitle;
+  renderBlockList();
+  renderBlockTitle();
+}
+
+function renderBlockTitle() {
+  const titleEl = document.getElementById('preview-block-title');
+  if (!titleEl) return;
+  titleEl.innerHTML = blockTitle ? `<p class="blue-tag">${h(blockTitle)}</p>` : '';
+}
+
+function setPhotoSize(size) {
+  selectedPhotoSize = size;
+  document.querySelectorAll('.size-btn').forEach(b => b.classList.toggle('active', b.dataset.size === size));
+}
+
+function setPhotoFrame(frame) {
+  selectedPhotoFrame = frame === 'none' ? 'none' : 'paper';
+  document.querySelectorAll('.frame-btn').forEach(b => b.classList.toggle('active', b.dataset.frame === selectedPhotoFrame));
+}
+
+function onPhotoPickSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    selectedPhotoDataUrl = ev.target.result;
+    selectedPhotoFilename = file.name;
+    const thumb = document.getElementById('photo-pick-thumb');
+    thumb.src = ev.target.result;
+    thumb.style.display = 'block';
+    document.getElementById('photo-pick-name').textContent = file.name;
+    document.querySelector('.btn-photo-pick').textContent = '画像を変更する';
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function insertBold() {
+  insertWrappedText('<b>', '</b>');
+}
+
+function insertSize(size) {
+  if (size !== 'large' && size !== 'small') return;
+  insertWrappedText(`<size=${size}>`, '</size>');
+}
+
+function insertWrappedText(openTag, closeTag) {
+  const ta = document.getElementById('bubble-text');
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const val = ta.value;
+  const selected = val.substring(start, end);
+  ta.value = val.substring(0, start) + openTag + selected + closeTag + val.substring(end);
+  ta.selectionStart = start + openTag.length;
+  ta.selectionEnd = start + openTag.length + selected.length;
+  ta.focus();
+}
+
+function insertFont(font) {
+  if (!FONTS[font]) return;
+  document.querySelectorAll('.font-btn').forEach(btn => btn.classList.remove('active'));
+  insertWrappedText(`<font=${font}>`, '</font>');
+}
+
+function buildCharactersMap() {
+  const charMap = {};
+  images.forEach(img => {
+    charMap[img.filename] = { type: img.type || 'char', charName: img.charName, exprLabel: img.exprLabel, symbolLabel: img.symbolLabel || '', charColor: img.charColor || '', src: img.src || '' };
+  });
+  return charMap;
+}
+
+function setAssetUpdateInfo(message) {
+  const info = document.getElementById('asset-update-info');
+  if (info) info.textContent = message;
+}
+
+function saveCharacters() {
+  if (!images.length) { alert('登録された画像がありません。'); return; }
+  const charMap = buildCharactersMap();
+  const blob = new Blob([JSON.stringify(charMap, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'characters.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+document.getElementById('drop-zone').addEventListener('dragover', e => {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.add('drag-over');
+});
+document.getElementById('drop-zone').addEventListener('dragleave', () => {
+  document.getElementById('drop-zone').classList.remove('drag-over');
+});
+document.getElementById('drop-zone').addEventListener('drop', e => {
+  e.preventDefault();
+  document.getElementById('drop-zone').classList.remove('drag-over');
+  handleFiles(e.dataTransfer.files);
+});
+
+function isImageAssetName(name) {
+  return /\.(png|jpe?g|gif|webp|avif)$/i.test(name || '');
+}
+
+async function readCharactersJsonFromHandle(dirHandle) {
+  try {
+    const fileHandle = await dirHandle.getFileHandle('characters.json');
+    const file = await fileHandle.getFile();
+    return JSON.parse(await file.text());
+  } catch {
+    return {};
+  }
+}
+
+async function readImageFilesFromHandle(dirHandle) {
+  const files = [];
+  for await (const entry of dirHandle.values()) {
+    if (entry.kind !== 'file' || !isImageAssetName(entry.name)) continue;
+    files.push(await entry.getFile());
+  }
+  files.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+  return files;
+}
+
+async function loadManagedAssetFolder() {
+  if (!assetDirHandle) return;
+  const charMap = await readCharactersJsonFromHandle(assetDirHandle);
+  const imgFiles = await readImageFilesFromHandle(assetDirHandle);
+  document.getElementById('folder-info').textContent = `${assetDirHandle.name}（${imgFiles.length}件）`;
+  loadImagesWithCharMap(imgFiles, charMap, normalizeExportPath(document.getElementById('export-path')?.value || '../assets/toolassets/'));
+  setAssetUpdateInfo(`素材一覧を読み込みました。新規素材は未設定、削除済み素材は一覧から外れます。`);
+}
+
+async function openManagedAssetFolder() {
+  if (!window.showDirectoryPicker) {
+    alert('このブラウザでは直接更新に対応していません。通常の「画像フォルダを選択」と「characters.jsonとして保存」を使ってください。');
+    return;
+  }
+  try {
+    assetDirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+    await loadManagedAssetFolder();
+  } catch (err) {
+    if (err && err.name === 'AbortError') return;
+    alert('素材フォルダの読み込みに失敗しました。');
+  }
+}
+
+async function reloadManagedAssetFolder() {
+  if (!assetDirHandle) {
+    alert('先に「素材フォルダを開いて更新」で素材フォルダを選んでください。');
+    return;
+  }
+  await loadManagedAssetFolder();
+}
+
+async function updateCharactersJsonDirect() {
+  if (!assetDirHandle) {
+    alert('先に「素材フォルダを開いて更新」で素材フォルダを選んでください。');
+    return;
+  }
+  if (!images.length) { alert('登録された画像がありません。'); return; }
+  try {
+    const fileHandle = await assetDirHandle.getFileHandle('characters.json', { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(JSON.stringify(buildCharactersMap(), null, 2));
+    await writable.close();
+    setAssetUpdateInfo('characters.jsonを素材フォルダへ直接更新しました。');
+    showExportToast('characters.jsonを直接更新しました');
+  } catch {
+    alert('characters.jsonの直接更新に失敗しました。通常の保存ボタンでダウンロードしてください。');
+  }
+}
+
+function onFolderSelect(e) {
+  const files = Array.from(e.target.files);
+  e.target.value = '';
+  if (!files.length) return;
+  const folderPath = files[0].webkitRelativePath.split('/')[0];
+  document.getElementById('folder-info').textContent = folderPath;
+  const jsonFile = files.find(f => f.name === 'characters.json');
+  const imgFiles = files.filter(f => f.type.startsWith('image/'));
+  if (jsonFile) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      let charMap = {};
+      try { charMap = JSON.parse(ev.target.result); } catch {}
+      loadImagesWithCharMap(imgFiles, charMap, normalizeExportPath(document.getElementById('export-path')?.value || '../assets/toolassets/'));
+    };
+    reader.readAsText(jsonFile);
+  } else {
+    loadImagesWithCharMap(imgFiles, {}, normalizeExportPath(document.getElementById('export-path')?.value || '../assets/toolassets/'));
+  }
+}
+
+function loadImagesWithCharMap(imgFiles, charMap, srcPrefix = '') {
+  // 素材フォルダを再読み込みしても、同名ファイルは会話データの imageId を維持する。
+  // これにより「プロジェクト読込→素材更新」でもアイコンの紐付けが切れない。
+  const existingByFilename = new Map(images.map(image => [image.filename, image]));
+  images = [];
+  selectedImageId = null;
+  let loaded = 0;
+  if (!imgFiles.length) { renderImageGrid(); renderCharSelect(); return; }
+  imgFiles.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const meta = charMap[file.name] || {};
+      const existing = existingByFilename.get(file.name);
+      const im = new Image();
+      im.onload = () => {
+        images.push({ id: existing?.id || uid(), filename: file.name, dataUrl: ev.target.result, src: meta.src || (srcPrefix ? srcPrefix + file.name : ''), type: meta.type || 'char', charName: meta.charName || '', exprLabel: meta.exprLabel || '', symbolLabel: meta.symbolLabel || '', charColor: meta.charColor || '', nw: im.naturalWidth, nh: im.naturalHeight });
+        loaded++;
+        if (loaded === imgFiles.length) {
+          images.sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true }));
+          renderImageGrid();
+          renderCharSelect();
+        }
+      };
+      im.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function onFileSelect(e) {
+  handleFiles(e.target.files);
+  e.target.value = '';
+}
+
+function handleFiles(files) {
+  Array.from(files).forEach(file => {
+    if (!file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const im = new Image();
+      im.onload = () => {
+        const srcPrefix = normalizeExportPath(document.getElementById('export-path')?.value || '../assets/toolassets/');
+        images.push({ id: uid(), filename: file.name, dataUrl: ev.target.result, src: srcPrefix + file.name, type: 'char', charName: '', exprLabel: '', symbolLabel: '', nw: im.naturalWidth, nh: im.naturalHeight });
+        renderImageGrid();
+        renderCharSelect();
+      };
+      im.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function removeImage(id) {
+  images = images.filter(i => i.id !== id);
+  if (selectedImageId === id) selectedImageId = null;
+  if (selectedSymbolId === id) selectedSymbolId = null;
+  renderImageGrid();
+  renderCharSelect();
+  renderPreview();
+}
+
+function renderImageGrid() {
+  const grid = document.getElementById('image-grid');
+  grid.innerHTML = '';
+  images.forEach(img => {
+    const type = img.type || 'char';
+    const isChar = type !== 'symbol' && type !== 'nametag';
+    const card = document.createElement('div');
+    card.className = 'img-card' + (isChar && selectedImageId === img.id ? ' selected' : '');
+    const typeToggleHtml = `
+      <div class="img-type-toggle">
+        <button class="img-type-btn${isChar ? ' active' : ''}" data-id="${img.id}" data-settype="char">キャラ</button>
+        <button class="img-type-btn${type === 'symbol' ? ' active' : ''}" data-id="${img.id}" data-settype="symbol">記号</button>
+        <button class="img-type-btn${type === 'nametag' ? ' active' : ''}" data-id="${img.id}" data-settype="nametag">名札</button>
+      </div>`;
+    if (type === 'symbol') {
+      card.innerHTML = `
+        <img class="img-thumb" src="${img.dataUrl}" alt="${h(img.filename)}" style="object-fit:contain;background:#f0f0f0;">
+        <div class="img-filename">${h(img.filename)}</div>
+        ${typeToggleHtml}
+        <span class="symbol-badge">記号</span>
+        <input type="text" placeholder="ラベル（例：音符）" value="${h(img.symbolLabel)}" data-id="${img.id}" data-field="symbolLabel">
+        <button class="btn-remove" title="削除" onclick="event.stopPropagation();removeImage('${img.id}')">x</button>`;
+    } else if (type === 'nametag') {
+      card.innerHTML = `
+        <img class="img-thumb" src="${img.dataUrl}" alt="${h(img.filename)}" style="object-fit:contain;background:#f0f0f0;">
+        <div class="img-filename">${h(img.filename)}</div>
+        ${typeToggleHtml}
+        <span class="nametag-badge">名札</span>
+        <input type="text" placeholder="キャラクター名（例：山本）" value="${h(img.charName)}" data-id="${img.id}" data-field="charName">
+        <button class="btn-remove" title="削除" onclick="event.stopPropagation();removeImage('${img.id}')">x</button>`;
+    } else {
+      const colorVal = img.charColor || '#cfcfcf';
+      card.innerHTML = `
+        <img class="img-thumb" src="${img.dataUrl}" alt="${h(img.filename)}">
+        <div class="img-filename">${h(img.filename)}</div>
+        ${typeToggleHtml}
+        <input type="text" placeholder="キャラクター名" value="${h(img.charName)}" data-id="${img.id}" data-field="charName">
+        <input type="text" placeholder="表情ラベル（例：通常）" value="${h(img.exprLabel)}" data-id="${img.id}" data-field="exprLabel">
+        <div style="display:flex;align-items:center;gap:4px;margin-bottom:3px;">
+          <span style="font-size:10px;color:#888;">枠色</span>
+          <input type="color" value="${colorVal}" data-id="${img.id}" data-field="charColor" style="width:32px;height:20px;border:1px solid #ccc;border-radius:3px;cursor:pointer;padding:1px;">
+        </div>
+        <button class="btn-remove" title="削除" onclick="event.stopPropagation();removeImage('${img.id}')">x</button>`;
+      card.addEventListener('click', () => { selectedImageId = img.id; renderImageGrid(); onCharSelect(false); });
+    }
+    card.querySelectorAll('[data-settype]').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const target = images.find(i => i.id === btn.dataset.id);
+        if (!target) return;
+        target.type = btn.dataset.settype;
+        if (btn.dataset.settype !== 'char' && selectedImageId === target.id) selectedImageId = null;
+        renderImageGrid();
+        renderCharSelect();
+        renderPreview();
+      });
+    });
+    card.querySelectorAll('input[type=text], input[type=color]').forEach(inp => {
+      inp.addEventListener('click', e => e.stopPropagation());
+      const onValueChange = e => {
+        const target = images.find(i => i.id === e.target.dataset.id);
+        if (target) {
+          target[e.target.dataset.field] = e.target.value;
+          if (type === 'symbol') renderSymbolGrid(); else renderCharSelect();
+          renderPreview();
+        }
+        if (e.type === 'change' && e.target.type === 'color') {
+          e.target.blur();
+          const tmp = document.createElement('input');
+          tmp.type = 'text';
+          tmp.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;';
+          document.body.appendChild(tmp);
+          tmp.focus();
+          requestAnimationFrame(() => { tmp.blur(); document.body.removeChild(tmp); });
+        }
+      };
+      inp.addEventListener('input', onValueChange);
+      inp.addEventListener('change', onValueChange);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function getCharNames() {
+  return [...new Set(images.filter(i => i.type !== 'symbol' && i.type !== 'nametag').map(i => i.charName).filter(Boolean))];
+}
+
+function getNametagForChar(charName) {
+  return images.find(i => i.type === 'nametag' && i.charName === charName) || null;
+}
+
+function getBubbleColor(charName) {
+  const img = images.find(i => i.charName === charName && i.type !== 'symbol' && i.type !== 'nametag' && i.charColor);
+  return img ? img.charColor : null;
+}
+
+function colorWithAlpha(color, alpha) {
+  const c = String(color || '#cfcfcf').trim();
+  const hex = c.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i);
+  if (hex) {
+    let raw = hex[1];
+    if (raw.length === 3) raw = raw.split('').map(ch => ch + ch).join('');
+    const r = parseInt(raw.slice(0, 2), 16);
+    const g = parseInt(raw.slice(2, 4), 16);
+    const b = parseInt(raw.slice(4, 6), 16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+  const rgb = c.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i);
+  if (rgb) return `rgba(${rgb[1]},${rgb[2]},${rgb[3]},${alpha})`;
+  return c;
+}
+
+function getSymbols() {
+  return images.filter(i => i.type === 'symbol');
+}
+
+function renderSymbolGrid() {
+  const grid = document.getElementById('symbol-grid');
+  grid.innerHTML = '';
+  const symbols = getSymbols();
+  if (!symbols.length) {
+    grid.innerHTML = '<span style="font-size:11px;color:#bbb">（記号画像なし）</span>';
+    selectedSymbolId = null;
+    return;
+  }
+  const noneDiv = document.createElement('div');
+  noneDiv.className = 'symbol-item';
+  const noneThumb = document.createElement('div');
+  noneThumb.className = 'symbol-thumb' + (!selectedSymbolId ? ' selected' : '');
+  noneThumb.textContent = 'x';
+  noneThumb.style.cssText = 'display:flex;align-items:center;justify-content:center;color:#bbb;font-size:18px;font-weight:bold;cursor:pointer;';
+  noneThumb.addEventListener('click', () => { selectedSymbolId = null; renderSymbolGrid(); });
+  const noneLabel = document.createElement('div');
+  noneLabel.className = 'symbol-label';
+  noneLabel.textContent = 'なし';
+  noneDiv.appendChild(noneThumb);
+  noneDiv.appendChild(noneLabel);
+  grid.appendChild(noneDiv);
+  symbols.forEach(sym => {
+    const wrap = document.createElement('div');
+    wrap.className = 'symbol-item';
+    const thumb = document.createElement('img');
+    thumb.className = 'symbol-thumb' + (selectedSymbolId === sym.id ? ' selected' : '');
+    thumb.src = sym.dataUrl;
+    thumb.title = sym.symbolLabel || sym.filename;
+    thumb.addEventListener('click', () => { selectedSymbolId = selectedSymbolId === sym.id ? null : sym.id; renderSymbolGrid(); });
+    const label = document.createElement('div');
+    label.className = 'symbol-label';
+    label.textContent = sym.symbolLabel || sym.filename;
+    wrap.appendChild(thumb);
+    wrap.appendChild(label);
+    grid.appendChild(wrap);
+  });
+}
+
+function renderCharSelect() {
+  const sel = document.getElementById('char-select');
+  const prev = sel.value;
+  sel.innerHTML = '<option value="">-- 選択 --</option>';
+  getCharNames().forEach(name => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = name;
+    sel.appendChild(opt);
+  });
+  if (prev) sel.value = prev;
+  onCharSelect(false);
+  renderSymbolGrid();
+}
+
+function onCharSelect(applyDefaultSide = false) {
+  const charName = document.getElementById('char-select').value;
+  const grid = document.getElementById('expr-grid');
+  grid.innerHTML = '';
+  if (!charName) return;
+  images.filter(i => i.charName === charName && i.type !== 'symbol' && i.type !== 'nametag').forEach(img => {
+    const wrap = document.createElement('div');
+    wrap.className = 'expr-item';
+    wrap.innerHTML = `
+      <div class="expr-thumb-clip ${selectedImageId === img.id ? 'selected' : ''}"
+           title="${h(img.exprLabel || img.filename)}">
+        <img class="expr-thumb-inner" src="${img.dataUrl}">
+      </div>
+      <div class="expr-label">${h(img.exprLabel || img.filename)}</div>
+    `;
+    wrap.querySelector('.expr-thumb-clip').addEventListener('click', () => {
+      selectedImageId = img.id;
+      renderImageGrid();
+      onCharSelect(false);
+    });
+    grid.appendChild(wrap);
+  });
+}
+
+// ===== 莨夊ｩｱ霑ｽ蜉繝ｻ邱ｨ髮・=====
+function commitDialogue() {
+  const text = document.getElementById('bubble-text').value.trim();
+  if (formMode === 'photo') {
+    if (!selectedPhotoDataUrl) { alert('写真を選択してください。'); return; }
+    if (editingId) {
+      const item = dialogue.find(d => d.id === editingId);
+      if (item) { item.type = 'photo'; item.dataUrl = selectedPhotoDataUrl; item.filename = selectedPhotoFilename; item.text = text; item.size = selectedPhotoSize; item.photoFrame = selectedPhotoFrame; delete item.imageId; delete item.symbolId; }
+      cancelEdit();
+    } else {
+      dialogue.push({ id: uid(), type: 'photo', dataUrl: selectedPhotoDataUrl, filename: selectedPhotoFilename, text, size: selectedPhotoSize, photoFrame: selectedPhotoFrame });
+      document.getElementById('bubble-text').value = '';
+      selectedPhotoDataUrl = null;
+      selectedPhotoFilename = null;
+      selectedPhotoSize = '100%';
+      selectedPhotoFrame = 'paper';
+      const thumb = document.getElementById('photo-pick-thumb');
+      thumb.src = '';
+      thumb.style.display = 'none';
+      document.getElementById('photo-pick-name').textContent = '';
+      document.querySelector('.btn-photo-pick').textContent = 'クリックして画像を選ぶ';
+      setPhotoSize('100%');
+      setPhotoFrame('paper');
+    }
+    renderDialogueList();
+    renderPreview();
+    syncActiveBlockFromState();
+    return;
+  }
+  if (formMode === 'action') {
+    if (!text) { alert('ト書きを入力してください。'); return; }
+    if (editingId) {
+      const item = dialogue.find(d => d.id === editingId);
+      if (item) { item.type = 'action'; item.text = text; item.font = selectedFont; delete item.imageId; }
+      cancelEdit();
+    } else {
+      dialogue.push({ id: uid(), type: 'action', text, font: selectedFont });
+      document.getElementById('bubble-text').value = '';
+    }
+  } else {
+    const charName = document.getElementById('char-select').value;
+    if (!charName || !selectedImageId || !text) {
+      alert('キャラクター・表情・セリフをすべて入力してください。');
+      return;
+    }
+    if (editingId) {
+      const item = dialogue.find(d => d.id === editingId);
+      if (item) { item.type = 'chat'; item.imageId = selectedImageId; item.text = text; item.symbolId = selectedSymbolId || null; item.font = selectedFont; item.bubbleShape = selectedBubbleShape; item.side = 'left'; }
+      cancelEdit();
+    } else {
+      dialogue.push({ id: uid(), type: 'chat', imageId: selectedImageId, text, symbolId: selectedSymbolId || null, font: selectedFont, bubbleShape: selectedBubbleShape, side: 'left' });
+      document.getElementById('bubble-text').value = '';
+      resetDialogueDecorations();
+    }
+  }
+  renderDialogueList();
+  renderPreview();
+  syncActiveBlockFromState();
+}
+
+function startEdit(id) {
+  const item = dialogue.find(d => d.id === id);
+  if (!item) return;
+  editingId = id;
+  if (item.type === 'action') {
+    setFormMode('action');
+  } else if (item.type === 'photo') {
+    setFormMode('photo');
+    selectedPhotoDataUrl = item.dataUrl;
+    selectedPhotoFilename = item.filename;
+    selectedPhotoSize = item.size || '100%';
+    selectedPhotoFrame = item.photoFrame === 'none' ? 'none' : 'paper';
+    const thumb = document.getElementById('photo-pick-thumb');
+    thumb.src = item.dataUrl;
+    thumb.style.display = 'block';
+    document.getElementById('photo-pick-name').textContent = item.filename;
+    document.querySelector('.btn-photo-pick').textContent = '画像を変更する';
+    setPhotoSize(selectedPhotoSize);
+    setPhotoFrame(selectedPhotoFrame);
+  } else {
+    setFormMode('chat');
+    const img = images.find(i => i.id === item.imageId);
+    if (img) {
+      document.getElementById('char-select').value = img.charName;
+      selectedImageId = item.imageId;
+      onCharSelect(false);
+    }
+    selectedSymbolId = item.symbolId || null;
+    setBubbleShape(item.bubbleShape || 'normal');
+    renderSymbolGrid();
+  }
+  document.getElementById('bubble-text').value = item.text;
+  setFont(item.font || 'default');
+  document.getElementById('form-title').textContent = 'ブロックを編集';
+  document.getElementById('add-btn').textContent = '更新';
+  document.getElementById('add-btn').classList.add('is-update');
+  document.getElementById('cancel-btn').style.display = 'block';
+  document.getElementById('bubble-text').focus();
+}
+
+function cancelEdit() {
+  editingId = null;
+  selectedFont = 'default';
+  setFont('default');
+  resetDialogueDecorations();
+  selectedPhotoDataUrl = null;
+  selectedPhotoFilename = null;
+  selectedPhotoSize = '100%';
+  selectedPhotoFrame = 'paper';
+  const thumb = document.getElementById('photo-pick-thumb');
+  thumb.src = '';
+  thumb.style.display = 'none';
+  document.getElementById('photo-pick-name').textContent = '';
+  document.querySelector('.btn-photo-pick').textContent = 'クリックして画像を選ぶ';
+  setPhotoSize('100%');
+  setPhotoFrame('paper');
+  document.getElementById('form-title').textContent = 'ブロックを追加';
+  document.getElementById('add-btn').textContent = '追加';
+  document.getElementById('add-btn').classList.remove('is-update');
+  document.getElementById('cancel-btn').style.display = 'none';
+  document.getElementById('bubble-text').value = '';
+  setFormMode('chat');
+}
+
+function deleteDialogue(id) {
+  if (!confirm('この会話履歴を削除しますか？\nこの操作は元に戻せません。')) return;
+  dialogue = dialogue.filter(d => d.id !== id);
+  if (editingId === id) cancelEdit();
+  renderDialogueList();
+  renderPreview();
+  syncActiveBlockFromState();
+}
+
+// ===== 閭梧勹逕ｻ蜒・=====
+function onBgSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = async ev => {
+    try {
+      bgDataUrl = await normalizeBgImage(ev.target.result);
+    } catch (err) {
+      console.warn('背景画像の変換に失敗したため、元画像を使用します。', err);
+      bgDataUrl = ev.target.result;
+    }
+    if (!bgExportPath) {
+      const backgroundDir = '../assets/reviews/00-共通/';
+      bgExportPath = backgroundDir + file.name;
+      document.getElementById('export-background-path').value = bgExportPath;
+    }
+    applyPreviewBg();
+    document.getElementById('btn-bg-clear').style.display = '';
+    syncActiveBlockFromState();
+  };
+  reader.readAsDataURL(file);
+  e.target.value = '';
+}
+
+function normalizeBgImage(dataUrl) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => {
+      const maxSide = 1600;
+      const scale = Math.min(1, maxSide / Math.max(img.naturalWidth, img.naturalHeight));
+      if (scale === 1 && dataUrl.length < 1500000) {
+        resolve(dataUrl);
+        return;
+      }
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(img.naturalHeight * scale));
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', 0.88));
+    };
+    img.onerror = reject;
+    img.src = dataUrl;
+  });
+}
+
+function clearBgImage() {
+  bgDataUrl = null;
+  applyPreviewBg();
+  document.getElementById('btn-bg-clear').style.display = 'none';
+  syncActiveBlockFromState();
+}
+
+function applyPreviewBg() {
+  const box = document.getElementById('preview-dialogue-box');
+  const title = document.getElementById('preview-block-title');
+  if (bgDataUrl) {
+    box.style.setProperty('--preview-bg-image', `url(${bgDataUrl})`);
+    box.classList.add('has-bg');
+    if (title) title.classList.add('has-bg-title');
+  } else {
+    box.style.removeProperty('--preview-bg-image');
+    box.classList.remove('has-bg');
+    if (title) title.classList.remove('has-bg-title');
+  }
+}
+
+// ===== 莨夊ｩｱ繝ｪ繧ｹ繝域緒逕ｻ =====
+function renderDialogueList() {
+  const list = document.getElementById('dialogue-list');
+  list.innerHTML = '';
+  dialogue.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'dlg-item' + (item.type === 'action' ? ' is-action' : item.type === 'photo' ? ' is-photo' : '');
+    div.draggable = true;
+    div.dataset.id = item.id;
+    let contentHtml;
+    if (item.type === 'action') {
+      contentHtml = `
+        <div class="dlg-action-label">ト書き</div>
+        <div class="dlg-info">
+          <div class="dlg-text">${h(item.text)}</div>
+        </div>`;
+    } else if (item.type === 'photo') {
+      contentHtml = `
+        <div style="flex-shrink:0;">
+          <img src="${item.dataUrl}" style="width:38px;height:38px;object-fit:cover;border-radius:4px;border:1px solid #d0c8f0;">
+        </div>
+        <div class="dlg-info">
+          <div class="dlg-name" style="color:#6c5ce7">写真</div>
+          <div class="dlg-text">${h(item.filename)} <span style="color:#aaa">・${item.photoFrame === 'none' ? 'フレームなし' : '紙フレーム'}</span>${item.text ? ' - ' + h(item.text) : ''}</div>
+        </div>`;
+    } else {
+      const img = images.find(i => i.id === item.imageId);
+      const sym = item.symbolId ? images.find(i => i.id === item.symbolId) : null;
+      const symBadgeHtml = sym
+        ? `<img src="${sym.dataUrl}" alt="" title="${h(sym.symbolLabel || sym.filename)}" style="position:absolute;top:-4px;right:-4px;width:16px;height:16px;object-fit:contain;">`
+        : '';
+      const avatarHtml = img
+        ? `<div style="position:relative;flex-shrink:0;"><img class="dlg-avatar" src="${img.dataUrl}" alt="">${symBadgeHtml}</div>`
+        : `<div class="dlg-no-avatar"></div>`;
+      const nameText = img ? (img.charName || img.filename) : '不明';
+      const shapeLabel = BUBBLE_SHAPES[item.bubbleShape || 'normal'];
+      contentHtml = `
+        ${avatarHtml}
+        <div class="dlg-info">
+          <div class="dlg-name">${h(nameText)} <span style="font-weight:400;color:#aaa">${h(shapeLabel)}</span></div>
+          <div class="dlg-text">${h(item.text)}</div>
+        </div>`;
+    }
+    div.innerHTML = `
+      ${contentHtml}
+      <div class="dlg-actions">
+        <button onclick="startEdit('${item.id}')">編集</button>
+        <button class="btn-del" onclick="deleteDialogue('${item.id}')">削除</button>
+      </div>
+    `;
+    div.addEventListener('dragstart', e => {
+      dragSrcId = item.id;
+      setTimeout(() => div.classList.add('dragging'), 0);
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    div.addEventListener('dragend', () => {
+      div.classList.remove('dragging');
+      list.querySelectorAll('.dlg-item').forEach(el => el.classList.remove('drop-above', 'drop-below'));
+    });
+    div.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (dragSrcId === item.id) return;
+      const mid = div.getBoundingClientRect().top + div.offsetHeight / 2;
+      list.querySelectorAll('.dlg-item').forEach(el => el.classList.remove('drop-above', 'drop-below'));
+      div.classList.add(e.clientY < mid ? 'drop-above' : 'drop-below');
+    });
+    div.addEventListener('dragleave', () => div.classList.remove('drop-above', 'drop-below'));
+    div.addEventListener('drop', e => {
+      e.preventDefault();
+      if (dragSrcId === item.id) return;
+      const mid = div.getBoundingClientRect().top + div.offsetHeight / 2;
+      const insertBefore = e.clientY < mid;
+      const srcIdx = dialogue.findIndex(d => d.id === dragSrcId);
+      const [moved] = dialogue.splice(srcIdx, 1);
+      const tgtIdx = dialogue.findIndex(d => d.id === item.id);
+      dialogue.splice(insertBefore ? tgtIdx : tgtIdx + 1, 0, moved);
+      renderDialogueList();
+      renderPreview();
+      syncActiveBlockFromState();
+    });
+    list.appendChild(div);
+  });
+}
+
+function bubbleMarkup(item, bubbleStyle, content, svgHtml = '') {
+  const shape = item.bubbleShape || 'normal';
+  const idAttr = ` data-dialogue-id="${h(item.id)}"`;
+  if (shape === 'normal') {
+    const svg = svgHtml || '<svg aria-hidden="true"><path></path></svg>';
+    return `<div class="bubble-path bubble-normal-path" data-bubble-shape="normal"${idAttr}${bubbleStyle}>${svg}<div class="bubble-path-text">${content}</div></div>`;
+  }
+  if (shape === 'prickly') {
+    const svg = svgHtml || '<svg aria-hidden="true"><path></path></svg>';
+    return `<div class="bubble-path bubble-prickly-path" data-bubble-shape="prickly"${idAttr}${bubbleStyle}>${svg}<div class="bubble-path-text">${content}</div></div>`;
+  }
+  if (shape === 'think') return `<div class="bubble-think"${bubbleStyle}>${content}</div>`;
+
+  if (shape === 'spiky') {
+    const svg = svgHtml || '<svg aria-hidden="true"><path></path></svg>';
+    return `<div class="bubble-path bubble-spiky-path" data-bubble-shape="spiky"${idAttr}${bubbleStyle}>${svg}<div class="bubble-path-text">${content}</div></div>`;
+  }
+
+  const tail = shape === 'cloud-thought' ? 'thought' : 'speech';
+  const svg = svgHtml || (tail === 'thought'
+    ? '<svg aria-hidden="true"><path></path><circle class="cloud-thought-dot cloud-thought-dot-large"></circle><circle class="cloud-thought-dot cloud-thought-dot-small"></circle></svg>'
+    : '<svg aria-hidden="true"><path></path></svg>');
+  return `<div class="bubble-path bubble-cloud-path" data-bubble-shape="cloud" data-cloud-tail="${tail}"${idAttr}${bubbleStyle}>${svg}<div class="bubble-path-text">${content}</div></div>`;
+}
+
+function makeBubbleSegments(length, preferred) {
+  const count = Math.max(1, Math.round(length / preferred));
+  return { count, size: length / count };
+}
+
+function updateBubblePath(bubble) {
+  const svg = bubble.querySelector('svg');
+  const path = svg && svg.querySelector('path:not(.svg-bubble-shadow)');
+  if (!svg || !path) return;
+  svg.querySelectorAll('.svg-bubble-shadow, .svg-dot-shadow').forEach(el => el.remove());
+  const shape = bubble.dataset.bubbleShape || 'normal';
+  const isNormal = shape === 'normal';
+  const isPrickly = shape === 'prickly';
+  const isSpiky = shape === 'spiky';
+  const tail = bubble.dataset.cloudTail || (isNormal || isPrickly ? 'speech' : 'none');
+  const isRight = false;
+  const tailSpace = isNormal || isPrickly ? 28 : tail === 'speech' || tail === 'thought' ? 42 : isSpiky ? 24 : 10;
+  const padLeft = tailSpace;
+  const padRight = 10;
+  const padY = 10;
+  const width = bubble.offsetWidth + padLeft + padRight;
+  const height = bubble.offsetHeight + padY * 2;
+  const edge = 12;
+  if (isNormal || isPrickly) {
+    const radius = 20;
+    const left = padLeft + 2;
+    const top = edge;
+    const right = width - edge;
+    const bottom = height - edge;
+    const anchorY = Math.min(top + radius + 10, bottom - radius - 8);
+    let d;
+    if (!isPrickly) {
+      d = [
+        `M ${left + radius} ${top}`,
+        `H ${right - radius}`,
+        `Q ${right} ${top} ${right} ${top + radius}`,
+        `V ${bottom - radius}`,
+        `Q ${right} ${bottom} ${right - radius} ${bottom}`,
+        `H ${left + radius}`,
+        `Q ${left} ${bottom} ${left} ${bottom - radius}`,
+        `V ${anchorY + 10}`,
+        `L ${left - 18} ${anchorY}`,
+        `L ${left} ${anchorY - 10}`,
+        `V ${top + radius}`,
+        `Q ${left} ${top} ${left + radius} ${top}`,
+        'Z'
+      ].join(' ');
+    } else {
+      const thorn = 6;
+      const thornBase = 12;
+      const thornHorizontal = (from, to, y, outward) => {
+        const dir = to >= from ? 1 : -1;
+        const length = Math.abs(to - from);
+        const count = Math.max(1, Math.ceil(length / 42));
+        const size = length / count;
+        const parts = [];
+        for (let i = 0; i < count; i++) {
+          const start = from + dir * size * i;
+          const end = from + dir * size * (i + 1);
+          const mid = start + dir * size * 0.5;
+          if (size > 24) {
+            parts.push(`L ${mid - dir * thornBase / 2} ${y}`);
+            parts.push(`L ${mid} ${y + outward * thorn}`);
+            parts.push(`L ${mid + dir * thornBase / 2} ${y}`);
+          }
+          parts.push(`L ${end} ${y}`);
+        }
+        return parts;
+      };
+      const thornVertical = (x, from, to, outward) => {
+        const dir = to >= from ? 1 : -1;
+        const length = Math.abs(to - from);
+        const count = Math.max(1, Math.ceil(length / 30));
+        const size = length / count;
+        const parts = [];
+        for (let i = 0; i < count; i++) {
+          const start = from + dir * size * i;
+          const end = from + dir * size * (i + 1);
+          const mid = start + dir * size * 0.5;
+          if (size > 16) {
+            parts.push(`L ${x} ${mid - dir * thornBase / 2}`);
+            parts.push(`L ${x + outward * thorn} ${mid}`);
+            parts.push(`L ${x} ${mid + dir * thornBase / 2}`);
+          }
+          parts.push(`L ${x} ${end}`);
+        }
+        return parts;
+      };
+      const parts = [`M ${left + radius} ${top}`];
+      parts.push(...thornHorizontal(left + radius, right - radius, top, -1));
+      parts.push(`Q ${right} ${top} ${right} ${top + radius}`);
+      parts.push(...thornVertical(right, top + radius, bottom - radius, 1));
+      parts.push(`Q ${right} ${bottom} ${right - radius} ${bottom}`);
+      parts.push(...thornHorizontal(right - radius, left + radius, bottom, 1));
+      parts.push(`Q ${left} ${bottom} ${left} ${bottom - radius}`);
+      parts.push(...thornVertical(left, bottom - radius, anchorY + 10, -1));
+      parts.push(`L ${left - 18} ${anchorY}`);
+      parts.push(`L ${left} ${anchorY - 10}`);
+      parts.push(`V ${top + radius}`);
+      parts.push(`Q ${left} ${top} ${left + radius} ${top}`);
+      parts.push('Z');
+      d = parts.join(' ');
+    }
+    svg.style.left = `${-padLeft}px`;
+    svg.style.top = `${-padY}px`;
+    svg.style.width = `${width}px`;
+    svg.style.height = `${height}px`;
+    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+    svg.style.transform = '';
+    svg.style.transformOrigin = 'center';
+    const shadowPath = path.cloneNode(false);
+    shadowPath.setAttribute('class', 'svg-bubble-shadow');
+    shadowPath.setAttribute('transform', 'translate(4 5)');
+    shadowPath.setAttribute('d', d);
+    svg.insertBefore(shadowPath, path);
+    path.setAttribute('d', d);
+    return;
+  }
+  const corner = isSpiky ? 15 : 18;
+  const depth = isSpiky ? 10 : 13;
+  const left = padLeft + 2;
+  const top = edge;
+  const right = width - edge;
+  const bottom = height - edge;
+  const horizontal = makeBubbleSegments(right - left - corner * 2, 30);
+  const vertical = makeBubbleSegments(bottom - top - corner * 2, isSpiky ? 28 : 26);
+  let d = `M ${left + corner} ${top}`;
+
+  for (let i = 0; i < horizontal.count; i++) {
+    d += isSpiky
+      ? ` l ${horizontal.size / 2} ${-depth} l ${horizontal.size / 2} ${depth}`
+      : ` q ${horizontal.size / 2} ${-depth} ${horizontal.size} 0`;
+  }
+  d += isSpiky
+    ? ` L ${right + depth} ${top - depth} L ${right} ${top + corner}`
+    : ` Q ${right} ${top} ${right} ${top + corner}`;
+  for (let i = 0; i < vertical.count; i++) {
+    d += isSpiky
+      ? ` l ${depth} ${vertical.size / 2} l ${-depth} ${vertical.size / 2}`
+      : ` q ${depth} ${vertical.size / 2} 0 ${vertical.size}`;
+  }
+  d += isSpiky
+    ? ` L ${right + depth} ${bottom + depth} L ${right - corner} ${bottom}`
+    : ` Q ${right} ${bottom} ${right - corner} ${bottom}`;
+  for (let i = 0; i < horizontal.count; i++) {
+    d += isSpiky
+      ? ` l ${-horizontal.size / 2} ${depth} l ${-horizontal.size / 2} ${-depth}`
+      : ` q ${-horizontal.size / 2} ${depth} ${-horizontal.size} 0`;
+  }
+  d += isSpiky
+    ? ` L ${left - depth} ${bottom + depth} L ${left} ${bottom - corner}`
+    : ` Q ${left} ${bottom} ${left} ${bottom - corner}`;
+  if (tail === 'speech') {
+    const anchorY = Math.min(top + 32, bottom - corner - 12);
+    const upperClear = 10;
+    const lowerLength = bottom - corner - (anchorY + 11);
+    if (lowerLength > 0) {
+      const lower = makeBubbleSegments(lowerLength, isSpiky ? 28 : 26);
+      for (let i = 0; i < lower.count; i++) {
+        d += isSpiky
+          ? ` l ${-depth} ${-lower.size / 2} l ${depth} ${-lower.size / 2}`
+          : ` q ${-depth} ${-lower.size / 2} 0 ${-lower.size}`;
+      }
+    }
+    d += ` L ${left - 18} ${anchorY} L ${left} ${anchorY - 11}`;
+    const upperResumeY = anchorY - 11 - upperClear;
+    d += ` L ${left} ${upperResumeY}`;
+    const upperLength = upperResumeY - (top + corner);
+    if (upperLength > 0) {
+      const upper = makeBubbleSegments(upperLength, isSpiky ? 28 : 26);
+      for (let i = 0; i < upper.count; i++) {
+        d += isSpiky
+          ? ` l ${-depth} ${-upper.size / 2} l ${depth} ${-upper.size / 2}`
+          : ` q ${-depth} ${-upper.size / 2} 0 ${-upper.size}`;
+      }
+    }
+  } else {
+    for (let i = 0; i < vertical.count; i++) {
+      if (isSpiky) {
+        const spikeDepth = i === vertical.count - 1 ? depth + 10 : depth;
+        d += ` l ${-spikeDepth} ${-vertical.size / 2} l ${spikeDepth} ${-vertical.size / 2}`;
+      } else {
+        d += ` q ${-depth} ${-vertical.size / 2} 0 ${-vertical.size}`;
+      }
+    }
+  }
+  d += isSpiky
+    ? ` L ${left - depth} ${top - depth} L ${left + corner} ${top} Z`
+    : ` Q ${left} ${top} ${left + corner} ${top} Z`;
+
+  svg.style.left = `${isRight ? -padRight : -padLeft}px`;
+  svg.style.top = `${-padY}px`;
+  svg.style.width = `${width}px`;
+  svg.style.height = `${height}px`;
+  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+  svg.style.transform = isRight ? 'scaleX(-1)' : '';
+  svg.style.transformOrigin = 'center';
+  const shadowPath = path.cloneNode(false);
+  shadowPath.setAttribute('class', 'svg-bubble-shadow');
+  shadowPath.setAttribute('transform', `translate(${isRight ? -4 : 4} 5)`);
+  shadowPath.setAttribute('d', d);
+  svg.insertBefore(shadowPath, path);
+  path.setAttribute('d', d);
+
+  if (!isSpiky && tail === 'thought') {
+    const anchorY = Math.min(top + 32, bottom - corner - 12);
+    const large = svg.querySelector('.cloud-thought-dot-large');
+    const small = svg.querySelector('.cloud-thought-dot-small');
+    const dotShadowX = isRight ? -2 : 2;
+    large.setAttribute('cx', left - 18);
+    large.setAttribute('cy', anchorY + 3);
+    large.setAttribute('r', 7);
+    small.setAttribute('cx', left - 33);
+    small.setAttribute('cy', anchorY + 10);
+    small.setAttribute('r', 4);
+    const largeShadow = large.cloneNode(false);
+    largeShadow.setAttribute('class', 'svg-dot-shadow');
+    largeShadow.setAttribute('cx', left - 18 + dotShadowX);
+    largeShadow.setAttribute('cy', anchorY + 5);
+    const smallShadow = small.cloneNode(false);
+    smallShadow.setAttribute('class', 'svg-dot-shadow');
+    smallShadow.setAttribute('cx', left - 33 + dotShadowX);
+    smallShadow.setAttribute('cy', anchorY + 12);
+    svg.insertBefore(smallShadow, small);
+    svg.insertBefore(largeShadow, large);
+  }
+}
+
+function updateBubblePaths(root = document) {
+  root.querySelectorAll('.bubble-path').forEach(updateBubblePath);
+}
+
+// ===== 繝励Ξ繝薙Η繝ｼ =====
+function renderPreview() {
+  const area = document.getElementById('preview-dialogue-box');
+  renderBlockTitle();
+  if (dialogue.length === 0) {
+    area.innerHTML = '<div id="preview-empty">\u4f1a\u8a71\u3092\u8ffd\u52a0\u3059\u308b\u3068\u3053\u3053\u306b\u8868\u793a\u3055\u308c\u307e\u3059</div>';
+    return;
+  }
+  area.innerHTML = dialogue.map(item => {
+    const fontCss = item.font && item.font !== 'default' ? `font-family:${FONTS[item.font].css};` : '';
+    if (item.type === 'action') {
+      return `<p class="action"${fontCss ? ` style="${fontCss}"` : ''}>${nl2br(item.text)}</p>`;
+    }
+    if (item.type === 'photo') {
+      const w = item.size || '100%';
+      const caption = item.text ? `<p class="photo-caption">${nl2br(item.text)}</p>` : '';
+      if (item.photoFrame === 'none') {
+        return `<div class="photo-block is-plain"><img src="${item.dataUrl}" alt="${h(item.filename)}" style="width:${w};max-width:100%;">${caption}</div>`;
+      }
+      return `<div class="photo-block is-paper" style="width:${w};max-width:100%;"><img src="${item.dataUrl}" alt="${h(item.filename)}">${caption}</div>`;
+    }
+    const img = images.find(i => i.id === item.imageId);
+    if (!img) return '';
+    const name = img.charName || img.filename;
+    const avatarWrapStyle = ``;
+    const sym = item.symbolId ? images.find(i => i.id === item.symbolId) : null;
+    const symHtml = sym ? `<img src="${sym.dataUrl}" alt="${h(sym.symbolLabel || sym.filename)}" class="symbol-overlay">` : '';
+    const avatarInner = sym
+      ? `<div class="avatar-wrap" style="${avatarWrapStyle}position:relative;"><img src="${img.dataUrl}" alt="${h(name)}" class="avatar">${symHtml}</div>`
+      : `<div class="avatar-wrap" style="${avatarWrapStyle}"><img src="${img.dataUrl}" alt="${h(name)}" class="avatar"></div>`;
+    const nametag = getNametagForChar(img.charName);
+    const nameHtml = nametag
+      ? `<img src="${nametag.dataUrl}" alt="${h(name)}" class="nametag-img">`
+      : `<div class="name">${h(name)}</div>`;
+    const bubbleColor = getBubbleColor(img.charName);
+    const bubbleShadowColor = bubbleColor ? colorWithAlpha(bubbleColor, 0.55) : '';
+    const inlineStyle = [
+      bubbleColor ? `--bc:${bubbleColor};` : '',
+      bubbleShadowColor ? `--bc-shadow:${bubbleShadowColor};` : '',
+      fontCss
+    ].filter(Boolean).join('');
+    const bubbleStyle = inlineStyle ? ` style="${inlineStyle}"` : '';
+    return `<div class="chat" data-dialogue-id="${h(item.id)}">
+  <div class="avatar-block">
+    ${avatarInner}
+    ${nameHtml}
+  </div>
+  ${bubbleMarkup(item, bubbleStyle, nl2br(item.text))}
+</div>`;
+  }).join('\n');
+  requestAnimationFrame(() => updateBubblePaths(area));
+}
+
+// ===== 繝励Ξ繝薙Η繝ｼ繝｢繝ｼ繝繝ｫ =====
+function buildPreviewDialogueHTML(items) {
+  if (!items || items.length === 0) {
+    return '<div id="preview-empty">\u4f1a\u8a71\u304c\u3042\u308a\u307e\u305b\u3093</div>';
+  }
+  return items.map(item => {
+    const fontCss = item.font && item.font !== 'default' ? `font-family:${FONTS[item.font].css};` : '';
+    if (item.type === 'action') {
+      return `<p class="action"${fontCss ? ` style="${fontCss}"` : ''}>${nl2br(item.text)}</p>`;
+    }
+    if (item.type === 'photo') {
+      const w = item.size || '100%';
+      const caption = item.text ? `<p class="photo-caption">${nl2br(item.text)}</p>` : '';
+      if (item.photoFrame === 'none') {
+        return `<div class="photo-block is-plain"><img src="${item.dataUrl}" alt="${h(item.filename)}" style="width:${w};max-width:100%;">${caption}</div>`;
+      }
+      return `<div class="photo-block is-paper" style="width:${w};max-width:100%;"><img src="${item.dataUrl}" alt="${h(item.filename)}">${caption}</div>`;
+    }
+    const img = images.find(i => i.id === item.imageId);
+    if (!img) return '';
+    const name = img.charName || img.filename;
+    const avatarWrapStyle = ``;
+    const sym = item.symbolId ? images.find(i => i.id === item.symbolId) : null;
+    const symHtml = sym ? `<img src="${sym.dataUrl}" alt="${h(sym.symbolLabel || sym.filename)}" class="symbol-overlay">` : '';
+    const avatarInner = sym
+      ? `<div class="avatar-wrap" style="${avatarWrapStyle}position:relative;"><img src="${img.dataUrl}" alt="${h(name)}" class="avatar">${symHtml}</div>`
+      : `<div class="avatar-wrap" style="${avatarWrapStyle}"><img src="${img.dataUrl}" alt="${h(name)}" class="avatar"></div>`;
+    const nametag = getNametagForChar(img.charName);
+    const nameHtml = nametag
+      ? `<img src="${nametag.dataUrl}" alt="${h(name)}" class="nametag-img">`
+      : `<div class="name">${h(name)}</div>`;
+    const bubbleColor = getBubbleColor(img.charName);
+    const bubbleShadowColor = bubbleColor ? colorWithAlpha(bubbleColor, 0.55) : '';
+    const inlineStyle = [
+      bubbleColor ? `--bc:${bubbleColor};` : '',
+      bubbleShadowColor ? `--bc-shadow:${bubbleShadowColor};` : '',
+      fontCss
+    ].filter(Boolean).join('');
+    const bubbleStyle = inlineStyle ? ` style="${inlineStyle}"` : '';
+    return `<div class="chat" data-dialogue-id="${h(item.id)}">
+  <div class="avatar-block">
+    ${avatarInner}
+    ${nameHtml}
+  </div>
+  ${bubbleMarkup(item, bubbleStyle, nl2br(item.text))}
+</div>`;
+  }).join('\n');
+}
+
+function buildAllPreviewHTML() {
+  const filledBlocks = blocks.filter(block => block.blockTitle || block.bgDataUrl || (block.dialogue || []).length > 0);
+  if (filledBlocks.length === 0) {
+    return '<div class="all-preview-empty">\u4f1a\u8a71\u30d6\u30ed\u30c3\u30af\u304c\u3042\u308a\u307e\u305b\u3093</div>';
+  }
+  return filledBlocks.map(block => {
+    const titleClass = 'preview-block-title' + (block.bgDataUrl ? ' has-bg-title' : '');
+    const boxClass = 'preview-dialogue-box' + (block.bgDataUrl ? ' has-bg' : '');
+    const boxStyle = block.bgDataUrl ? ` style="--preview-bg-image:url(${block.bgDataUrl})"` : '';
+    const titleHtml = block.blockTitle ? `<div class="${titleClass}"><p class="blue-tag">${h(block.blockTitle)}</p></div>` : '';
+    return `<div class="all-preview-block">
+  ${titleHtml}
+  <div class="${boxClass}"${boxStyle}>
+    ${buildPreviewDialogueHTML(block.dialogue)}
+  </div>
+</div>`;
+  }).join('\n');
+}
+
+function openPreviewModal() {
+  if (dialogue.length === 0) return;
+  const inner = document.getElementById('preview-modal-inner');
+  inner.classList.remove('is-all-preview');
+  inner.innerHTML = document.getElementById('preview-inner').innerHTML;
+  document.getElementById('preview-modal-title').textContent = 'プレビュー';
+  document.getElementById('preview-modal').classList.add('open');
+  requestAnimationFrame(() => updateBubblePaths(inner));
+  document.addEventListener('keydown', onModalKeydown);
+}
+
+function openAllPreviewModal() {
+  syncActiveBlockFromState();
+  const inner = document.getElementById('preview-modal-inner');
+  inner.classList.add('is-all-preview');
+  inner.innerHTML = buildAllPreviewHTML();
+  document.getElementById('preview-modal-title').textContent = '一括プレビュー';
+  document.getElementById('preview-modal').classList.add('open');
+  requestAnimationFrame(() => updateBubblePaths(inner));
+  document.addEventListener('keydown', onModalKeydown);
+}
+function closePreviewModal() {
+  document.getElementById('preview-modal').classList.remove('open');
+  document.getElementById('preview-modal-inner').classList.remove('is-all-preview');
+  document.removeEventListener('keydown', onModalKeydown);
+}
+function onModalBgClick(e) {
+  if (e.target === document.getElementById('preview-modal')) closePreviewModal();
+}
+function onModalKeydown(e) {
+  if (e.key === 'Escape') closePreviewModal();
+}
+
+// ===== HTML譖ｸ縺榊・縺・=====
+function normalizeExportPath(path) {
+  const value = (path || '').trim();
+  if (!value) return '';
+  return /[\/\\]$/.test(value) ? value : value + '/';
+}
+
+function syncBackgroundExportPath(value) {
+  bgExportPath = String(value || '').trim();
+  syncActiveBlockFromState();
+}
+
+function getExportPaths() {
+  return {
+    asset: normalizeExportPath(document.getElementById('export-path')?.value || '../assets/toolassets/'),
+    photo: normalizeExportPath(document.getElementById('export-photo-path')?.value || '../assets/reviews/hihyo/photos/')
+  };
+}
+
+function exportAssetSrc(item, fallbackPath) {
+  if (!item) return '';
+  return item.src || (fallbackPath + item.filename);
+}
+
+function exportCardBackgroundSrc() {
+  if (!bgDataUrl) return '';
+  return bgExportPath || bgDataUrl;
+}
+
+function indentExportHTML(html, spaces) {
+  const indent = ' '.repeat(spaces);
+  return String(html || '').split('\n').map(line => line ? indent + line : line).join('\n');
+}
+
+function exportTextHTML(text) {
+  return nl2br(text).replace(/<br>/g, '<br>\n');
+}
+
+function trimExportDecimals(html) {
+  return String(html || '').replace(/-?\d+\.\d{3,}/g, value => {
+    const rounded = Number(value).toFixed(2).replace(/\.?0+$/, '');
+    return rounded === '-0' ? '0' : rounded;
+  });
+}
+
+function buildCurrentHTML(exportPaths) {
+  const paths = typeof exportPaths === 'string'
+    ? { asset: normalizeExportPath(exportPaths), photo: normalizeExportPath(exportPaths) }
+    : exportPaths;
+  const assetPath = normalizeExportPath(paths?.asset || '../assets/toolassets/');
+  const photoPath = normalizeExportPath(paths?.photo || '../assets/reviews/hihyo/photos/');
+  const titleHtml = blockTitle ? `<p class="blue-tag">${h(blockTitle)}</p>\n` : '';
+  const bodyHtml = dialogue.map(item => {
+    const fontCss = item.font && item.font !== 'default' ? `font-family:${FONTS[item.font].css};` : '';
+    if (item.type === 'action') {
+      return `<p class="action"${fontCss ? ` style="${fontCss}"` : ''}>\n  ${exportTextHTML(item.text)}\n</p>`;
+    }
+    if (item.type === 'photo') {
+      const src = exportAssetSrc(item, photoPath);
+      const w = item.size || '100%';
+      const caption = item.text ? `\n  <p class="photo-caption">${exportTextHTML(item.text)}</p>` : '';
+      if (item.photoFrame === 'none') {
+        return `<div class="photo-block is-plain">\n  <img src="${src}" alt="${h(item.filename)}" style="width:${w};max-width:100%;">${caption}\n</div>`;
+      }
+      return `<div class="photo-block is-paper" style="width:${w};max-width:100%;">\n  <img src="${src}" alt="${h(item.filename)}">${caption}\n</div>`;
+    }
+    const img = images.find(i => i.id === item.imageId);
+    if (!img) return '';
+    const name = img.charName || img.filename;
+    const src = exportAssetSrc(img, assetPath);
+    const sz = avatarStyle(img);
+    const sym = item.symbolId ? images.find(i => i.id === item.symbolId) : null;
+    const symHtml = sym
+      ? `<img src="${exportAssetSrc(sym, assetPath)}" alt="${h(sym.symbolLabel || sym.filename)}" style="position:absolute;top:0;left:0;width:570px;height:570px;object-fit:contain;pointer-events:none;z-index:2;">`
+      : '';
+    const wrapStyle = `display:inline-block;position:relative;isolation:isolate;filter:drop-shadow(2px 3px 2px rgba(0,0,0,0.4));transform:translate(5px,0);`;
+    const avatarMaskStyle = '-webkit-mask-image:linear-gradient(to bottom,#000 0 95%,transparent 100%);mask-image:linear-gradient(to bottom,#000 0 95%,transparent 100%);';
+    const avatarInner = sym
+      ? `<div style="${wrapStyle}"><img src="${src}" alt="${h(name)}" class="avatar" style="width:570px;height:570px;margin:0;position:relative;z-index:1;${avatarMaskStyle}">${symHtml}</div>`
+      : `<div style="${wrapStyle}"><img src="${src}" alt="${h(name)}" class="avatar"${sz ? ` style="${sz}object-fit:contain;position:relative;z-index:1;${avatarMaskStyle}"` : ` style="position:relative;z-index:1;${avatarMaskStyle}"`}></div>`;
+    const nametag = getNametagForChar(img.charName);
+    const nameHtml = nametag
+      ? `<img src="${exportAssetSrc(nametag, assetPath)}" alt="${h(name)}" style="max-width:130px;width:100%;height:auto;display:block;margin:4px auto 0;object-fit:contain;">`
+      : `<div class="name">${h(name)}</div>`;
+    const bubbleColor = getBubbleColor(img.charName);
+    const bubbleShadowColor = bubbleColor ? colorWithAlpha(bubbleColor, 0.55) : '';
+    const inlineStyle = [
+      bubbleColor ? `--bc:${bubbleColor};` : '',
+      bubbleShadowColor ? `--bc-shadow:${bubbleShadowColor};` : '',
+      fontCss
+    ].filter(Boolean).join('');
+    const bubbleStyle = inlineStyle ? ` style="${inlineStyle}"` : '';
+    const renderedBubble = document.querySelector(`#preview-dialogue-box .bubble-path[data-dialogue-id="${item.id}"]`);
+    const svgHtml = renderedBubble ? trimExportDecimals(renderedBubble.querySelector('svg').outerHTML) : '';
+    const bubbleHtml = indentExportHTML(bubbleMarkup(item, bubbleStyle, exportTextHTML(item.text), svgHtml), 2);
+    return `<div class="chat">
+  <div class="avatar-block" style="position:relative">
+    ${avatarInner}
+    ${nameHtml}
+  </div>
+${bubbleHtml}
+</div>`;
+  }).filter(Boolean).join('\n\n\n');
+  const backgroundSrc = exportCardBackgroundSrc();
+  const backgroundHtml = backgroundSrc
+    ? `\n  <img class="dialogue-card-background" src="${h(backgroundSrc)}" alt="" aria-hidden="true">`
+    : '';
+  return `${titleHtml}<section class="dialogue-card">${backgroundHtml}
+  <div class="dialogue-card-panel">
+${indentExportHTML(bodyHtml, 4)}
+  </div>
+</section>`;
+}
+
+function copyTextToClipboard(text, message) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => showExportToast(message)).catch(() => fallbackCopy(text, () => showExportToast(message)));
+  } else {
+    fallbackCopy(text, () => showExportToast(message));
+  }
+}
+
+function copyHTML() {
+  syncActiveBlockFromState();
+  if (dialogue.length === 0) { alert('会話がありません。'); return; }
+  const exportPaths = getExportPaths();
+  renderPreview();
+  updateBubblePaths(document.getElementById('preview-dialogue-box'));
+  copyTextToClipboard(buildCurrentHTML(exportPaths), '現在ブロックのHTMLをコピーしました');
+}
+
+function copyAllHTML() {
+  syncActiveBlockFromState();
+  const filledBlocks = blocks.filter(block => (block.dialogue || []).length > 0);
+  if (filledBlocks.length === 0) { alert('会話がありません。'); return; }
+  const exportPaths = getExportPaths();
+  const originalId = activeBlockId;
+  const htmlList = [];
+  filledBlocks.forEach(block => {
+    loadBlockIntoState(block);
+    renderPreview();
+    updateBubblePaths(document.getElementById('preview-dialogue-box'));
+    htmlList.push(buildCurrentHTML(exportPaths));
+  });
+  loadBlockIntoState(blocks.find(block => block.id === originalId) || blocks[0]);
+  copyTextToClipboard(htmlList.join('\n\n'), '全ブロックのHTMLをコピーしました');
+}
+
+function plainDialogueText(text) {
+  return String(text || '')
+    .replace(/<br\s*\/?\s*>/gi, '\n')
+    .replace(/<[^>]*>/g, '');
+}
+
+function buildDialogueText() {
+  const filledBlocks = blocks.filter(block => block.blockTitle || (block.dialogue || []).length > 0);
+  return filledBlocks.map(block => {
+    const lines = [];
+    if (block.blockTitle) lines.push(`【${block.blockTitle}】`);
+    (block.dialogue || []).forEach(item => {
+      if (item.type === 'action') {
+        const text = plainDialogueText(item.text);
+        if (text) lines.push(`（${text}）`);
+        return;
+      }
+      if (item.type === 'photo') {
+        const label = item.filename ? `写真：${item.filename}` : '写真';
+        const text = plainDialogueText(item.text);
+        lines.push(text ? `［${label}］ ${text}` : `［${label}］`);
+        return;
+      }
+      const image = images.find(img => img.id === item.imageId);
+      const name = image ? (image.charName || image.filename) : '不明';
+      lines.push(`${name}「${plainDialogueText(item.text)}」`);
+    });
+    return lines.join('\n');
+  }).filter(Boolean).join('\n\n\n');
+}
+
+function exportDialogueText() {
+  syncActiveBlockFromState();
+  const text = buildDialogueText();
+  if (!text) { alert('書き出す会話がありません。'); return; }
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'dialogue-blocks-text.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showExportToast('会話テキストを書き出しました');
+}
+
+function showExportToast(message) {
+  const toast = document.getElementById('copy-toast');
+  toast.textContent = message;
+  toast.style.display = 'block';
+  clearTimeout(showExportToast.timer);
+  showExportToast.timer = setTimeout(() => toast.style.display = 'none', 2200);
+}
+
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-9999px;left:-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  cb();
+}
+
+// ===== 繝励Ο繧ｸ繧ｧ繧ｯ繝井ｿ晏ｭ倥・隱ｭ縺ｿ霎ｼ縺ｿ =====
+function saveProject() {
+  syncActiveBlockFromState();
+  const data = {
+    version: 2,
+    mode: 'multi-block',
+    activeBlockId,
+    images: images.map(({ id, filename, src, type, charName, exprLabel, symbolLabel, nw, nh, charColor }) => ({ id, filename, src: src || '', type: type || 'char', charName, exprLabel, symbolLabel: symbolLabel || '', nw: nw || 0, nh: nh || 0, charColor: charColor || '' })),
+    blocks: blocks.map(block => ({
+      id: block.id,
+      blockTitle: block.blockTitle || '',
+      bgDataUrl: block.bgDataUrl || null,
+      bgExportPath: block.bgExportPath || '',
+      dialogue: cloneDialogueItems(block.dialogue)
+    }))
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'dialogue-blocks-project.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function triggerLoad() { document.getElementById('load-input').click(); }
+
+function mergeProjectImages(projectImages) {
+  const currentByFilename = new Map(images.map(image => [image.filename, image]));
+  const projectFilenames = new Set();
+  const merged = (projectImages || []).map(projectImage => {
+    projectFilenames.add(projectImage.filename);
+    const currentImage = currentByFilename.get(projectImage.filename);
+    if (!currentImage) return { ...projectImage, dataUrl: '' };
+    return {
+      ...projectImage,
+      dataUrl: currentImage.dataUrl || '',
+      src: currentImage.src || '',
+      type: currentImage.type || 'char',
+      charName: currentImage.charName || '',
+      exprLabel: currentImage.exprLabel || '',
+      symbolLabel: currentImage.symbolLabel || '',
+      charColor: currentImage.charColor || '',
+      nw: currentImage.nw || projectImage.nw || 0,
+      nh: currentImage.nh || projectImage.nh || 0
+    };
+  });
+  images.forEach(currentImage => {
+    if (!projectFilenames.has(currentImage.filename)) merged.push(currentImage);
+  });
+  return merged;
+}
+
+function onLoadFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    let loadPhase = 'プロジェクトファイルの解析';
+    try {
+      const data = JSON.parse(ev.target.result);
+      loadPhase = '画像一覧の復元';
+      images = mergeProjectImages(data.images);
+      if (Array.isArray(data.blocks)) {
+        loadPhase = '会話ブロックの復元';
+        blocks = data.blocks.map(block => ({
+          id: block.id || uid(),
+          blockTitle: (block.blockTitle || '').trim(),
+          bgDataUrl: block.bgDataUrl || null,
+          bgExportPath: (block.bgExportPath || '').trim(),
+          dialogue: cloneDialogueItems(block.dialogue).filter(d => d.type !== 'heading')
+        })).filter(block => block.dialogue.length > 0 || block.blockTitle || block.bgDataUrl);
+        if (blocks.length === 0) blocks = [createBlock('')];
+        activeBlockId = blocks.some(block => block.id === data.activeBlockId) ? data.activeBlockId : blocks[0].id;
+      } else {
+        loadPhase = '旧形式の会話データの復元';
+        const loadedDialogue = (data.dialogue || []).map(d => ({ type: 'chat', bubbleShape: 'normal', ...d, side: 'left' }));
+        const legacyHeading = loadedDialogue.find(d => d.type === 'heading');
+        blocks = [{
+          id: uid(),
+          blockTitle: (data.blockTitle || (legacyHeading && legacyHeading.text) || '').trim(),
+          bgDataUrl: data.bgDataUrl || null,
+          bgExportPath: (data.bgExportPath || '').trim(),
+          dialogue: loadedDialogue.filter(d => d.type !== 'heading')
+        }];
+        activeBlockId = blocks[0].id;
+      }
+      loadPhase = '素材一覧の表示';
+      renderImageGrid();
+      renderCharSelect();
+      loadPhase = '会話プレビューの表示';
+      loadBlockIntoState(getActiveBlock());
+      const missing = images.filter(i => !i.dataUrl).length;
+      if (missing > 0) {
+        alert(`読み込み完了。\n画像 ${missing} 件が未登録です。ドラッグ＆ドロップで画像を再登録してください。（ファイル名が一致すれば自動で紐付けされます）`);
+      }
+    } catch (err) {
+      const detail = err instanceof Error ? err.message : String(err);
+      console.error(`プロジェクト読み込みエラー（${loadPhase}）`, err);
+      alert(`読み込み中にエラーが起きました。\n場所: ${loadPhase}\n詳細: ${detail}`);
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+// ===== 繝ｦ繝ｼ繝・ぅ繝ｪ繝・ぅ =====
+function h(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function nl2br(s) {
+  return h(s)
+    .replace(/&lt;b&gt;/g, '<b>')
+    .replace(/&lt;\/b&gt;/g, '</b>')
+    .replace(/&lt;font=(default|mincho|pop)&gt;/g, (_, font) => `<span style="font-family:${FONTS[font].css};">`)
+    .replace(/&lt;\/font&gt;/g, '</span>')
+    .replace(/&lt;size=(large|small)&gt;/g, (_, size) => `<span style="font-size:${size === 'large' ? '1.25em' : '0.85em'};">`)
+    .replace(/&lt;\/size&gt;/g, '</span>')
+    .replace(/\n/g, '<br>');
+}
+
+document.querySelectorAll('.font-btn').forEach(btn => btn.classList.remove('active'));
+initBlockManager();
+</script>
+
+</body>
+</html>

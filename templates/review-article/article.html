@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ARTICLE_TITLE}}</title>
+<link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/common/dialogue.css">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: #fff;
+  color: #555;
+  font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.page {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 0 32px;
+  background: #fff;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+
+.side-title {
+  display: block;
+  position: absolute;
+  left: calc(50% - 520px);
+  top: 140px;
+  writing-mode: vertical-rl;
+  color: #888;
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+
+.side-characters {
+  display: block;
+  position: absolute;
+  left: calc(50% + 490px);
+  top: 140px;
+  width: 150px;
+  opacity: 0.8;
+}
+
+.side-char {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.side-char img {
+  width: 200px;
+}
+
+.side-name {
+  margin-top: 6px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.side-desc {
+  color: #777;
+  font-size: 14px;
+}
+
+.title-card {
+  margin: 40px 0;
+}
+
+.lead-label {
+  margin-bottom: 12px;
+  color: #777;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+.title-card h1 {
+  margin: 0;
+  color: #333;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.poster {
+  max-width: 360px;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.work-info {
+  margin: 24px 0;
+  color: #666;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+hr {
+  margin: 30px 0 20px;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+.blue-tag {
+  display: inline-block;
+  margin: 32px 0 18px;
+  padding: 4px 14px;
+  background: #e9f3ff;
+  border-left: 8px solid #74a7d8;
+  color: #365d83;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.question {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 40px 0 24px;
+  padding: 10px 42px 10px 16px;
+  background: #ffe9e9;
+  border-left: 8px solid #d87474;
+  color: #833636;
+  font-family: 'Kosugi Maru', 'Hiragino Maru Gothic ProN', sans-serif;
+  font-size: 30px;
+  font-weight: 700;
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    calc(100% - 20px) 25%,
+    100% 50%,
+    calc(100% - 20px) 75%,
+    100% 100%,
+    0 100%
+  );
+}
+
+.score-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.score-table {
+  width: 100%;
+  max-width: 900px;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+}
+
+.score-table th,
+.score-table td {
+  width: 50%;
+  padding: 10px;
+  border: 2px solid #444;
+  vertical-align: top;
+}
+
+.score-table th {
+  background: #f8f8f8;
+  font-size: 26px;
+  text-align: center;
+}
+
+.big-score {
+  margin-top: 32px;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.big-score span {
+  margin-left: 6px;
+  font-size: 28px;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 24px;
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding-bottom: 4px;
+  border-bottom: 1px solid #ddd;
+}
+
+.score-row span:first-child {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.score-row span:last-child {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.score-row:nth-child(odd) {
+  padding-right: 16px;
+  border-right: 1px solid #ddd;
+}
+
+.bottom-total {
+  background: #fafafa;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 18px 0;
+  padding: 14px;
+}
+
+.profile-icon {
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.profile-name {
+  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.profile-tip {
+  margin-top: 4px;
+  color: #666;
+}
+
+.article-body h3 {
+  margin: 34px 0 10px;
+  color: #333;
+  font-size: 28px;
+}
+
+.article-body h4 {
+  margin: 0 0 24px;
+  color: #666;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.notes {
+  margin-top: 32px;
+  color: #666;
+  font-size: 15px;
+}
+
+@media (max-width: 1100px) {
+  .side-title,
+  .side-characters {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  body {
+    padding: 8px;
+  }
+
+  .page {
+    padding: 0 16px;
+    border: none;
+  }
+
+  .title-card h1 {
+    font-size: 26px;
+  }
+
+  .question {
+    padding: 8px 32px 8px 12px;
+    font-size: 22px;
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      calc(100% - 14px) 25%,
+      100% 50%,
+      calc(100% - 14px) 75%,
+      100% 100%,
+      0 100%
+    );
+  }
+
+  .score-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .score-row:nth-child(odd) {
+    padding-right: 0;
+    border-right: none;
+  }
+}
+</style>
+</head>
+<body>
+<!--
+  Review article template
+
+  Copy target:
+    reviews/{{ARTICLE_ID}}.html
+
+  Article assets:
+    ../assets/reviews/{{ARTICLE_ID}}/bg/
+    ../assets/reviews/{{ARTICLE_ID}}/photos/
+    ../assets/reviews/{{ARTICLE_ID}}/poster/
+
+  Shared assets:
+    ../assets/toolassets/
+
+  Paste the editor output between DIALOGUE_BLOCKS_START and DIALOGUE_BLOCKS_END.
+  This template keeps the hihyo.html article frame, but the old dialogue markup
+  is intentionally not included.
+-->
+<div class="side-title">{{SIDE_TITLE}}</div>
+
+<div class="side-characters" aria-label="登場キャラクター">
+  <div class="side-char">
+    <img src="../assets/toolassets/{{SIDE_CHARACTER_1_IMAGE}}" alt="{{SIDE_CHARACTER_1_NAME}}">
+    <div class="side-name">{{SIDE_CHARACTER_1_NAME}}</div>
+    <div class="side-desc">{{SIDE_CHARACTER_1_DESC}}</div>
+  </div>
+  <div class="side-char">
+    <img src="../assets/toolassets/{{SIDE_CHARACTER_2_IMAGE}}" alt="{{SIDE_CHARACTER_2_NAME}}">
+    <div class="side-name">{{SIDE_CHARACTER_2_NAME}}</div>
+    <div class="side-desc">{{SIDE_CHARACTER_2_DESC}}</div>
+  </div>
+</div>
+
+<div class="page" data-article-id="{{ARTICLE_ID}}">
+  <div class="title-card">
+    <div class="lead-label">{{LEAD_LABEL}}</div>
+    <h1>{{ARTICLE_TITLE}}</h1>
+  </div>
+
+  <div class="poster">
+    <img src="../assets/reviews/{{ARTICLE_ID}}/poster/{{POSTER_IMAGE}}" alt="{{ARTICLE_TITLE}}">
+  </div>
+
+  <section class="work-info">
+    {{WORK_INFO_HTML}}
+  </section>
+
+  <hr>
+
+  <section class="dialogue-area" aria-label="会話ブロック">
+    <!-- DIALOGUE_BLOCKS_START -->
+    <!-- エディタの「全ブロックのHTMLをコピー」をここへ貼り付けます。 -->
+    <!-- DIALOGUE_BLOCKS_END -->
+  </section>
+
+  <section class="review-score" aria-label="採点">
+    <div class="question">
+      <span class="q-label">Q.</span>
+      {{SCORE_QUESTION}}
+    </div>
+
+    <div class="score-wrap">
+      <table class="score-table">
+        <tr>
+          <th>{{REVIEWER_1_NAME}}</th>
+          <th>{{REVIEWER_2_NAME}}</th>
+        </tr>
+        <tr>
+          <td>
+            <div class="big-score">{{REVIEWER_1_SCORE}}<span>点</span></div>
+            <div>{{REVIEWER_1_COMMENT}}</div>
+          </td>
+          <td>
+            <div class="score-grid">
+              <div class="score-row"><span>{{SCORE_LABEL_1}}</span><span>{{SCORE_VALUE_1}}</span></div>
+              <div class="score-row"><span>{{SCORE_LABEL_2}}</span><span>{{SCORE_VALUE_2}}</span></div>
+              <div class="score-row"><span>{{SCORE_LABEL_3}}</span><span>{{SCORE_VALUE_3}}</span></div>
+              <div class="score-row"><span>{{SCORE_LABEL_4}}</span><span>{{SCORE_VALUE_4}}</span></div>
+              <div class="score-row"><span>{{SCORE_LABEL_5}}</span><span>{{SCORE_VALUE_5}}</span></div>
+              <div class="score-row"><span>計</span><span>{{REVIEWER_2_SCORE}}</span></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="bottom-total nowrap">{{REVIEWER_1_TOTAL_TEXT}}</td>
+          <td class="bottom-total">{{REVIEWER_2_TOTAL_TEXT}}</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <section class="profiles" aria-label="プロフィール">
+    <h3>{{PROFILE_HEADING}}</h3>
+
+    <div class="profile-card">
+      <img src="../assets/toolassets/{{PROFILE_1_IMAGE}}" alt="{{PROFILE_1_NAME}}" class="profile-icon">
+      <div class="profile-text">
+        <div class="profile-name">{{PROFILE_1_NAME}}</div>
+        <div class="profile-tip">{{PROFILE_1_TEXT}}</div>
+      </div>
+    </div>
+
+    <div class="profile-card">
+      <img src="../assets/toolassets/{{PROFILE_2_IMAGE}}" alt="{{PROFILE_2_NAME}}" class="profile-icon">
+      <div class="profile-text">
+        <div class="profile-name">{{PROFILE_2_NAME}}</div>
+        <div class="profile-tip">{{PROFILE_2_TEXT}}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="article-body">
+    <h3>{{REVIEWER_1_NAME}}</h3>
+    <h4>{{REVIEWER_1_BODY_HTML}}</h4>
+
+    <h3>{{REVIEWER_2_NAME}}</h3>
+    <h4>{{REVIEWER_2_BODY_HTML}}</h4>
+  </section>
+
+  <hr>
+
+  <section class="notes">
+    {{ARTICLE_NOTES_HTML}}
+  </section>
+</div>
+<script src="../../assets/common/dialogue-responsive.js"></script>
+</body>
+</html>
