@@ -2,11 +2,12 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ARTICLE_TITLE}}</title>
-<link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/common/dialogue.css">
+<meta name="viewport" content="width=1200">
+<title>{{ARTICLE_TITLE}} | 言語化ヘタクソ派</title>
+<link href="https://fonts.googleapis.com/css2?family=Kosugi+Maru&family=Yuji+Boku&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/common/dialogue.css">
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -45,15 +46,36 @@ img {
   border-right: 1px solid #ddd;
 }
 
-.side-title {
-  display: block;
-  position: absolute;
-  left: calc(50% - 520px);
-  top: 140px;
-  writing-mode: vertical-rl;
-  color: #888;
-  font-size: 22px;
-  letter-spacing: 2px;
+.article-footer {
+  margin: 48px 0 20px;
+  text-align: center;
+}
+
+.article-footer a {
+  color: #333;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.article-footer a:hover,
+.article-footer a:focus-visible {
+  color: #9b4761;
+}
+
+    .side-title {
+      display: block;
+      position: absolute;
+      left: calc(50% - 520px);
+      top: 140px;
+      writing-mode: vertical-rl;
+      color: #888;
+      font-size: 22px;
+      letter-spacing: 2px;
+      white-space: nowrap;
+    }
+    .side-title-right {
+      left: auto;
+      right: calc(50% - 520px);
 }
 
 .side-characters {
@@ -85,6 +107,69 @@ img {
   font-size: 14px;
 }
 
+.character-intro {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+  margin: 32px 0;
+  text-align: center;
+}
+
+.character-intro-title {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #333;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Yuji Boku', 'Yu Mincho', 'Hiragino Mincho ProN', serif;
+}
+
+.character-intro-title img {
+  display: block;
+  width: min(540px, 100%);
+  height: auto;
+  margin: 0 auto;
+}
+
+.character-intro-card {
+  min-width: 0;
+}
+
+.character-intro-card img {
+  display: block;
+  width: min(200px, 100%);
+  margin: 0 auto;
+}
+
+.character-intro-name {
+  margin-top: 6px;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.character-intro-name img {
+  display: block;
+  width: min(300px, 100%);
+  height: auto;
+  margin: 0 auto;
+}
+
+.character-intro-desc {
+  margin: 4px auto 0;
+  max-width: 240px;
+  color: #555;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.warning-banner {
+  display: block;
+  width: min(720px, 100%);
+  height: auto;
+  margin: 24px auto 32px;
+}
+
 .title-card {
   margin: 40px 0;
 }
@@ -104,12 +189,20 @@ img {
   line-height: 1.35;
 }
 
-.poster {
-  max-width: 360px;
-  padding: 8px;
-  background: #fff;
-  border: 1px solid #ddd;
-}
+    .poster {
+      width: 80%;
+      max-width: 720px;
+      margin: 0;
+      box-sizing: border-box;
+      padding: 8px;
+      background: #fff;
+      border: 1px solid #ddd;
+    }
+    .poster img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
 
 .work-info {
   margin: 24px 0;
@@ -133,6 +226,15 @@ hr {
   color: #365d83;
   font-size: 22px;
   font-weight: 700;
+}
+
+.dialogue-slot {
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
 }
 
 .question {
@@ -183,6 +285,7 @@ hr {
   background: #f8f8f8;
   font-size: 26px;
   text-align: center;
+  font-family: 'Kosugi Maru', 'Hiragino Maru Gothic ProN', sans-serif;
 }
 
 .big-score {
@@ -254,14 +357,21 @@ hr {
   width: 96px;
   height: 96px;
   flex-shrink: 0;
+  box-sizing: border-box;
   object-fit: cover;
   border-radius: 50%;
+  border: 2px solid rgba(80, 80, 80, 0.35);
 }
 
 .profile-name {
   color: #333;
-  font-size: 20px;
+  font-size: 28px;
   font-weight: 700;
+  font-family: 'Kosugi Maru', 'Hiragino Maru Gothic ProN', sans-serif;
+}
+
+.profiles > h2 {
+  font-family: 'Kosugi Maru', 'Hiragino Maru Gothic ProN', sans-serif;
 }
 
 .profile-tip {
@@ -269,10 +379,22 @@ hr {
   color: #666;
 }
 
+.profile-tip h4 {
+  margin: 0;
+  color: inherit;
+  font-size: 18px;
+  font-weight: 500;
+}
+
 .article-body h3 {
   margin: 34px 0 10px;
   color: #333;
   font-size: 28px;
+  font-family: 'Kosugi Maru', 'Hiragino Maru Gothic ProN', sans-serif;
+}
+
+.article-body h2 {
+  font-family: 'Kosugi Maru', 'Hiragino Maru Gothic ProN', sans-serif;
 }
 
 .article-body h4 {
@@ -332,41 +454,22 @@ hr {
     border-right: none;
   }
 }
+
 </style>
 </head>
 <body>
 <!--
   Review article template
 
-  Copy target:
-    reviews/{{ARTICLE_ID}}.html
+  1. Copy this file to reviews/{{ARTICLE_ID}}.html.
+  2. Put article-only images in assets/reviews/{{ARTICLE_ID}}/.
+  3. Paste the dialogue editor export between DIALOGUE_BLOCKS_START and END.
+  4. Replace all {{PLACEHOLDERS}} before publishing.
 
-  Article assets:
-    ../assets/reviews/{{ARTICLE_ID}}/bg/
-    ../assets/reviews/{{ARTICLE_ID}}/photos/
-    ../assets/reviews/{{ARTICLE_ID}}/poster/
-
-  Shared assets:
-    ../assets/toolassets/
-
-  Paste the editor output between DIALOGUE_BLOCKS_START and DIALOGUE_BLOCKS_END.
-  This template keeps the hihyo.html article frame, but the old dialogue markup
-  is intentionally not included.
+  Paths below assume the completed file is in the reviews folder.
 -->
-<div class="side-title">{{SIDE_TITLE}}</div>
-
-<div class="side-characters" aria-label="登場キャラクター">
-  <div class="side-char">
-    <img src="../assets/toolassets/{{SIDE_CHARACTER_1_IMAGE}}" alt="{{SIDE_CHARACTER_1_NAME}}">
-    <div class="side-name">{{SIDE_CHARACTER_1_NAME}}</div>
-    <div class="side-desc">{{SIDE_CHARACTER_1_DESC}}</div>
-  </div>
-  <div class="side-char">
-    <img src="../assets/toolassets/{{SIDE_CHARACTER_2_IMAGE}}" alt="{{SIDE_CHARACTER_2_NAME}}">
-    <div class="side-name">{{SIDE_CHARACTER_2_NAME}}</div>
-    <div class="side-desc">{{SIDE_CHARACTER_2_DESC}}</div>
-  </div>
-</div>
+<div class="side-title">{{SIDE_TITLE_LEFT}}</div>
+<div class="side-title side-title-right" aria-hidden="true">{{SIDE_TITLE_RIGHT}}</div>
 
 <div class="page" data-article-id="{{ARTICLE_ID}}">
   <div class="title-card">
@@ -384,28 +487,49 @@ hr {
 
   <hr>
 
+  <section class="character-intro" aria-label="登場キャラクター">
+    <h2 class="character-intro-title">
+      <img src="../assets/reviews/00-共通/精鋭レビュアーたち.png" alt="言語化ヘタクソ派の精鋭レビュアーたち">
+    </h2>
+
+    <div class="character-intro-card">
+      <img src="../assets/characters/{{CHARACTER_1_IMAGE}}" alt="{{CHARACTER_1_NAME}}">
+      <div class="character-intro-name"><img src="../assets/reviews/00-共通/テンメン名札.png" alt="{{CHARACTER_1_NAME}}"></div>
+      <p class="character-intro-desc">{{CHARACTER_1_INTRO}}</p>
+    </div>
+
+    <div class="character-intro-card">
+      <img src="../assets/characters/{{CHARACTER_2_IMAGE}}" alt="{{CHARACTER_2_NAME}}">
+      <div class="character-intro-name"><img src="../assets/reviews/00-共通/山本名札.png" alt="{{CHARACTER_2_NAME}}"></div>
+      <p class="character-intro-desc">{{CHARACTER_2_INTRO}}</p>
+    </div>
+  </section>
+
+  <br>
+  <hr>
+
+  <img class="warning-banner" src="../assets/reviews/00-共通/warning.png" alt="注意書き">
+
+  <hr>
+
   <section class="dialogue-area" aria-label="会話ブロック">
     <!-- DIALOGUE_BLOCKS_START -->
     <!-- エディタの「全ブロックのHTMLをコピー」をここへ貼り付けます。 -->
     <!-- DIALOGUE_BLOCKS_END -->
   </section>
 
+  <hr>
+
   <section class="review-score" aria-label="採点">
-    <div class="question">
-      <span class="q-label">Q.</span>
-      {{SCORE_QUESTION}}
-    </div>
+    <div class="question"><span class="q-label">Ｑ.</span>{{SCORE_QUESTION}}</div>
 
     <div class="score-wrap">
       <table class="score-table">
-        <tr>
-          <th>{{REVIEWER_1_NAME}}</th>
-          <th>{{REVIEWER_2_NAME}}</th>
-        </tr>
+        <tr><th>{{REVIEWER_1_NAME}}</th><th>{{REVIEWER_2_NAME}}</th></tr>
         <tr>
           <td>
             <div class="big-score">{{REVIEWER_1_SCORE}}<span>点</span></div>
-            <div>{{REVIEWER_1_COMMENT}}</div>
+            <div>{{REVIEWER_1_COMMENT_HTML}}</div>
           </td>
           <td>
             <div class="score-grid">
@@ -418,30 +542,27 @@ hr {
             </div>
           </td>
         </tr>
-        <tr>
-          <td class="bottom-total nowrap">{{REVIEWER_1_TOTAL_TEXT}}</td>
-          <td class="bottom-total">{{REVIEWER_2_TOTAL_TEXT}}</td>
-        </tr>
+        <tr><td class="bottom-total nowrap">{{REVIEWER_1_TOTAL_TEXT}}</td><td class="bottom-total">{{REVIEWER_2_TOTAL_TEXT}}</td></tr>
       </table>
     </div>
   </section>
 
   <section class="profiles" aria-label="プロフィール">
-    <h3>{{PROFILE_HEADING}}</h3>
+    <h2>{{PROFILE_HEADING}}</h2>
 
     <div class="profile-card">
-      <img src="../assets/toolassets/{{PROFILE_1_IMAGE}}" alt="{{PROFILE_1_NAME}}" class="profile-icon">
+      <img src="../assets/reviews/00-共通/{{PROFILE_1_IMAGE}}" alt="{{PROFILE_1_NAME}}" class="profile-icon">
       <div class="profile-text">
         <div class="profile-name">{{PROFILE_1_NAME}}</div>
-        <div class="profile-tip">{{PROFILE_1_TEXT}}</div>
+        <div class="profile-tip"><h4>{{PROFILE_1_TEXT}}</h4></div>
       </div>
     </div>
 
     <div class="profile-card">
-      <img src="../assets/toolassets/{{PROFILE_2_IMAGE}}" alt="{{PROFILE_2_NAME}}" class="profile-icon">
+      <img src="../assets/reviews/00-共通/{{PROFILE_2_IMAGE}}" alt="{{PROFILE_2_NAME}}" class="profile-icon">
       <div class="profile-text">
         <div class="profile-name">{{PROFILE_2_NAME}}</div>
-        <div class="profile-tip">{{PROFILE_2_TEXT}}</div>
+        <div class="profile-tip"><h4>{{PROFILE_2_TEXT}}</h4></div>
       </div>
     </div>
   </section>
@@ -456,10 +577,10 @@ hr {
 
   <hr>
 
-  <section class="notes">
-    {{ARTICLE_NOTES_HTML}}
-  </section>
+  <section class="notes">{{ARTICLE_NOTES_HTML}}</section>
+
+  <footer class="article-footer"><a href="../index.html">サイトのトップに戻る</a></footer>
 </div>
-<script src="../../assets/common/dialogue-responsive.js"></script>
+<script src="../assets/common/dialogue-responsive.js"></script>
 </body>
 </html>
