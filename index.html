@@ -3,19 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/png" href="favicon.png">
-<!-- スマホでもPC版レイアウトを縮小表示する。 -->
-<meta name="viewport" content="width=1200">
+<!-- 1920px固定のPC舞台を縮小表示し、スマホではピンチ拡大とスワイプを許可する。 -->
+<meta name="viewport" content="width=1920, minimum-scale=0.1, user-scalable=yes">
 <title>言語化ヘタクソ派 | なんでもレビュー劇</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+  min-width: 1920px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+/* スクロール操作は残し、画面端のスクロールバーだけ隠す。 */
+html::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
 body {
+  width: 1920px;
+  min-width: 1920px;
   background: #000;
 }
 
 #bg-photos {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 1920px;
+  height: 960px;
   z-index: -1;
 }
 .bg-photo {
@@ -31,7 +48,8 @@ body {
 }
 
 #page1 {
-  height: 100vh;
+  width: 1920px;
+  height: 960px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -40,12 +58,13 @@ body {
 }
 
 #page2 {
-  height: 100vh;
+  width: 1920px;
+  height: 960px;
   position: relative;
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   z-index: 1;
   /* 背景なし → fixed の #bg-photos が透けて見える */
 }
@@ -71,13 +90,13 @@ body {
 /* page2 全体の配置エリア */
 #page2-inner {
   position: relative;
-  width: 100%;
-  height: 100%;
+  width: 1905px;
+  height: 960px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 6%;
+  padding-top: 115px;
   gap: 28px;
   overflow: visible;
   z-index: 2;
@@ -94,15 +113,15 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  margin: 0 3% 2.5%;
+  margin: 0 57px 48px;
   padding: 16px 28px 20px;
-  min-height: 18%;
+  min-height: 173px;
   background: rgba(4, 8, 30, 0.92);
   border: 2px solid #5577cc;
   border-radius: 4px;
   color: #ddeeff;
   font-family: 'Hiragino Sans', 'ヒラギノ角ゴシック', '游ゴシック', 'Yu Gothic', 'Meiryo', sans-serif;
-  font-size: clamp(14px, 1.9vw, 20px);
+  font-size: 20px;
   line-height: 1.75;
   box-shadow:
     inset 0 0 0 1px rgba(80, 120, 255, 0.18),
@@ -151,7 +170,7 @@ body {
 }
 
 #page2-menyu {
-  width: clamp(220px, 36vw, 520px);
+  width: 520px;
   height: auto;
   pointer-events: none;
   position: relative;
@@ -163,7 +182,7 @@ body {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: clamp(10px, 1.5vw, 24px);
+  gap: 24px;
   position: relative;
   z-index: 3;
 }
@@ -181,32 +200,33 @@ body {
 
 .p2-menu-button {
   display: block;
-  width: clamp(180px, 22.5vw, 315px);
+  width: 315px;
   height: auto;
   flex: 0 1 auto;
 }
 
 #page-divider {
   position: relative;
-  width: 100%;
+  width: 1920px;
   z-index: 1;
   line-height: 0;
   background: #fff;
 }
 
 #page-divider .divider-line {
-  width: 100%;
-  height: auto;
+  width: 1905px;
+  height: 74px;
   display: block;
   pointer-events: none;
 }
 
 .divider-text-area {
-  min-height: clamp(160px, 22vh, 260px);
-  padding: clamp(28px, 5vw, 72px);
+  width: 1905px;
+  min-height: 533px;
+  padding: 72px;
   background: #fff;
   color: #111;
-  font-size: clamp(16px, 2vw, 24px);
+  font-size: 24px;
   line-height: 1.8;
   white-space: pre-wrap;
   display: flex;
@@ -216,7 +236,7 @@ body {
 }
 
 .divider-text-area p {
-  width: min(100%, 1000px);
+  width: 1000px;
   margin: 0;
 }
 
@@ -225,7 +245,7 @@ body {
   top: 6%;
   left: 50%;
   transform: translateX(-50%);
-  width: 20vw;
+  width: 384px;
   height: auto;
   pointer-events: none;
   z-index: 3;
@@ -243,7 +263,7 @@ body {
 }
 
 .p2-chara {
-  height: 62vh;
+  height: 595px;
   width: auto;
   display: block;
 }
@@ -253,7 +273,7 @@ body {
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 130%;
+  width: 2477px;
   perspective: 650px;
   z-index: 2;
 }
@@ -293,7 +313,7 @@ body {
 }
 
 .p2-left-chars img {
-  height: 60vh;
+  height: 576px;
   width: auto;
   display: block;
 }
@@ -306,7 +326,7 @@ body {
 }
 
 .p2-right-chars img {
-  height: 60vh;
+  height: 576px;
   width: auto;
   display: block;
 }
@@ -314,19 +334,19 @@ body {
 /* page2 解説画像：キャラクターとは独立配置で、その背面に表示 */
 .p2-explainer {
   position: absolute;
-  bottom: calc(clamp(160px, 24vh, 260px) + 150px);
-  width: clamp(260px, 32vw, 620px);
+  bottom: 380px;
+  width: 614px;
   height: auto;
   pointer-events: none;
   z-index: 1;
 }
 
 .p2-explainer-bundodo {
-  left: clamp(12px, 3vw, 58px);
+  left: 58px;
 }
 
 .p2-explainer-cherry {
-  right: clamp(12px, 3vw, 58px);
+  right: 58px;
 }
 
 
@@ -348,6 +368,7 @@ body {
 
 /* キャラステージ */
 .stage {
+  width: 1905px;
   flex: 1;
   display: flex;
   align-items: flex-end;
@@ -358,7 +379,7 @@ body {
 
 .chara {
   display: block;
-  height: 80vh;
+  height: 768px;
   width: auto;
   position: relative;
   z-index: 2;
@@ -381,7 +402,7 @@ body {
   position: absolute;
   right: 0;
   bottom: 0;
-  height: min(72vh, 760px);
+  height: 691px;
   width: auto;
   pointer-events: none;
 }
@@ -397,10 +418,9 @@ body {
 
 .title-img {
   position: absolute;
-  left: 45%;
-  transform: translateX(calc(-50% + 60px));
-  bottom: calc(79vh - 100px);
-  max-width: 512vw;
+  left: 567px;
+  bottom: 658px;
+  max-width: none;
   height: auto;
   pointer-events: none;
   z-index: 4;
@@ -408,11 +428,10 @@ body {
 
 #radial-canvas {
   position: absolute;
-  left: 45%;
-  transform: translateX(calc(-50% + 60px));
-  bottom: calc(79vh + 230px - 14vw);
-  width: clamp(300px, calc(52vw - 250px), 700px);
-  height: clamp(150px, calc(26vw - 280px), 350px);
+  left: 567px;
+  bottom: 720px;
+  width: 700px;
+  height: 219px;
   pointer-events: none;
   z-index: 1;
   opacity: 0.92;
@@ -427,7 +446,7 @@ body {
 
 .hukidashi-img {
   position: absolute;
-  width: 13.5vw;
+  width: 259px;
   height: auto;
   pointer-events: none;
   opacity: 0;
@@ -1452,7 +1471,9 @@ body {
       <a class="btn" href="reviews/index.html" aria-label="レビュー一覧へ">
         <img class="p2-menu-button" src="assets/common/ui/レビューボタン.png" alt="レビュー記事">
       </a>
-      <img class="p2-menu-button" src="assets/common/ui/プロフボタン.png" alt="プロフィール">
+      <a class="btn" href="characters/index.html" aria-label="レビュアープロフィールへ">
+        <img class="p2-menu-button" src="assets/common/ui/プロフボタン.png" alt="プロフィール">
+      </a>
       <img class="p2-menu-button" src="assets/common/ui/研究所ボタン.png" alt="研究所">
     </nav>
     <div id="p2-dialog">
@@ -1798,35 +1819,6 @@ function scheduleChara2() {
   requestAnimationFrame(frame);
 })();
 
-// ====== 放射キャンバスのサイズ・位置をページ読み込み時に一度だけpx固定 ======
-(function() {
-  const canvas   = document.getElementById('radial-canvas');
-  if (canvas.classList.contains('is-hidden')) return;
-  const titleImg = document.querySelector('.title-img');
-  const stage    = document.querySelector('.stage');
-
-  function lockOnce() {
-    requestAnimationFrame(() => {
-      const stageRect  = stage.getBoundingClientRect();
-      const canvasRect = canvas.getBoundingClientRect();
-      if (!canvasRect.width) return;
-
-      // CSS calc() で算出された現在値をpx固定値に変換
-      canvas.style.width     = canvasRect.width  + 'px';
-      canvas.style.height    = canvasRect.height + 'px';
-      canvas.style.bottom    = Math.round(stageRect.bottom - canvasRect.bottom) + 'px';
-      canvas.style.left      = Math.round(canvasRect.left  - stageRect.left)   + 'px';
-      canvas.style.transform = 'none';
-    });
-  }
-
-  if (titleImg.complete && titleImg.naturalWidth > 0) {
-    lockOnce();
-  } else {
-    titleImg.addEventListener('load', lockOnce, { once: true });
-  }
-})();
-
 // ====== 背景写真スライドショー ======
 (function() {
   // BG_PHOTOS_START (managed by update-background-list.ps1)
@@ -1965,7 +1957,7 @@ function scheduleChara2() {
         { name: '山本ディレッタント', text: 'あんなとこに行くやつの気が知れないわ。' },
         { name: 'テンメンちゃん',    text: '研究室ホバー：テキスト３' },
       ],
-      chara: [
+      'characters/index': [
         { name: 'テンメンちゃん',    text: 'キャラプロフィールホバー：テキスト１' },
         { name: '山本ディレッタント', text: 'キャラプロフィールホバー：テキスト２' },
         { name: 'テンメンちゃん',    text: 'キャラプロフィールホバー：テキスト３' },

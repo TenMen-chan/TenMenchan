@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="言語化ヘタクソ派の登場人物を舞台から呼び出すキャラクター紹介。" />
+    <meta name="theme-color" content="#10070c" />
+    <title>レビュアープロフィール | 言語化ヘタクソ派</title>
+    <link rel="icon" type="image/png" href="../favicon.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="theatre" id="theatre" aria-label="キャラクター紹介の舞台">
+        <div class="proscenium" aria-hidden="true">
+          <div class="proscenium__ornament">◆</div>
+        </div>
+
+        <div class="stage" id="stage">
+          <div class="stage-camera">
+            <div class="focus-camera" id="focusCamera">
+              <div class="stage-scenery" aria-hidden="true"></div>
+              <div class="character-backdrop" id="characterBackdrop" aria-hidden="true"></div>
+              <div class="stage-light" aria-hidden="true"></div>
+              <div class="cast" id="cast" aria-hidden="true">
+                <button class="cast-member cast-member--left cast-member--tenmen" data-character="1" aria-label="テンメンちゃんの紹介を見る">
+                  <span class="figure-motion"><img src="assets/tenmen.png" alt="" /></span>
+                </button>
+                <button class="cast-member cast-member--right" data-character="0" aria-label="山本ディレッタントの紹介を見る">
+                  <span class="figure-motion"><img src="assets/yamamoto.png" alt="" /></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="curtain curtain--left" aria-hidden="true"></div>
+          <div class="curtain curtain--right" aria-hidden="true"></div>
+          <div class="curtain-valance" aria-hidden="true"></div>
+
+          <div class="opening-panel" id="openingPanel">
+            <button class="open-button" id="openButton" type="button">
+              <span>開く</span>
+            </button>
+          </div>
+
+          <article class="profile" id="profile" aria-live="polite" hidden>
+            <button class="profile__close" id="closeProfile" type="button" aria-label="舞台へ戻る">×</button>
+            <button class="profile__arrow profile__arrow--prev" id="prevCharacter" type="button" aria-label="前の人物">‹</button>
+            <div class="profile__portrait-wrap">
+              <img class="profile__portrait" id="profileImage" src="assets/yamamoto.png" alt="山本ディレッタント" />
+            </div>
+            <div class="profile__copy">
+              <p class="profile__role" id="profileRole">サブカル批評家気取りクソ面倒潔癖症委員長</p>
+              <h2 id="profileName">山本ディレッタント</h2>
+              <p class="profile__kana" id="profileKana">YAMAMOTO DILETTANTE</p>
+              <p class="profile__lead" id="profileLead">都立高校に通う鬼っ子。片親のうえ姉と妹と弟がいる。他人に厳しい。</p>
+              <div class="profile__voices" id="profileVoices" aria-label="自己紹介サウンド"></div>
+              <dl class="profile__facts" id="profileFacts">
+                <div><dt>趣味</dt><dd>読書、節約</dd></div>
+              </dl>
+              <section class="ability" aria-labelledby="abilityTitle">
+                <h3 id="abilityTitle">能力</h3>
+                <div class="ability__chart" id="abilityChart"></div>
+              </section>
+            </div>
+            <button class="profile__arrow profile__arrow--next" id="nextCharacter" type="button" aria-label="次の人物">›</button>
+          </article>
+        </div>
+
+        <div class="footlights" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="audience" aria-hidden="true">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </section>
+
+      <nav class="lower-nav" aria-label="ページ操作">
+        <button id="resetStage" type="button">閉幕！</button>
+        <a href="../index.html">サイトトップへ</a>
+      </nav>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>
